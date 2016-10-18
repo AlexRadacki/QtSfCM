@@ -15,12 +15,13 @@ public:
     explicit TestWindow(QWidget *parent = 0);
     ~TestWindow();
 
+     void updateWindow();
 
 private slots:
     void on_pushButton_Color_clicked();
 
 private:
-    Ui::TestWindow *ui;
+     Ui::TestWindow *ui;
 };
 
 #endif // TESTWINDOW_H

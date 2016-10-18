@@ -2,6 +2,7 @@
 #include <QApplication>
 #include <QDesktopWidget>
 #include <QDebug>
+#include <QTimer>
 #include "testwindow.h"
 #include "myglwidget.h"
 

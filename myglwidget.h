@@ -12,6 +12,7 @@ public:
     explicit MyGLWidget(QWidget *parent = 0);
     ~MyGLWidget();
     void randomColor();
+    void updateRotation();
 
 protected:
     void initializeGL();
@@ -22,6 +23,9 @@ protected:
     QSize sizeHint() const;
 
 private:
+    float xRot;
+    float yRot;
+    float zRot;
     void draw();
 };
 

@@ -10,11 +10,17 @@ TestWindow::TestWindow(QWidget *parent) :
     ui->setupUi(this);
 }
 
+
+
 TestWindow::~TestWindow()
 {
     delete ui;
 }
 
+void TestWindow::updateWindow()
+{
+    ui->myglwidget->updateRotation();
+}
 
 void TestWindow::on_pushButton_Color_clicked()
 {

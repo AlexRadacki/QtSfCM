@@ -9,7 +9,12 @@
 MyGLWidget::MyGLWidget(QWidget *parent)
     : QGLWidget(QGLFormat(QGL::SampleBuffers), parent)
 {
-
+    xRot = 0;
+    yRot = 0;
+    zRot = 0;
+    auto timer = new QTimer(parent);
+    connect(timer, &QTimer::timeout, [&]{updateRotation();});
+    timer->start();
 }
 
 MyGLWidget::~MyGLWidget()
@@ -51,16 +56,28 @@ void MyGLWidget::randomColor()
     QColor c;
     c.setRgb(rand() % 127, rand() % 127, rand() % 127);
     qglClearColor(c);
+
     updateGL();
     paintGL();
 }
 
+void MyGLWidget::updateRotation()
+{
+    xRot++;
+    yRot++;
+    zRot++;
+    updateGL();
+    paintGL();
+}
 
 void MyGLWidget::paintGL()
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glLoadIdentity();
     glTranslatef(0.0, 0.0, -10.0);
+    glRotatef(xRot / 16.0, 1.0, 0.0, 0.0);
+    glRotatef(yRot / 16.0, 0.0, 1.0, 0.0);
+    glRotatef(zRot / 16.0, 0.0, 0.0, 1.0);
     draw();
 }
 
