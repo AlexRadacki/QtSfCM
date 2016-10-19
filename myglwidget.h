@@ -27,6 +27,7 @@ private:
     float yRot;
     float zRot;
     void draw();
+    void triangle(QVector3D a, QVector3D b, QVector3D c);
 };
 
 #endif // MYGLWIDGET_H

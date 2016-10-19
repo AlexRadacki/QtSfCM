@@ -63,9 +63,9 @@ void MyGLWidget::randomColor()
 
 void MyGLWidget::updateRotation()
 {
-    xRot++;
-    yRot++;
-    zRot++;
+    xRot += 10;
+    yRot += 10;
+    zRot += 10;
     updateGL();
     paintGL();
 }
@@ -99,36 +99,32 @@ void MyGLWidget::resizeGL(int width, int height)
 void MyGLWidget::draw()
 {
     qglColor(Qt::red);
-    glBegin(GL_QUADS);
-        glNormal3f(0,0,-1);
-        glVertex3f(-1,-1,0);
-        glVertex3f(-1,1,0);
-        glVertex3f(1,1,0);
-        glVertex3f(1,-1,0);
 
-    glEnd();
+    triangle(QVector3D(-1,-1,0),QVector3D(1,-1,0),QVector3D(0,0,1.2));
+    triangle(QVector3D(1,-1,0),QVector3D(1,1,0),QVector3D(0,0,1.2));
+    triangle(QVector3D(1,1,0),QVector3D(-1,1,0),QVector3D(0,0,1.2));
+    triangle(QVector3D(-1,1,0),QVector3D(-1,-1,0),QVector3D(0,0,1.2));
+
+    triangle(QVector3D(-1,-1,0),QVector3D(0,0,-1.2),QVector3D(1,-1,0));
+    triangle(QVector3D(1,-1,0),QVector3D(0,0,-1.2),QVector3D(1,1,0));
+    triangle(QVector3D(1,1,0),QVector3D(0,0,-1.2),QVector3D(-1,1,0));
+    triangle(QVector3D(-1,1,0),QVector3D(0,0,-1.2),QVector3D(-1,-1,0));
+
+
+}
+void MyGLWidget::triangle(QVector3D a, QVector3D b, QVector3D c)
+{
+
+    QVector3D v = b-a;
+    QVector3D w = c-a;
+
+    QVector3D n = QVector3D::normal(v,w);
     glBegin(GL_TRIANGLES);
-        glNormal3f(0,-1,0.707);
-        glVertex3f(-1,-1,0);
-        glVertex3f(1,-1,0);
-        glVertex3f(0,0,1.2);
+        glNormal3f(n.x(),n.y(),n.z());
+
+        glVertex3f(a.x(),a.y(),a.z());
+        glVertex3f(b.x(),b.y(),b.z());
+        glVertex3f(c.x(),c.y(),c.z());
     glEnd();
-    glBegin(GL_TRIANGLES);
-        glNormal3f(1,0, 0.707);
-        glVertex3f(1,-1,0);
-        glVertex3f(1,1,0);
-        glVertex3f(0,0,1.2);
-    glEnd();
-    glBegin(GL_TRIANGLES);
-        glNormal3f(0,1,0.707);
-        glVertex3f(1,1,0);
-        glVertex3f(-1,1,0);
-        glVertex3f(0,0,1.2);
-    glEnd();
-    glBegin(GL_TRIANGLES);
-        glNormal3f(-1,0,0.707);
-        glVertex3f(-1,1,0);
-        glVertex3f(-1,-1,0);
-        glVertex3f(0,0,1.2);
-    glEnd();
+
 }
