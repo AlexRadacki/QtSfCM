@@ -16,6 +16,7 @@ public:
     ~TestWindow();
 
      void updateWindow();
+     void updateFps();
 
 private slots:
     void on_pushButton_Color_clicked();

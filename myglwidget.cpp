@@ -12,6 +12,8 @@ MyGLWidget::MyGLWidget(QWidget *parent)
     xRot = 0;
     yRot = 0;
     zRot = 0;
+    frameCounter = 0;
+
     auto timer = new QTimer(parent);
     connect(timer, &QTimer::timeout, [&]{updateRotation();});
     timer->start();
@@ -61,11 +63,21 @@ void MyGLWidget::randomColor()
     paintGL();
 }
 
+float MyGLWidget::calcFps()
+{
+    float _frameCounter = frameCounter;
+    frameCounter = 0;
+    return _frameCounter;
+}
+
 void MyGLWidget::updateRotation()
 {
     xRot += 10;
     yRot += 10;
     zRot += 10;
+
+    frameCounter++;
+
     updateGL();
     paintGL();
 }
@@ -100,15 +112,15 @@ void MyGLWidget::draw()
 {
     qglColor(Qt::red);
 
-    triangle(QVector3D(-1,-1,0),QVector3D(1,-1,0),QVector3D(0,0,1.2));
-    triangle(QVector3D(1,-1,0),QVector3D(1,1,0),QVector3D(0,0,1.2));
-    triangle(QVector3D(1,1,0),QVector3D(-1,1,0),QVector3D(0,0,1.2));
-    triangle(QVector3D(-1,1,0),QVector3D(-1,-1,0),QVector3D(0,0,1.2));
+    triangle(QVector3D(-1,-1,0),QVector3D(1,-1,0),QVector3D(0,0,1.3));
+    triangle(QVector3D(1,-1,0),QVector3D(1,1,0),QVector3D(0,0,1.3));
+    triangle(QVector3D(1,1,0),QVector3D(-1,1,0),QVector3D(0,0,1.3));
+    triangle(QVector3D(-1,1,0),QVector3D(-1,-1,0),QVector3D(0,0,1.3));
 
-    triangle(QVector3D(-1,-1,0),QVector3D(0,0,-1.2),QVector3D(1,-1,0));
-    triangle(QVector3D(1,-1,0),QVector3D(0,0,-1.2),QVector3D(1,1,0));
-    triangle(QVector3D(1,1,0),QVector3D(0,0,-1.2),QVector3D(-1,1,0));
-    triangle(QVector3D(-1,1,0),QVector3D(0,0,-1.2),QVector3D(-1,-1,0));
+    triangle(QVector3D(-1,-1,0),QVector3D(0,0,-1.3),QVector3D(1,-1,0));
+    triangle(QVector3D(1,-1,0),QVector3D(0,0,-1.3),QVector3D(1,1,0));
+    triangle(QVector3D(1,1,0),QVector3D(0,0,-1.3),QVector3D(-1,1,0));
+    triangle(QVector3D(-1,1,0),QVector3D(0,0,-1.3),QVector3D(-1,-1,0));
 
 
 }
