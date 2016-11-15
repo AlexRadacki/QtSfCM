@@ -63,10 +63,7 @@ public:
         palette.setBrush(QPalette::Disabled, QPalette::Window, brush2);
         label_fps->setPalette(palette);
         QFont font;
-        font.setFamily(QStringLiteral("Terminal"));
         font.setPointSize(18);
-        font.setBold(true);
-        font.setWeight(75);
         label_fps->setFont(font);
         label_fps->setAutoFillBackground(true);
         label_fps->setMidLineWidth(3);

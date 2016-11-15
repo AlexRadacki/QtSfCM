@@ -30,7 +30,6 @@ void TestWindow::updateWindow()
 void TestWindow::updateFps()
 {
     ui->label_fps->setText(QString::number(ui->myglwidget->calcFps()) + "FPS");
-    //qInfo() << QString::number(ui->myglwidget->calcFps());
 }
 
 void TestWindow::on_pushButton_Color_clicked()
