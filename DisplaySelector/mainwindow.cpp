@@ -61,6 +61,9 @@ MainWindow::MainWindow(QWidget *parent) :
 
        videoWidget = new QVideoWidget;
        player->setVideoOutput(videoWidget);
+       videoWidget->setParent(ui->videoBox);
+       videoWidget->setGeometry(QRect(15,20,300,180));
+       videoWidget->show();
 }
 
 MainWindow::~MainWindow()
@@ -86,7 +89,8 @@ void MainWindow::on_actionLoad_triggered()
 {
     qDebug() << "loadtest";
     fileName = QFileDialog::getOpenFileName(this, tr("Open Media"), "/", tr("Media Files (*.avi *.mp4 *.mov)"));
-
+    ui->fileNameLabel->setText(fileName.toString());
+    player->setMedia(fileName);
 }
 
 void MainWindow::on_actionExit_triggered()
@@ -109,28 +113,35 @@ void MainWindow::on_checkBox_clicked()
 
 void MainWindow::on_pushButton_pressed()
 {
+    if(player->state() > 0) player->stop();
+
     if(fileName.isEmpty())
     {
 
         fileName = QFileDialog::getOpenFileUrl(this, tr("Open Media"), QUrl("/"), tr("Media Files (*.avi *.mp4 *.mov)"));
         player->setMedia(fileName);
+        ui->fileNameLabel->setText(fileName.toString());
         qDebug() <<"Play file: " << player->currentMedia().canonicalUrl();
-
-        if(screen0 && !screen1)
-        {
-            videoWidget->setGeometry(QApplication::screens().at(0)->geometry());
-        }
-        else if(screen1 && !screen0)
-        {
-            videoWidget->setGeometry(QApplication::screens().at(1)->geometry());
-        }
-        else if(screen1 && screen0)
-        {
-            videoWidget->setGeometry(QRect(0,0,3840,1080));
-        }
-
-        videoWidget->show();
-        player->play();
-
     }
+
+    if(screen0 && !screen1)
+    {
+        videoWidget->setFullScreen(true);
+        videoWidget->setGeometry(QApplication::screens().at(0)->geometry());
+    }
+    else if(screen1 && !screen0)
+    {
+        videoWidget->setFullScreen(true);
+        videoWidget->setGeometry(QApplication::screens().at(1)->geometry());
+    }
+    else if(screen1 && screen0)
+    {
+        videoWidget->setFullScreen(true);
+        int x = QApplication::screens().at(0)->geometry().width() + QApplication::screens().at(1)->geometry().width();
+        int y = (QApplication::screens().at(0)->geometry().height() > QApplication::screens().at(1)->geometry().height()) ? QApplication::screens().at(0)->geometry().height() : QApplication::screens().at(1)->geometry().height();
+        videoWidget->setGeometry(QRect(0,0,x,y));
+    }
+
+    player->play();
 }
+

@@ -15,6 +15,7 @@
 #include <QtWidgets/QButtonGroup>
 #include <QtWidgets/QGroupBox>
 #include <QtWidgets/QHeaderView>
+#include <QtWidgets/QLabel>
 #include <QtWidgets/QListWidget>
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QMenu>
@@ -42,6 +43,8 @@ public:
     QWidget *verticalLayoutWidget;
     QVBoxLayout *displaySelectorLayout;
     QPushButton *pushButton;
+    QGroupBox *videoBox;
+    QLabel *fileNameLabel;
     QToolBar *mainToolBar;
     QStatusBar *statusBar;
     QMenuBar *menuBar;
@@ -52,7 +55,7 @@ public:
     {
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName(QStringLiteral("MainWindow"));
-        MainWindow->resize(530, 584);
+        MainWindow->resize(692, 584);
         actionLoad = new QAction(MainWindow);
         actionLoad->setObjectName(QStringLiteral("actionLoad"));
         actionExit = new QAction(MainWindow);
@@ -95,7 +98,7 @@ public:
         listWidget->setGeometry(QRect(10, 20, 301, 191));
         displaySelectorBox = new QGroupBox(centralWidget);
         displaySelectorBox->setObjectName(QStringLiteral("displaySelectorBox"));
-        displaySelectorBox->setGeometry(QRect(340, 10, 181, 221));
+        displaySelectorBox->setGeometry(QRect(350, 10, 181, 221));
         verticalLayoutWidget = new QWidget(displaySelectorBox);
         verticalLayoutWidget->setObjectName(QStringLiteral("verticalLayoutWidget"));
         verticalLayoutWidget->setGeometry(QRect(10, 20, 160, 191));
@@ -107,7 +110,13 @@ public:
         displaySelectorLayout->setContentsMargins(0, 0, 0, 0);
         pushButton = new QPushButton(centralWidget);
         pushButton->setObjectName(QStringLiteral("pushButton"));
-        pushButton->setGeometry(QRect(350, 250, 161, 31));
+        pushButton->setGeometry(QRect(350, 240, 341, 31));
+        videoBox = new QGroupBox(centralWidget);
+        videoBox->setObjectName(QStringLiteral("videoBox"));
+        videoBox->setGeometry(QRect(350, 290, 331, 211));
+        fileNameLabel = new QLabel(centralWidget);
+        fileNameLabel->setObjectName(QStringLiteral("fileNameLabel"));
+        fileNameLabel->setGeometry(QRect(350, 510, 331, 16));
         MainWindow->setCentralWidget(centralWidget);
         mainToolBar = new QToolBar(MainWindow);
         mainToolBar->setObjectName(QStringLiteral("mainToolBar"));
@@ -117,7 +126,7 @@ public:
         MainWindow->setStatusBar(statusBar);
         menuBar = new QMenuBar(MainWindow);
         menuBar->setObjectName(QStringLiteral("menuBar"));
-        menuBar->setGeometry(QRect(0, 0, 530, 21));
+        menuBar->setGeometry(QRect(0, 0, 692, 21));
         menu = new QMenu(menuBar);
         menu->setObjectName(QStringLiteral("menu"));
         menuFile = new QMenu(menuBar);
@@ -166,6 +175,8 @@ public:
         ___qtablewidgetitem8->setText(QApplication::translate("MainWindow", "Depth", 0));
         displaySelectorBox->setTitle(QApplication::translate("MainWindow", "Select Output", 0));
         pushButton->setText(QApplication::translate("MainWindow", "Test Screen(s)", 0));
+        videoBox->setTitle(QApplication::translate("MainWindow", "Preview", 0));
+        fileNameLabel->setText(QApplication::translate("MainWindow", "No file", 0));
         menu->setTitle(QApplication::translate("MainWindow", "?", 0));
         menuFile->setTitle(QApplication::translate("MainWindow", "File", 0));
     } // retranslateUi

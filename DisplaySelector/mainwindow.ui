@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>530</width>
+    <width>692</width>
     <height>584</height>
    </rect>
   </property>
@@ -101,7 +101,7 @@
    <widget class="QGroupBox" name="displaySelectorBox">
     <property name="geometry">
      <rect>
-      <x>340</x>
+      <x>350</x>
       <y>10</y>
       <width>181</width>
       <height>221</height>
@@ -130,13 +130,39 @@
     <property name="geometry">
      <rect>
       <x>350</x>
-      <y>250</y>
-      <width>161</width>
+      <y>240</y>
+      <width>341</width>
       <height>31</height>
      </rect>
     </property>
     <property name="text">
      <string>Test Screen(s)</string>
+    </property>
+   </widget>
+   <widget class="QGroupBox" name="videoBox">
+    <property name="geometry">
+     <rect>
+      <x>350</x>
+      <y>290</y>
+      <width>331</width>
+      <height>211</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string>Preview</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="fileNameLabel">
+    <property name="geometry">
+     <rect>
+      <x>350</x>
+      <y>510</y>
+      <width>331</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>No file</string>
     </property>
    </widget>
   </widget>
@@ -154,7 +180,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>530</width>
+     <width>692</width>
      <height>21</height>
     </rect>
    </property>
