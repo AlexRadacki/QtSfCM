@@ -6,6 +6,8 @@
 #include <QListWidgetItem>
 #include <QDebug>
 #include <QMediaPlayer>
+#include <QWidget>
+#include <QKeyEvent>
 
 namespace Ui {
 class MainWindow;
@@ -39,9 +41,13 @@ private:
     QMediaPlayer *player;
     QVideoWidget *videoWidget;
     QUrl fileName;
-
+    //void keyPressEvent(QKeyEvent *k);
     bool screen0;
     bool screen1;
+
+protected:
+
+    bool eventFilter(QObject *obj, QEvent *event);
 };
 
 #endif // MAINWINDOW_H

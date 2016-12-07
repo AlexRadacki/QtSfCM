@@ -13,6 +13,7 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
+qApp->installEventFilter(this);
     ui->setupUi(this);
 
     ui->displayInfoTable->setColumnWidth(0, 220);
@@ -145,3 +146,23 @@ void MainWindow::on_pushButton_pressed()
     player->play();
 }
 
+bool MainWindow::eventFilter(QObject *obj, QEvent *event)
+{
+    if (event->type() == QEvent::KeyPress)
+    {
+        QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
+           qDebug() << "key " << keyEvent->key() << "from" << obj;
+           char keyPressed;
+               keyPressed = QString(keyEvent->text()).at(0).toLatin1();
+               switch ( keyPressed)
+               {
+                   case '\r':                               // reload
+                       videoWidget->setFullScreen(!videoWidget->isFullScreen());
+                       break;
+                   case 'q':                               // quit
+                       QApplication::exit();
+                       break;
+               }
+    }
+    return QObject::eventFilter(obj, event);
+}
