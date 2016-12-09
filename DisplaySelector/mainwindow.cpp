@@ -13,7 +13,7 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
-qApp->installEventFilter(this);
+    qApp->installEventFilter(this);
     ui->setupUi(this);
 
     ui->displayInfoTable->setColumnWidth(0, 220);
@@ -148,21 +148,28 @@ void MainWindow::on_pushButton_pressed()
 
 bool MainWindow::eventFilter(QObject *obj, QEvent *event)
 {
-    if (event->type() == QEvent::KeyPress)
+    if (event->type() == QEvent::KeyRelease)
     {
         QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
-           qDebug() << "key " << keyEvent->key() << "from" << obj;
-           char keyPressed;
-               keyPressed = QString(keyEvent->text()).at(0).toLatin1();
-               switch ( keyPressed)
-               {
-                   case '\r':                               // reload
-                       videoWidget->setFullScreen(!videoWidget->isFullScreen());
-                       break;
-                   case 'q':                               // quit
-                       QApplication::exit();
-                       break;
-               }
+        if(keyEvent->isAutoRepeat() == false && lastKeyEventTime != keyEvent->timestamp())
+        {
+            qDebug() << "key " << keyEvent->key() << "from" << obj;
+            if(keyEvent->key() == Qt::Key_Enter)
+            {
+                videoWidget->setFullScreen(!videoWidget->isFullScreen());
+                if(videoWidget->isFullScreen()==false)
+                {
+                    videoWidget->setParent(ui->videoBox);
+                    videoWidget->setGeometry(QRect(15,20,300,180));
+                }
+
+            }
+            if(keyEvent->key() == Qt::Key_Q) QApplication::exit();
+            lastKeyEventTime = keyEvent->timestamp();
+        }
+
     }
+
     return QObject::eventFilter(obj, event);
+
 }

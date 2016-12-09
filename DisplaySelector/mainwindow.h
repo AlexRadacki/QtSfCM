@@ -44,6 +44,7 @@ private:
     //void keyPressEvent(QKeyEvent *k);
     bool screen0;
     bool screen1;
+    ulong lastKeyEventTime;
 
 protected:
 
