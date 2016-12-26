@@ -6,7 +6,7 @@
 ** WARNING! All changes made in this file will be lost!
 *****************************************************************************/
 
-#include "../mainwindow.h"
+#include "../../mainwindow.h"
 #include <QtCore/qbytearray.h>
 #include <QtCore/qmetatype.h>
 #if !defined(Q_MOC_OUTPUT_REVISION)
@@ -20,7 +20,7 @@
 QT_BEGIN_MOC_NAMESPACE
 struct qt_meta_stringdata_MainWindow_t {
     QByteArrayData data[10];
-    char stringdata0[181];
+    char stringdata0[175];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -30,18 +30,18 @@ struct qt_meta_stringdata_MainWindow_t {
 static const qt_meta_stringdata_MainWindow_t qt_meta_stringdata_MainWindow = {
     {
 QT_MOC_LITERAL(0, 0, 10), // "MainWindow"
-QT_MOC_LITERAL(1, 11, 31), // "on_videoAdapterlist_itemClicked"
-QT_MOC_LITERAL(2, 43, 0), // ""
-QT_MOC_LITERAL(3, 44, 16), // "QListWidgetItem*"
-QT_MOC_LITERAL(4, 61, 4), // "item"
-QT_MOC_LITERAL(5, 66, 23), // "on_actionLoad_triggered"
-QT_MOC_LITERAL(6, 90, 23), // "on_actionExit_triggered"
-QT_MOC_LITERAL(7, 114, 24), // "on_actionAbout_triggered"
-QT_MOC_LITERAL(8, 139, 21), // "on_pushButton_pressed"
-QT_MOC_LITERAL(9, 161, 19) // "on_checkBox_clicked"
+QT_MOC_LITERAL(1, 11, 25), // "on_listWidget_itemClicked"
+QT_MOC_LITERAL(2, 37, 0), // ""
+QT_MOC_LITERAL(3, 38, 16), // "QListWidgetItem*"
+QT_MOC_LITERAL(4, 55, 4), // "item"
+QT_MOC_LITERAL(5, 60, 23), // "on_actionLoad_triggered"
+QT_MOC_LITERAL(6, 84, 23), // "on_actionExit_triggered"
+QT_MOC_LITERAL(7, 108, 24), // "on_actionAbout_triggered"
+QT_MOC_LITERAL(8, 133, 21), // "on_pushButton_pressed"
+QT_MOC_LITERAL(9, 155, 19) // "on_checkBox_clicked"
 
     },
-    "MainWindow\0on_videoAdapterlist_itemClicked\0"
+    "MainWindow\0on_listWidget_itemClicked\0"
     "\0QListWidgetItem*\0item\0on_actionLoad_triggered\0"
     "on_actionExit_triggered\0"
     "on_actionAbout_triggered\0on_pushButton_pressed\0"
@@ -87,7 +87,7 @@ void MainWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
         MainWindow *_t = static_cast<MainWindow *>(_o);
         Q_UNUSED(_t)
         switch (_id) {
-        case 0: _t->on_videoAdapterlist_itemClicked((*reinterpret_cast< QListWidgetItem*(*)>(_a[1]))); break;
+        case 0: _t->on_listWidget_itemClicked((*reinterpret_cast< QListWidgetItem*(*)>(_a[1]))); break;
         case 1: _t->on_actionLoad_triggered(); break;
         case 2: _t->on_actionExit_triggered(); break;
         case 3: _t->on_actionAbout_triggered(); break;

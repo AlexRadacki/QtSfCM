@@ -24,7 +24,7 @@ public:
 private slots:
 
 
-    void on_listWidget_itemClicked(QListWidgetItem *item);
+    void on_videoAdapterlist_itemClicked(QListWidgetItem *item);
 
     void on_actionLoad_triggered();
 

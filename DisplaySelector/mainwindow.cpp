@@ -45,7 +45,7 @@ MainWindow::MainWindow(QWidget *parent) :
            int monitorIndex = 0;
            while(EnumDisplayDevices(sw, monitorIndex, &dd, 0))
            {
-               ui->listWidget->addItem(QString::fromStdString(deviceName)+", "+QString::fromStdString(deviceString));
+               ui->videoAdapterlist->addItem(QString::fromStdString(deviceName)+", "+QString::fromStdString(deviceString));
                ++monitorIndex;
 
                QCheckBox *checkBox = new QCheckBox(QString::fromStdString(deviceName));
@@ -73,9 +73,9 @@ MainWindow::~MainWindow()
 }
 
 
-void MainWindow::on_listWidget_itemClicked(QListWidgetItem *item)
+void MainWindow::on_videoAdapterlist_itemClicked(QListWidgetItem *item)
 {
-    int itemID = ui->listWidget->row(item);
+    int itemID = ui->videoAdapterlist->row(item);
     ui->displayInfoTable->setItem(0,0,new QTableWidgetItem(item->text()));
     ui->displayInfoTable->setItem(1,0,new QTableWidgetItem(QString::number(QApplication::screens().at(itemID)->geometry().x())));
     ui->displayInfoTable->setItem(2,0,new QTableWidgetItem(QString::number(QApplication::screens().at(itemID)->geometry().y())));
