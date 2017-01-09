@@ -8,6 +8,7 @@
 #include <QScreen>
 #include <QVideoWidget>
 #include <QFileDialog>
+#include <QTimer>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -65,6 +66,32 @@ MainWindow::MainWindow(QWidget *parent) :
        videoWidget->setParent(ui->videoBox);
        videoWidget->setGeometry(QRect(15,20,300,180));
        videoWidget->show();
+
+       mainTime.start();
+       elapsed_mainTime.setHMS(0,0,0);
+
+       timerElements = ui->timerDisplayBox->children();
+       m = static_cast<QLCDNumber*>(timerElements.at(1));
+       s = static_cast<QLCDNumber*>(timerElements.at(2));
+       ms = static_cast<QLCDNumber*>(timerElements.at(3));
+
+       qDebug() << m->objectName();
+       qDebug() << s->objectName();
+       qDebug() << ms->objectName();
+
+       QTimer *timer = new QTimer(this);
+           connect(timer, SIGNAL(timeout()), this, SLOT(updateTime()));
+           timer->start(100);
+}
+
+void MainWindow::updateTime()
+{
+    elapsed_mainTime = elapsed_mainTime.addMSecs(mainTime.elapsed() - lastTime);
+    m->display(elapsed_mainTime.minute());
+    s->display(elapsed_mainTime.second());
+    ms->display(elapsed_mainTime.msec());
+
+    lastTime = mainTime.elapsed();
 }
 
 MainWindow::~MainWindow()
@@ -112,7 +139,7 @@ void MainWindow::on_checkBox_clicked()
     else if (obj->objectName() == "checkbox 1") screen1 = !screen1;
 }
 
-void MainWindow::on_pushButton_pressed()
+void MainWindow::on_testScreenButton_pressed()
 {
     if(player->state() > 0) player->stop();
 

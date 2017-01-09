@@ -8,6 +8,8 @@
 #include <QMediaPlayer>
 #include <QWidget>
 #include <QKeyEvent>
+#include <QTime>
+#include <QLCDNumber>
 
 namespace Ui {
 class MainWindow;
@@ -19,10 +21,11 @@ class MainWindow : public QMainWindow
 
 public:
     explicit MainWindow(QWidget *parent = 0);
+    QTime mainTime;
     ~MainWindow();
 
 private slots:
-
+    void updateTime();
 
     void on_videoAdapterlist_itemClicked(QListWidgetItem *item);
 
@@ -32,7 +35,7 @@ private slots:
 
     void on_actionAbout_triggered();
 
-    void on_pushButton_pressed();
+    void on_testScreenButton_pressed();
 
     void on_checkBox_clicked();
 
@@ -41,10 +44,15 @@ private:
     QMediaPlayer *player;
     QVideoWidget *videoWidget;
     QUrl fileName;
-    //void keyPressEvent(QKeyEvent *k);
     bool screen0;
     bool screen1;
     ulong lastKeyEventTime;
+    QObjectList timerElements;
+    QLCDNumber *m;
+    QLCDNumber *s;
+    QLCDNumber *ms;
+    QTime elapsed_mainTime;
+    int lastTime;
 
 protected:
 
