@@ -70,15 +70,6 @@ MainWindow::MainWindow(QWidget *parent) :
        mainTime.start();
        elapsed_mainTime.setHMS(0,0,0);
 
-       timerElements = ui->timerDisplayBox->children();
-       m = static_cast<QLCDNumber*>(timerElements.at(1));
-       s = static_cast<QLCDNumber*>(timerElements.at(2));
-       ms = static_cast<QLCDNumber*>(timerElements.at(3));
-
-       qDebug() << m->objectName();
-       qDebug() << s->objectName();
-       qDebug() << ms->objectName();
-
        QTimer *timer = new QTimer(this);
            connect(timer, SIGNAL(timeout()), this, SLOT(updateTime()));
            timer->start(100);
@@ -87,9 +78,11 @@ MainWindow::MainWindow(QWidget *parent) :
 void MainWindow::updateTime()
 {
     elapsed_mainTime = elapsed_mainTime.addMSecs(mainTime.elapsed() - lastTime);
-    m->display(elapsed_mainTime.minute());
-    s->display(elapsed_mainTime.second());
-    ms->display(elapsed_mainTime.msec());
+    QString ms_String;
+    if(elapsed_mainTime.msec() < 10) ms_String = "00" + QString::number(elapsed_mainTime.msec());
+    else if(elapsed_mainTime.msec()<100) ms_String = "0" + QString::number(elapsed_mainTime.msec());
+    else ms_String = QString::number(elapsed_mainTime.msec());
+    ui->time_label->setText(elapsed_mainTime.toString()+":"+ ms_String);
 
     lastTime = mainTime.elapsed();
 }

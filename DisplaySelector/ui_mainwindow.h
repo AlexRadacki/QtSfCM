@@ -15,8 +15,8 @@
 #include <QtWidgets/QButtonGroup>
 #include <QtWidgets/QCheckBox>
 #include <QtWidgets/QGroupBox>
+#include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QHeaderView>
-#include <QtWidgets/QLCDNumber>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QListWidget>
 #include <QtWidgets/QMainWindow>
@@ -57,10 +57,14 @@ public:
     QTimeEdit *timeEdit;
     QCheckBox *checkBox;
     QGroupBox *timerDisplayBox;
-    QLCDNumber *currentTimeMinutes;
-    QLCDNumber *currentTimeSeconds;
-    QLCDNumber *currentTimeSeconds_2;
-    QLabel *label_2;
+    QLabel *time_label;
+    QWidget *horizontalLayoutWidget;
+    QHBoxLayout *horizontalLayout;
+    QPushButton *stop_Button;
+    QPushButton *backward_Button;
+    QPushButton *play_Button;
+    QPushButton *forward_Button;
+    QPushButton *pause_Button;
     QGroupBox *addEventBox;
     QPushButton *addImageButton;
     QPushButton *addVideoButton;
@@ -75,7 +79,7 @@ public:
     {
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName(QStringLiteral("MainWindow"));
-        MainWindow->resize(1041, 762);
+        MainWindow->resize(1041, 862);
         actionLoad = new QAction(MainWindow);
         actionLoad->setObjectName(QStringLiteral("actionLoad"));
         actionExit = new QAction(MainWindow);
@@ -172,10 +176,10 @@ public:
         eventListTable->horizontalHeader()->setDefaultSectionSize(76);
         timeLineBox = new QGroupBox(centralWidget);
         timeLineBox->setObjectName(QStringLiteral("timeLineBox"));
-        timeLineBox->setGeometry(QRect(10, 540, 1021, 161));
+        timeLineBox->setGeometry(QRect(10, 540, 1021, 261));
         horizontalSlider = new QSlider(timeLineBox);
         horizontalSlider->setObjectName(QStringLiteral("horizontalSlider"));
-        horizontalSlider->setGeometry(QRect(10, 130, 1001, 22));
+        horizontalSlider->setGeometry(QRect(10, 180, 1001, 22));
         horizontalSlider->setOrientation(Qt::Horizontal);
         label = new QLabel(timeLineBox);
         label->setObjectName(QStringLiteral("label"));
@@ -189,64 +193,85 @@ public:
         timerDisplayBox = new QGroupBox(timeLineBox);
         timerDisplayBox->setObjectName(QStringLiteral("timerDisplayBox"));
         timerDisplayBox->setGeometry(QRect(260, 19, 421, 91));
-        currentTimeMinutes = new QLCDNumber(timerDisplayBox);
-        currentTimeMinutes->setObjectName(QStringLiteral("currentTimeMinutes"));
-        currentTimeMinutes->setGeometry(QRect(110, 30, 71, 41));
+        time_label = new QLabel(timerDisplayBox);
+        time_label->setObjectName(QStringLiteral("time_label"));
+        time_label->setGeometry(QRect(10, 20, 401, 61));
+        QPalette palette;
+        QBrush brush(QColor(0, 255, 0, 255));
+        brush.setStyle(Qt::SolidPattern);
+        palette.setBrush(QPalette::Active, QPalette::WindowText, brush);
+        QBrush brush1(QColor(0, 0, 0, 255));
+        brush1.setStyle(Qt::SolidPattern);
+        palette.setBrush(QPalette::Active, QPalette::Button, brush1);
+        palette.setBrush(QPalette::Active, QPalette::Midlight, brush1);
+        palette.setBrush(QPalette::Active, QPalette::Text, brush);
+        QBrush brush2(QColor(255, 255, 255, 255));
+        brush2.setStyle(Qt::SolidPattern);
+        palette.setBrush(QPalette::Active, QPalette::Base, brush2);
+        palette.setBrush(QPalette::Active, QPalette::Window, brush1);
+        palette.setBrush(QPalette::Active, QPalette::AlternateBase, brush1);
+        palette.setBrush(QPalette::Inactive, QPalette::WindowText, brush);
+        palette.setBrush(QPalette::Inactive, QPalette::Button, brush1);
+        palette.setBrush(QPalette::Inactive, QPalette::Midlight, brush1);
+        palette.setBrush(QPalette::Inactive, QPalette::Text, brush);
+        palette.setBrush(QPalette::Inactive, QPalette::Base, brush2);
+        palette.setBrush(QPalette::Inactive, QPalette::Window, brush1);
+        palette.setBrush(QPalette::Inactive, QPalette::AlternateBase, brush1);
+        QBrush brush3(QColor(120, 120, 120, 255));
+        brush3.setStyle(Qt::SolidPattern);
+        palette.setBrush(QPalette::Disabled, QPalette::WindowText, brush3);
+        palette.setBrush(QPalette::Disabled, QPalette::Button, brush1);
+        palette.setBrush(QPalette::Disabled, QPalette::Midlight, brush1);
+        palette.setBrush(QPalette::Disabled, QPalette::Text, brush3);
+        palette.setBrush(QPalette::Disabled, QPalette::Base, brush1);
+        palette.setBrush(QPalette::Disabled, QPalette::Window, brush1);
+        palette.setBrush(QPalette::Disabled, QPalette::AlternateBase, brush1);
+        time_label->setPalette(palette);
         QFont font;
-        font.setBold(false);
-        font.setItalic(false);
-        font.setWeight(50);
-        currentTimeMinutes->setFont(font);
-        currentTimeMinutes->setAutoFillBackground(false);
-        currentTimeMinutes->setFrameShape(QFrame::NoFrame);
-        currentTimeMinutes->setFrameShadow(QFrame::Plain);
-        currentTimeMinutes->setSmallDecimalPoint(true);
-        currentTimeMinutes->setDigitCount(2);
-        currentTimeMinutes->setMode(QLCDNumber::Dec);
-        currentTimeMinutes->setSegmentStyle(QLCDNumber::Flat);
-        currentTimeMinutes->setProperty("value", QVariant(88));
-        currentTimeMinutes->setProperty("intValue", QVariant(88));
-        currentTimeSeconds = new QLCDNumber(timerDisplayBox);
-        currentTimeSeconds->setObjectName(QStringLiteral("currentTimeSeconds"));
-        currentTimeSeconds->setGeometry(QRect(170, 30, 81, 41));
-        currentTimeSeconds->setFont(font);
-        currentTimeSeconds->setAutoFillBackground(false);
-        currentTimeSeconds->setFrameShape(QFrame::NoFrame);
-        currentTimeSeconds->setFrameShadow(QFrame::Plain);
-        currentTimeSeconds->setSmallDecimalPoint(true);
-        currentTimeSeconds->setDigitCount(2);
-        currentTimeSeconds->setMode(QLCDNumber::Dec);
-        currentTimeSeconds->setSegmentStyle(QLCDNumber::Flat);
-        currentTimeSeconds->setProperty("value", QVariant(88));
-        currentTimeSeconds->setProperty("intValue", QVariant(88));
-        currentTimeSeconds_2 = new QLCDNumber(timerDisplayBox);
-        currentTimeSeconds_2->setObjectName(QStringLiteral("currentTimeSeconds_2"));
-        currentTimeSeconds_2->setGeometry(QRect(240, 30, 81, 41));
-        currentTimeSeconds_2->setFont(font);
-        currentTimeSeconds_2->setAutoFillBackground(false);
-        currentTimeSeconds_2->setFrameShape(QFrame::NoFrame);
-        currentTimeSeconds_2->setFrameShadow(QFrame::Plain);
-        currentTimeSeconds_2->setSmallDecimalPoint(true);
-        currentTimeSeconds_2->setDigitCount(3);
-        currentTimeSeconds_2->setMode(QLCDNumber::Dec);
-        currentTimeSeconds_2->setSegmentStyle(QLCDNumber::Flat);
-        currentTimeSeconds_2->setProperty("value", QVariant(888));
-        currentTimeSeconds_2->setProperty("intValue", QVariant(888));
-        label_2 = new QLabel(timerDisplayBox);
-        label_2->setObjectName(QStringLiteral("label_2"));
-        label_2->setGeometry(QRect(170, 10, 101, 71));
-        QFont font1;
-        font1.setPointSize(26);
-        label_2->setFont(font1);
-        label_2->raise();
-        currentTimeMinutes->raise();
-        currentTimeSeconds->raise();
-        currentTimeSeconds_2->raise();
+        font.setPointSize(22);
+        time_label->setFont(font);
+        time_label->setAutoFillBackground(true);
+        time_label->setTextFormat(Qt::PlainText);
+        time_label->setAlignment(Qt::AlignCenter);
+        horizontalLayoutWidget = new QWidget(timeLineBox);
+        horizontalLayoutWidget->setObjectName(QStringLiteral("horizontalLayoutWidget"));
+        horizontalLayoutWidget->setGeometry(QRect(259, 120, 421, 51));
+        horizontalLayout = new QHBoxLayout(horizontalLayoutWidget);
+        horizontalLayout->setSpacing(6);
+        horizontalLayout->setContentsMargins(11, 11, 11, 11);
+        horizontalLayout->setObjectName(QStringLiteral("horizontalLayout"));
+        horizontalLayout->setContentsMargins(0, 0, 0, 0);
+        stop_Button = new QPushButton(horizontalLayoutWidget);
+        stop_Button->setObjectName(QStringLiteral("stop_Button"));
+
+        horizontalLayout->addWidget(stop_Button);
+
+        backward_Button = new QPushButton(horizontalLayoutWidget);
+        backward_Button->setObjectName(QStringLiteral("backward_Button"));
+
+        horizontalLayout->addWidget(backward_Button);
+
+        play_Button = new QPushButton(horizontalLayoutWidget);
+        play_Button->setObjectName(QStringLiteral("play_Button"));
+
+        horizontalLayout->addWidget(play_Button);
+
+        forward_Button = new QPushButton(horizontalLayoutWidget);
+        forward_Button->setObjectName(QStringLiteral("forward_Button"));
+
+        horizontalLayout->addWidget(forward_Button);
+
+        pause_Button = new QPushButton(horizontalLayoutWidget);
+        pause_Button->setObjectName(QStringLiteral("pause_Button"));
+
+        horizontalLayout->addWidget(pause_Button);
+
         timerDisplayBox->raise();
         horizontalSlider->raise();
         label->raise();
         timeEdit->raise();
         checkBox->raise();
+        horizontalLayoutWidget->raise();
         addEventBox = new QGroupBox(centralWidget);
         addEventBox->setObjectName(QStringLiteral("addEventBox"));
         addEventBox->setGeometry(QRect(540, 10, 141, 221));
@@ -334,7 +359,12 @@ public:
         label->setText(QApplication::translate("MainWindow", "End Time:", 0));
         checkBox->setText(QApplication::translate("MainWindow", "Loop", 0));
         timerDisplayBox->setTitle(QApplication::translate("MainWindow", "Time", 0));
-        label_2->setText(QApplication::translate("MainWindow", ":     :", 0));
+        time_label->setText(QApplication::translate("MainWindow", "88:88:888", 0));
+        stop_Button->setText(QApplication::translate("MainWindow", "[ ]", 0));
+        backward_Button->setText(QApplication::translate("MainWindow", "<<", 0));
+        play_Button->setText(QApplication::translate("MainWindow", ">", 0));
+        forward_Button->setText(QApplication::translate("MainWindow", ">>", 0));
+        pause_Button->setText(QApplication::translate("MainWindow", "I I", 0));
         addEventBox->setTitle(QApplication::translate("MainWindow", "Add Media", 0));
         addImageButton->setText(QApplication::translate("MainWindow", "Add Image", 0));
         addVideoButton->setText(QApplication::translate("MainWindow", "Add Video", 0));
