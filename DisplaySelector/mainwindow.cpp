@@ -58,8 +58,10 @@ MainWindow::MainWindow(QWidget *parent) :
            ++deviceIndex;
        }
 
+        totalMs = QTime(0,0,0).msecsTo(ui->timeEdit->time());
+        ui->progressBar->setRange(0,totalMs);
 
-       player = new QMediaPlayer;
+        player = new QMediaPlayer;
 
        videoWidget = new QVideoWidget;
        player->setVideoOutput(videoWidget);
@@ -67,24 +69,33 @@ MainWindow::MainWindow(QWidget *parent) :
        videoWidget->setGeometry(QRect(15,20,300,180));
        videoWidget->show();
 
-       mainTime.start();
-       elapsed_mainTime.setHMS(0,0,0);
-
-       QTimer *timer = new QTimer(this);
-           connect(timer, SIGNAL(timeout()), this, SLOT(updateTime()));
-           timer->start(100);
 }
 
 void MainWindow::updateTime()
 {
-    elapsed_mainTime = elapsed_mainTime.addMSecs(mainTime.elapsed() - lastTime);
-    QString ms_String;
-    if(elapsed_mainTime.msec() < 10) ms_String = "00" + QString::number(elapsed_mainTime.msec());
-    else if(elapsed_mainTime.msec()<100) ms_String = "0" + QString::number(elapsed_mainTime.msec());
-    else ms_String = QString::number(elapsed_mainTime.msec());
-    ui->time_label->setText(elapsed_mainTime.toString()+":"+ ms_String);
+    int currentMs = QTime(0,0,0).msecsTo(elapsed_mainTime);
+    if(currentMs >= totalMs)
+    {
+        timer->stop();
+        elapsed_mainTime.setHMS(0,0,0);
+        lastTime = 0;
+        ui->time_label->setText("00:00:00:000");
+        isPlaying = false;
+        ui->progressBar->setValue(0);
+    }
+    else
+    {
+        elapsed_mainTime = elapsed_mainTime.addMSecs(mainTime.elapsed() - lastTime);
+        QString ms_String;
+        if(elapsed_mainTime.msec() < 10) ms_String = "00" + QString::number(elapsed_mainTime.msec());
+        else if(elapsed_mainTime.msec()<100) ms_String = "0" + QString::number(elapsed_mainTime.msec());
+        else ms_String = QString::number(elapsed_mainTime.msec());
+        ui->time_label->setText(elapsed_mainTime.toString()+":"+ ms_String);
 
-    lastTime = mainTime.elapsed();
+        lastTime = mainTime.elapsed();
+
+        ui->progressBar->setValue(currentMs);
+    }
 }
 
 MainWindow::~MainWindow()
@@ -121,7 +132,7 @@ void MainWindow::on_actionExit_triggered()
 
 void MainWindow::on_actionAbout_triggered()
 {
-    QMessageBox::information(this, "About", "Qt System for cultural mediation\nVersion 0.0.2\nAlexander Radacki 2016\nh_da University of Applied Sciences");
+    QMessageBox::information(this, "About", "Qt System for cultural mediation\nVersion 0.1.9\nAlexander Radacki 2016\nh_da University of Applied Sciences");
 }
 
 void MainWindow::on_checkBox_clicked()
@@ -192,4 +203,76 @@ bool MainWindow::eventFilter(QObject *obj, QEvent *event)
 
     return QObject::eventFilter(obj, event);
 
+}
+
+void MainWindow::on_timeEdit_userTimeChanged(const QTime &time)
+{
+    int msec = QTime(0,0,0).msecsTo(ui->timeEdit->time());
+    ui->progressBar->setRange(0,msec);
+    totalMs = QTime(0,0,0).msecsTo(ui->timeEdit->time());
+}
+
+void MainWindow::on_play_Button_pressed()
+{
+    if (!isPlaying)
+    {
+        mainTime.restart();
+        elapsed_mainTime.setHMS(0,0,0);
+        lastTime = 0;
+
+        timer = new QTimer(this);
+        connect(timer, SIGNAL(timeout()), this, SLOT(updateTime()));
+        timer->start(100);
+
+        isPlaying = true;
+    }
+}
+
+void MainWindow::on_pause_Button_pressed()
+{
+    if(isPlaying)
+    {
+        isPaused = !isPaused;
+
+        mainTime.restart();
+        lastTime = 0;
+
+        if(isPaused) timer->stop();
+        else timer->start(100);
+    }
+}
+
+void MainWindow::on_stop_Button_pressed()
+{
+     timer->stop();
+     elapsed_mainTime.setHMS(0,0,0);
+     lastTime = 0;
+     ui->time_label->setText("00:00:00:000");
+     isPlaying = false;
+     ui->progressBar->setValue(0);
+}
+
+void MainWindow::on_backward_Button_pressed()
+{
+    if(elapsed_mainTime.hour()==0 && elapsed_mainTime.minute() == 0 && elapsed_mainTime.second()<10)
+    {
+        mainTime.restart();
+        elapsed_mainTime.setHMS(0,0,0);
+        lastTime = 0;
+    }
+    else elapsed_mainTime = elapsed_mainTime.addSecs(-10);
+}
+
+void MainWindow::on_forward_Button_pressed()
+{
+    int secondsToEnd = QTime(0,0,0).secsTo(ui->timeEdit->time()) - QTime(0, 0, 0).secsTo(elapsed_mainTime);
+    if(secondsToEnd<10)
+    {
+        timer->stop();
+        elapsed_mainTime.setHMS(0,0,0);
+        lastTime = 0;
+        ui->time_label->setText("00:00:00:000");
+        isPlaying = false;
+    }
+    else elapsed_mainTime = elapsed_mainTime.addSecs(10);
 }

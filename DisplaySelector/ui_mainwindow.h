@@ -52,7 +52,7 @@ public:
     QGroupBox *eventListBox;
     QTableWidget *eventListTable;
     QGroupBox *timeLineBox;
-    QSlider *horizontalSlider;
+    QSlider *progressBar;
     QLabel *label;
     QTimeEdit *timeEdit;
     QCheckBox *checkBox;
@@ -177,19 +177,21 @@ public:
         timeLineBox = new QGroupBox(centralWidget);
         timeLineBox->setObjectName(QStringLiteral("timeLineBox"));
         timeLineBox->setGeometry(QRect(10, 540, 1021, 261));
-        horizontalSlider = new QSlider(timeLineBox);
-        horizontalSlider->setObjectName(QStringLiteral("horizontalSlider"));
-        horizontalSlider->setGeometry(QRect(10, 180, 1001, 22));
-        horizontalSlider->setOrientation(Qt::Horizontal);
+        progressBar = new QSlider(timeLineBox);
+        progressBar->setObjectName(QStringLiteral("progressBar"));
+        progressBar->setGeometry(QRect(10, 180, 1001, 22));
+        progressBar->setOrientation(Qt::Horizontal);
         label = new QLabel(timeLineBox);
         label->setObjectName(QStringLiteral("label"));
         label->setGeometry(QRect(730, 20, 61, 16));
         timeEdit = new QTimeEdit(timeLineBox);
         timeEdit->setObjectName(QStringLiteral("timeEdit"));
-        timeEdit->setGeometry(QRect(780, 20, 118, 22));
+        timeEdit->setGeometry(QRect(780, 20, 81, 22));
+        timeEdit->setCurrentSection(QDateTimeEdit::HourSection);
+        timeEdit->setTime(QTime(0, 5, 0));
         checkBox = new QCheckBox(timeLineBox);
         checkBox->setObjectName(QStringLiteral("checkBox"));
-        checkBox->setGeometry(QRect(940, 20, 61, 17));
+        checkBox->setGeometry(QRect(910, 20, 61, 17));
         timerDisplayBox = new QGroupBox(timeLineBox);
         timerDisplayBox->setObjectName(QStringLiteral("timerDisplayBox"));
         timerDisplayBox->setGeometry(QRect(260, 19, 421, 91));
@@ -267,7 +269,7 @@ public:
         horizontalLayout->addWidget(pause_Button);
 
         timerDisplayBox->raise();
-        horizontalSlider->raise();
+        progressBar->raise();
         label->raise();
         timeEdit->raise();
         checkBox->raise();
@@ -357,9 +359,10 @@ public:
         ___qtablewidgetitem13->setText(QApplication::translate("MainWindow", "1", 0));
         timeLineBox->setTitle(QApplication::translate("MainWindow", "Timeline", 0));
         label->setText(QApplication::translate("MainWindow", "End Time:", 0));
+        timeEdit->setDisplayFormat(QApplication::translate("MainWindow", "HH:mm:ss", 0));
         checkBox->setText(QApplication::translate("MainWindow", "Loop", 0));
         timerDisplayBox->setTitle(QApplication::translate("MainWindow", "Time", 0));
-        time_label->setText(QApplication::translate("MainWindow", "88:88:888", 0));
+        time_label->setText(QApplication::translate("MainWindow", "00:00:00:000", 0));
         stop_Button->setText(QApplication::translate("MainWindow", "[ ]", 0));
         backward_Button->setText(QApplication::translate("MainWindow", "<<", 0));
         play_Button->setText(QApplication::translate("MainWindow", ">", 0));

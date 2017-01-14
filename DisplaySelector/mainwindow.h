@@ -39,6 +39,18 @@ private slots:
 
     void on_checkBox_clicked();
 
+    void on_timeEdit_userTimeChanged(const QTime &time);
+
+    void on_play_Button_pressed();
+
+    void on_pause_Button_pressed();
+
+    void on_stop_Button_pressed();
+
+    void on_backward_Button_pressed();
+
+    void on_forward_Button_pressed();
+
 private:
     Ui::MainWindow *ui;
     QMediaPlayer *player;
@@ -51,8 +63,12 @@ private:
     QLCDNumber *m;
     QLCDNumber *s;
     QLCDNumber *ms;
+    QTimer *timer;
     QTime elapsed_mainTime;
+    bool isPaused;
+    bool isPlaying;
     int lastTime;
+    int totalMs;
 
 protected:
 
