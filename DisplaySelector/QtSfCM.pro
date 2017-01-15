@@ -14,8 +14,11 @@ TEMPLATE = app
 LIBS += -luser32
 
 SOURCES += main.cpp\
-        mainwindow.cpp
+        mainwindow.cpp \
+    additemdialog.cpp
 
-HEADERS  += mainwindow.h
+HEADERS  += mainwindow.h \
+    additemdialog.h
 
-FORMS    += mainwindow.ui
+FORMS    += mainwindow.ui \
+    additemdialog.ui

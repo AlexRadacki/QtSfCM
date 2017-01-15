@@ -2,6 +2,7 @@
 #include <WinUser.h>
 #include <string>
 #include "mainwindow.h"
+#include "additemdialog.h"
 #include "ui_mainwindow.h"
 #include <QMessageBox>
 #include <QCheckBox>
@@ -71,6 +72,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
 }
 
+//main update function
+
 void MainWindow::updateTime()
 {
     int currentMs = QTime(0,0,0).msecsTo(elapsed_mainTime);
@@ -116,6 +119,8 @@ void MainWindow::on_videoAdapterlist_itemClicked(QListWidgetItem *item)
     ui->displayInfoTable->setItem(6,0,new QTableWidgetItem(QString::number(QApplication::screens().at(itemID)->physicalDotsPerInch())));
     ui->displayInfoTable->setItem(7,0,new QTableWidgetItem(QString::number(QApplication::screens().at(itemID)->depth())));
 }
+
+// menu items
 
 void MainWindow::on_actionLoad_triggered()
 {
@@ -207,10 +212,12 @@ bool MainWindow::eventFilter(QObject *obj, QEvent *event)
 
 void MainWindow::on_timeEdit_userTimeChanged(const QTime &time)
 {
-    int msec = QTime(0,0,0).msecsTo(ui->timeEdit->time());
+    int msec = QTime(0,0,0).msecsTo(time);
     ui->progressBar->setRange(0,msec);
-    totalMs = QTime(0,0,0).msecsTo(ui->timeEdit->time());
+    totalMs = QTime(0,0,0).msecsTo(time);
 }
+
+// play buttons
 
 void MainWindow::on_play_Button_pressed()
 {
@@ -275,4 +282,21 @@ void MainWindow::on_forward_Button_pressed()
         isPlaying = false;
     }
     else elapsed_mainTime = elapsed_mainTime.addSecs(10);
+}
+
+void MainWindow::on_addImageButton_pressed()
+{
+    AddItemDialog *newItemAdder = new AddItemDialog();
+    newItemAdder->mainWindow = this;
+    newItemAdder->show();
+}
+
+void MainWindow::createItem(QString path, int type, QTime start, QTime end)
+{
+    qDebug() << "create item of type: " + QString::number(type) + " from: " + path + " at: " + start.toString() + " to: " +end.toString();
+    ui->eventListTable->setRowCount(ui->eventListTable->rowCount()+1);
+    ui->eventListTable->setItem(ui->eventListTable->rowCount()-1,0, new QTableWidgetItem(QString::number(type)));
+    ui->eventListTable->setItem(ui->eventListTable->rowCount()-1,1, new QTableWidgetItem(start.toString()));
+    ui->eventListTable->setItem(ui->eventListTable->rowCount()-1,2, new QTableWidgetItem(end.toString()));
+    ui->eventListTable->setItem(ui->eventListTable->rowCount()-1,3, new QTableWidgetItem(QString::number(type)));
 }

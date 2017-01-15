@@ -165,14 +165,10 @@ public:
         eventListTable->setHorizontalHeaderItem(2, __qtablewidgetitem11);
         QTableWidgetItem *__qtablewidgetitem12 = new QTableWidgetItem();
         eventListTable->setHorizontalHeaderItem(3, __qtablewidgetitem12);
-        if (eventListTable->rowCount() < 1)
-            eventListTable->setRowCount(1);
-        QTableWidgetItem *__qtablewidgetitem13 = new QTableWidgetItem();
-        eventListTable->setVerticalHeaderItem(0, __qtablewidgetitem13);
         eventListTable->setObjectName(QStringLiteral("eventListTable"));
         eventListTable->setGeometry(QRect(10, 20, 321, 461));
         eventListTable->setSizeAdjustPolicy(QAbstractScrollArea::AdjustToContents);
-        eventListTable->setRowCount(1);
+        eventListTable->setRowCount(0);
         eventListTable->horizontalHeader()->setDefaultSectionSize(76);
         timeLineBox = new QGroupBox(centralWidget);
         timeLineBox->setObjectName(QStringLiteral("timeLineBox"));
@@ -355,8 +351,6 @@ public:
         ___qtablewidgetitem11->setText(QApplication::translate("MainWindow", "End", 0));
         QTableWidgetItem *___qtablewidgetitem12 = eventListTable->horizontalHeaderItem(3);
         ___qtablewidgetitem12->setText(QApplication::translate("MainWindow", "Type", 0));
-        QTableWidgetItem *___qtablewidgetitem13 = eventListTable->verticalHeaderItem(0);
-        ___qtablewidgetitem13->setText(QApplication::translate("MainWindow", "1", 0));
         timeLineBox->setTitle(QApplication::translate("MainWindow", "Timeline", 0));
         label->setText(QApplication::translate("MainWindow", "End Time:", 0));
         timeEdit->setDisplayFormat(QApplication::translate("MainWindow", "HH:mm:ss", 0));

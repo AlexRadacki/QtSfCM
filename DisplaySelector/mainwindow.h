@@ -22,6 +22,7 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     QTime mainTime;
+    void createItem(QString path, int type, QTime start, QTime end);
     ~MainWindow();
 
 private slots:
@@ -50,6 +51,8 @@ private slots:
     void on_backward_Button_pressed();
 
     void on_forward_Button_pressed();
+
+    void on_addImageButton_pressed();
 
 private:
     Ui::MainWindow *ui;

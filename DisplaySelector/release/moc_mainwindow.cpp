@@ -19,8 +19,8 @@
 
 QT_BEGIN_MOC_NAMESPACE
 struct qt_meta_stringdata_MainWindow_t {
-    QByteArrayData data[18];
-    char stringdata0[354];
+    QByteArrayData data[19];
+    char stringdata0[380];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -46,7 +46,8 @@ QT_MOC_LITERAL(13, 231, 22), // "on_play_Button_pressed"
 QT_MOC_LITERAL(14, 254, 23), // "on_pause_Button_pressed"
 QT_MOC_LITERAL(15, 278, 22), // "on_stop_Button_pressed"
 QT_MOC_LITERAL(16, 301, 26), // "on_backward_Button_pressed"
-QT_MOC_LITERAL(17, 328, 25) // "on_forward_Button_pressed"
+QT_MOC_LITERAL(17, 328, 25), // "on_forward_Button_pressed"
+QT_MOC_LITERAL(18, 354, 25) // "on_addImageButton_pressed"
 
     },
     "MainWindow\0updateTime\0\0"
@@ -59,7 +60,8 @@ QT_MOC_LITERAL(17, 328, 25) // "on_forward_Button_pressed"
     "time\0on_play_Button_pressed\0"
     "on_pause_Button_pressed\0on_stop_Button_pressed\0"
     "on_backward_Button_pressed\0"
-    "on_forward_Button_pressed"
+    "on_forward_Button_pressed\0"
+    "on_addImageButton_pressed"
 };
 #undef QT_MOC_LITERAL
 
@@ -69,7 +71,7 @@ static const uint qt_meta_data_MainWindow[] = {
        7,       // revision
        0,       // classname
        0,    0, // classinfo
-      13,   14, // methods
+      14,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -77,19 +79,20 @@ static const uint qt_meta_data_MainWindow[] = {
        0,       // signalCount
 
  // slots: name, argc, parameters, tag, flags
-       1,    0,   79,    2, 0x08 /* Private */,
-       3,    1,   80,    2, 0x08 /* Private */,
-       6,    0,   83,    2, 0x08 /* Private */,
-       7,    0,   84,    2, 0x08 /* Private */,
-       8,    0,   85,    2, 0x08 /* Private */,
-       9,    0,   86,    2, 0x08 /* Private */,
-      10,    0,   87,    2, 0x08 /* Private */,
-      11,    1,   88,    2, 0x08 /* Private */,
-      13,    0,   91,    2, 0x08 /* Private */,
-      14,    0,   92,    2, 0x08 /* Private */,
-      15,    0,   93,    2, 0x08 /* Private */,
-      16,    0,   94,    2, 0x08 /* Private */,
-      17,    0,   95,    2, 0x08 /* Private */,
+       1,    0,   84,    2, 0x08 /* Private */,
+       3,    1,   85,    2, 0x08 /* Private */,
+       6,    0,   88,    2, 0x08 /* Private */,
+       7,    0,   89,    2, 0x08 /* Private */,
+       8,    0,   90,    2, 0x08 /* Private */,
+       9,    0,   91,    2, 0x08 /* Private */,
+      10,    0,   92,    2, 0x08 /* Private */,
+      11,    1,   93,    2, 0x08 /* Private */,
+      13,    0,   96,    2, 0x08 /* Private */,
+      14,    0,   97,    2, 0x08 /* Private */,
+      15,    0,   98,    2, 0x08 /* Private */,
+      16,    0,   99,    2, 0x08 /* Private */,
+      17,    0,  100,    2, 0x08 /* Private */,
+      18,    0,  101,    2, 0x08 /* Private */,
 
  // slots: parameters
     QMetaType::Void,
@@ -100,6 +103,7 @@ static const uint qt_meta_data_MainWindow[] = {
     QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void, QMetaType::QTime,   12,
+    QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
@@ -128,6 +132,7 @@ void MainWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
         case 10: _t->on_stop_Button_pressed(); break;
         case 11: _t->on_backward_Button_pressed(); break;
         case 12: _t->on_forward_Button_pressed(); break;
+        case 13: _t->on_addImageButton_pressed(); break;
         default: ;
         }
     }
@@ -158,13 +163,13 @@ int MainWindow::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 13)
+        if (_id < 14)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 13;
+        _id -= 14;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 13)
+        if (_id < 14)
             *reinterpret_cast<int*>(_a[0]) = -1;
-        _id -= 13;
+        _id -= 14;
     }
     return _id;
 }
