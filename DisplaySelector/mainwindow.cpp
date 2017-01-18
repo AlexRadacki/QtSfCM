@@ -61,7 +61,11 @@ MainWindow::MainWindow(QWidget *parent) :
 
         totalMs = QTime(0,0,0).msecsTo(ui->timeEdit->time());
         ui->progressBar->setRange(0,totalMs);
-
+        int n;
+        for(n=0;n<64;n++)
+        {
+            mediaEventArray[n] = nullptr;
+        }
         player = new QMediaPlayer;
 
        videoWidget = new QVideoWidget;
@@ -98,6 +102,29 @@ void MainWindow::updateTime()
         lastTime = mainTime.elapsed();
 
         ui->progressBar->setValue(currentMs);
+        int i;
+        for(i = 0; i < 64; i++)
+        {
+            if(mediaEventArray[i] != nullptr)
+            {
+                if(QTime(0,0,0).msecsTo(mediaEventArray[i]->start) <= currentMs && !mediaEventArray[i]->hasStarted)
+                {
+                    mediaEventArray[i]->hasStarted = true;
+                    qDebug()<<"start mediaEvent " + mediaEventArray[i]->name;
+                    if(mediaEventArray[i]->type == "Video" || mediaEventArray[i]->type == "Sound")
+                    {
+                        qDebug()<<"play " + mediaEventArray[i]->path.toString();
+                        player->setMedia(mediaEventArray[i]->path);
+                        player->play();
+                    }
+                }
+
+                if(QTime(0,0,0).msecsTo(mediaEventArray[i]->end) <= currentMs && mediaEventArray[i]->hasStarted)
+                {
+                    player->stop();
+                }
+            }
+        }
     }
 }
 
@@ -125,7 +152,7 @@ void MainWindow::on_videoAdapterlist_itemClicked(QListWidgetItem *item)
 void MainWindow::on_actionLoad_triggered()
 {
     qDebug() << "loadtest";
-    fileName = QFileDialog::getOpenFileName(this, tr("Open Media"), "/", tr("Media Files (*.avi *.mp4 *.mov)"));
+    fileName = QFileDialog::getOpenFileName(this, tr("Open Media"), "/", tr("Media Files (*.*)"));
     ui->fileNameLabel->setText(fileName.toString());
     player->setMedia(fileName);
 }
@@ -251,12 +278,15 @@ void MainWindow::on_pause_Button_pressed()
 
 void MainWindow::on_stop_Button_pressed()
 {
-     timer->stop();
-     elapsed_mainTime.setHMS(0,0,0);
-     lastTime = 0;
-     ui->time_label->setText("00:00:00:000");
-     isPlaying = false;
-     ui->progressBar->setValue(0);
+    if(isPlaying)
+    {
+        timer->stop();
+        elapsed_mainTime.setHMS(0,0,0);
+        lastTime = 0;
+        ui->time_label->setText("00:00:00:000");
+        isPlaying = false;
+        ui->progressBar->setValue(0);
+    }
 }
 
 void MainWindow::on_backward_Button_pressed()
@@ -318,9 +348,4 @@ void MainWindow::createItem(QString name, QUrl path, QString type, QTime start, 
     ui->eventListTable->setItem(ui->eventListTable->rowCount()-1,1, new QTableWidgetItem(mediaEventArray[ui->eventListTable->rowCount()]->start.toString()));
     ui->eventListTable->setItem(ui->eventListTable->rowCount()-1,2, new QTableWidgetItem(mediaEventArray[ui->eventListTable->rowCount()]->end.toString()));
     ui->eventListTable->setItem(ui->eventListTable->rowCount()-1,3, new QTableWidgetItem(mediaEventArray[ui->eventListTable->rowCount()]->type));
-
 }
-
-
-
-

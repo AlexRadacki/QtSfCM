@@ -34,11 +34,12 @@ public:
         QString type;
         QTime start;
         QTime end;
+        bool hasStarted;
         MediaEvent(){}
         MediaEvent(QString _name, QUrl _path, QString _type, QTime _start, QTime _end)
             : name(_name), path(_path), type(_type), start(_start), end(_end)
         {
-
+            hasStarted = false;
         }
     };
 
