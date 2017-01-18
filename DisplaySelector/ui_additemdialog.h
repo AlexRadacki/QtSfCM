@@ -17,6 +17,7 @@
 #include <QtWidgets/QGroupBox>
 #include <QtWidgets/QHeaderView>
 #include <QtWidgets/QLabel>
+#include <QtWidgets/QLineEdit>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QTimeEdit>
 
@@ -33,6 +34,8 @@ public:
     QGroupBox *previewBox;
     QPushButton *cancelButton;
     QPushButton *applyButton;
+    QLineEdit *nameLineEdit;
+    QLabel *label;
 
     void setupUi(QDialog *AddItemDialog)
     {
@@ -41,7 +44,7 @@ public:
         AddItemDialog->resize(400, 300);
         loadFileButton = new QPushButton(AddItemDialog);
         loadFileButton->setObjectName(QStringLiteral("loadFileButton"));
-        loadFileButton->setGeometry(QRect(20, 30, 75, 23));
+        loadFileButton->setGeometry(QRect(20, 30, 171, 23));
         timeEdit_start = new QTimeEdit(AddItemDialog);
         timeEdit_start->setObjectName(QStringLiteral("timeEdit_start"));
         timeEdit_start->setGeometry(QRect(250, 30, 118, 22));
@@ -63,6 +66,12 @@ public:
         applyButton = new QPushButton(AddItemDialog);
         applyButton->setObjectName(QStringLiteral("applyButton"));
         applyButton->setGeometry(QRect(220, 260, 75, 23));
+        nameLineEdit = new QLineEdit(AddItemDialog);
+        nameLineEdit->setObjectName(QStringLiteral("nameLineEdit"));
+        nameLineEdit->setGeometry(QRect(80, 70, 113, 20));
+        label = new QLabel(AddItemDialog);
+        label->setObjectName(QStringLiteral("label"));
+        label->setGeometry(QRect(20, 70, 47, 13));
 
         retranslateUi(AddItemDialog);
 
@@ -80,6 +89,7 @@ public:
         previewBox->setTitle(QApplication::translate("AddItemDialog", "Preview", 0));
         cancelButton->setText(QApplication::translate("AddItemDialog", "Cancel", 0));
         applyButton->setText(QApplication::translate("AddItemDialog", "Apply", 0));
+        label->setText(QApplication::translate("AddItemDialog", "Name:", 0));
     } // retranslateUi
 
 };

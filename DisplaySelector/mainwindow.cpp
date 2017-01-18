@@ -288,15 +288,39 @@ void MainWindow::on_addImageButton_pressed()
 {
     AddItemDialog *newItemAdder = new AddItemDialog();
     newItemAdder->mainWindow = this;
+    newItemAdder->mediaType = "Image";
     newItemAdder->show();
 }
 
-void MainWindow::createItem(QString path, int type, QTime start, QTime end)
+void MainWindow::on_addVideoButton_pressed()
 {
-    qDebug() << "create item of type: " + QString::number(type) + " from: " + path + " at: " + start.toString() + " to: " +end.toString();
-    ui->eventListTable->setRowCount(ui->eventListTable->rowCount()+1);
-    ui->eventListTable->setItem(ui->eventListTable->rowCount()-1,0, new QTableWidgetItem(QString::number(type)));
-    ui->eventListTable->setItem(ui->eventListTable->rowCount()-1,1, new QTableWidgetItem(start.toString()));
-    ui->eventListTable->setItem(ui->eventListTable->rowCount()-1,2, new QTableWidgetItem(end.toString()));
-    ui->eventListTable->setItem(ui->eventListTable->rowCount()-1,3, new QTableWidgetItem(QString::number(type)));
+    AddItemDialog *newItemAdder = new AddItemDialog();
+    newItemAdder->mainWindow = this;
+    newItemAdder->mediaType = "Video";
+    newItemAdder->show();
 }
+
+void MainWindow::on_addSoundButton_pressed()
+{
+    AddItemDialog *newItemAdder = new AddItemDialog();
+    newItemAdder->mainWindow = this;
+    newItemAdder->mediaType = "Sound";
+    newItemAdder->show();
+}
+
+void MainWindow::createItem(QString name, QUrl path, QString type, QTime start, QTime end)
+{
+    qDebug() << "create item of type: " + type + " from: " + path.toString() + " at: " + start.toString() + " to: " +end.toString();
+    ui->eventListTable->setRowCount(ui->eventListTable->rowCount()+1);
+
+    mediaEventArray[ui->eventListTable->rowCount()] = new MediaEvent(name, path, type, start, end);
+    ui->eventListTable->setItem(ui->eventListTable->rowCount()-1,0, new QTableWidgetItem( mediaEventArray[ui->eventListTable->rowCount()]->name));
+    ui->eventListTable->setItem(ui->eventListTable->rowCount()-1,1, new QTableWidgetItem(mediaEventArray[ui->eventListTable->rowCount()]->start.toString()));
+    ui->eventListTable->setItem(ui->eventListTable->rowCount()-1,2, new QTableWidgetItem(mediaEventArray[ui->eventListTable->rowCount()]->end.toString()));
+    ui->eventListTable->setItem(ui->eventListTable->rowCount()-1,3, new QTableWidgetItem(mediaEventArray[ui->eventListTable->rowCount()]->type));
+
+}
+
+
+
+

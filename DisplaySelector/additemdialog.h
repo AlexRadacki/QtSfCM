@@ -14,6 +14,9 @@ class AddItemDialog : public QDialog
 public:
     explicit AddItemDialog(QWidget *parent = 0);
     MainWindow *mainWindow;
+    QString mediaType;
+    QString eventName;
+    QUrl fileName;
     ~AddItemDialog();
 
 private slots:

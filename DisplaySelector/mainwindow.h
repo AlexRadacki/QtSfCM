@@ -19,11 +19,30 @@ class MainWindow : public QMainWindow
 {
     Q_OBJECT
 
+
+
 public:
     explicit MainWindow(QWidget *parent = 0);
     QTime mainTime;
-    void createItem(QString path, int type, QTime start, QTime end);
+    void createItem(QString name, QUrl path, QString type, QTime start, QTime end);
     ~MainWindow();
+
+    struct MediaEvent
+    {
+        QString name;
+        QUrl path;
+        QString type;
+        QTime start;
+        QTime end;
+        MediaEvent(){}
+        MediaEvent(QString _name, QUrl _path, QString _type, QTime _start, QTime _end)
+            : name(_name), path(_path), type(_type), start(_start), end(_end)
+        {
+
+        }
+    };
+
+    MediaEvent *mediaEventArray[64];
 
 private slots:
     void updateTime();
@@ -54,6 +73,10 @@ private slots:
 
     void on_addImageButton_pressed();
 
+    void on_addVideoButton_pressed();
+
+    void on_addSoundButton_pressed();
+
 private:
     Ui::MainWindow *ui;
     QMediaPlayer *player;
@@ -72,6 +95,8 @@ private:
     bool isPlaying;
     int lastTime;
     int totalMs;
+
+
 
 protected:
 
