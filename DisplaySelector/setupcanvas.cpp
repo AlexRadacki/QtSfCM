@@ -142,6 +142,7 @@ void SetupCanvas::on_checkBox_clicked()
         newFrame->setGeometry(ui->canvaspreviewBox->width()/2, ui->canvaspreviewBox->height()/2, QApplication::screens().at(i)->geometry().width() / 10, QApplication::screens().at(i)->geometry().height() / 10);
         newFrame->setFrameShape(QFrame::Box);
         newFrame->setFrameShadow(QFrame::Plain);
+        newFrame->setLineWidth(3);
         newFrame->setMouseTracking(true);;
         newFrame->setObjectName("DisplayDevice");
         newFrame->show();
@@ -158,10 +159,12 @@ void SetupCanvas::on_checkBox_clicked()
 
 void SetupCanvas::mousePressEvent(QMouseEvent *event)
 {
+    qDebug() << childAt(event->pos())->metaObject()->className();
     child = qobject_cast<QFrame*>(childAt(event->pos()));
-    offset = mapToGlobal(event->pos());
-    qDebug() << QString::number(event->pos().x()) + "," + QString::number(event->pos().y());
-    qDebug() << QString::number(offset.x()) + "," + QString::number(offset.y());
+    deltaMouse = event->pos();
+    //offset = mapToGlobal(event->pos());
+    //qDebug() << QString::number(event->pos().x()) + "," + QString::number(event->pos().y());
+    //qDebug() << QString::number(offset.x()) + "," + QString::number(offset.y());
 }
 
 void SetupCanvas::mouseMoveEvent(QMouseEvent *event)
@@ -170,10 +173,11 @@ void SetupCanvas::mouseMoveEvent(QMouseEvent *event)
     {
         if(child)
         {
-            qDebug() << "moving: " + child->objectName() + " from: " + QString::number(child->pos().x())+","+QString::number(child->pos().y());
-            child->move( child->mapFromGlobal(mapToGlobal(event->pos())-offset));
-            qDebug() << "moving: " + child->objectName() + " to: " + QString::number(mapToParent(event->pos() - offset).x()) + "," + QString::number(mapToParent(event->pos() - offset).y());
-
+            //qDebug() << "moving: " + child->objectName() + " from: " + QString::number(child->pos().x())+","+QString::number(child->pos().y());
+            //child->move( child->mapFromGlobal(mapToGlobal(event->pos())-offset));
+            //qDebug() << "moving: " + child->objectName() + " to: " + QString::number(mapToParent(event->pos() - offset).x()) + "," + QString::number(mapToParent(event->pos() - offset).y());
+            child->move(child->pos() + (event->pos() - deltaMouse));
+            deltaMouse = event->pos();
         }
     }
 }

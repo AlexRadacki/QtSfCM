@@ -38,7 +38,7 @@ private:
     int canvas_height;
     QFrame *canvasItems[64];
     QFrame *child;
-    QPoint offset;
+    QPoint deltaMouse;
 
 };
 
