@@ -1,12 +1,9 @@
-#include <Windows.h>
-#include <WinUser.h>
 #include <string>
 #include "mainwindow.h"
 #include "additemdialog.h"
 #include "ui_mainwindow.h"
+#include "setupcanvas.h"
 #include <QMessageBox>
-#include <QCheckBox>
-#include <QScreen>
 #include <QVideoWidget>
 #include <QFileDialog>
 #include <QTimer>
@@ -18,47 +15,6 @@ MainWindow::MainWindow(QWidget *parent) :
     qApp->installEventFilter(this);
     ui->setupUi(this);
 
-    ui->displayInfoTable->setColumnWidth(0, 220);
-
-    screen0 = false;
-    screen1 = false;
-
-    DISPLAY_DEVICE dd;
-       dd.cb = sizeof(dd);
-       int deviceIndex = 0;
-       while(EnumDisplayDevices(0, deviceIndex, &dd, 0))
-       {
-           WCHAR wc[32] = {};
-           wcscpy(wc, dd.DeviceName);
-           char ch[32];
-           char DefChar = ' ';
-           WideCharToMultiByte(CP_ACP,0,wc,-1, ch,32,&DefChar, NULL);
-           std::string deviceName (ch);
-           std::wstring stemp = std::wstring(deviceName.begin(), deviceName.end());
-           LPCWSTR sw = stemp.c_str();
-
-           WCHAR wc128[128] = {};
-           wcscpy(wc128, dd.DeviceString);
-           char ch128[128];
-           char DefChar128 = ' ';
-           WideCharToMultiByte(CP_ACP,0,wc128,-1, ch128,128,&DefChar128, NULL);
-           std::string deviceString (ch128);
-
-           int monitorIndex = 0;
-           while(EnumDisplayDevices(sw, monitorIndex, &dd, 0))
-           {
-               ui->videoAdapterlist->addItem(QString::fromStdString(deviceName)+", "+QString::fromStdString(deviceString));
-               ++monitorIndex;
-
-               QCheckBox *checkBox = new QCheckBox(QString::fromStdString(deviceName));
-               ui->verticalLayoutWidget->layout()->addWidget(checkBox);
-               checkBox->setObjectName("checkbox " + QString::number(deviceIndex));
-               connect(checkBox, SIGNAL(clicked()), this, SLOT(on_checkBox_clicked()));
-           }
-
-           ++deviceIndex;
-       }
-
         totalMs = QTime(0,0,0).msecsTo(ui->timeEdit->time());
         ui->progressBar->setRange(0,totalMs);
         int n;
@@ -66,13 +22,16 @@ MainWindow::MainWindow(QWidget *parent) :
         {
             mediaEventArray[n] = nullptr;
         }
-        player = new QMediaPlayer;
 
-       videoWidget = new QVideoWidget;
-       player->setVideoOutput(videoWidget);
-       videoWidget->setParent(ui->videoBox);
-       videoWidget->setGeometry(QRect(15,20,300,180));
-       videoWidget->show();
+        mainCanvas = new Canvas(1280,720);
+
+
+//       player = new QMediaPlayer;
+//       videoWidget = new QVideoWidget;
+//       player->setVideoOutput(videoWidget);
+//       videoWidget->setParent(ui->videoBox);
+//       videoWidget->setGeometry(QRect(15,20,300,180));
+//       videoWidget->show();
 
 }
 
@@ -114,6 +73,7 @@ void MainWindow::updateTime()
                     if(mediaEventArray[i]->type == "Video" || mediaEventArray[i]->type == "Sound")
                     {
                         qDebug()<<"play " + mediaEventArray[i]->path.toString();
+                        QMediaPlayer *player = new QMediaPlayer();
                         player->setMedia(mediaEventArray[i]->path);
                         player->play();
                     }
@@ -121,7 +81,7 @@ void MainWindow::updateTime()
 
                 if(QTime(0,0,0).msecsTo(mediaEventArray[i]->end) <= currentMs && mediaEventArray[i]->hasStarted)
                 {
-                    player->stop();
+                    //player->stop();
                 }
             }
         }
@@ -134,28 +94,22 @@ MainWindow::~MainWindow()
 }
 
 
-void MainWindow::on_videoAdapterlist_itemClicked(QListWidgetItem *item)
-{
-    int itemID = ui->videoAdapterlist->row(item);
-    ui->displayInfoTable->setItem(0,0,new QTableWidgetItem(item->text()));
-    ui->displayInfoTable->setItem(1,0,new QTableWidgetItem(QString::number(QApplication::screens().at(itemID)->geometry().x())));
-    ui->displayInfoTable->setItem(2,0,new QTableWidgetItem(QString::number(QApplication::screens().at(itemID)->geometry().y())));
-    ui->displayInfoTable->setItem(3,0,new QTableWidgetItem(QString::number(QApplication::screens().at(itemID)->geometry().width())));
-    ui->displayInfoTable->setItem(4,0,new QTableWidgetItem(QString::number(QApplication::screens().at(itemID)->geometry().height())));
-    ui->displayInfoTable->setItem(5,0,new QTableWidgetItem(QString::number(QApplication::screens().at(itemID)->refreshRate())));
-    ui->displayInfoTable->setItem(6,0,new QTableWidgetItem(QString::number(QApplication::screens().at(itemID)->physicalDotsPerInch())));
-    ui->displayInfoTable->setItem(7,0,new QTableWidgetItem(QString::number(QApplication::screens().at(itemID)->depth())));
-}
+
 
 // menu items
 
-void MainWindow::on_actionLoad_triggered()
+void MainWindow::on_actionSetup_Canvas_triggered()
 {
-    qDebug() << "loadtest";
-    fileName = QFileDialog::getOpenFileName(this, tr("Open Media"), "/", tr("Media Files (*.*)"));
-    ui->fileNameLabel->setText(fileName.toString());
-    player->setMedia(fileName);
+    SetupCanvas *newCanvasDialoge = new SetupCanvas();
+    newCanvasDialoge->mainWindow = this;
+    newCanvasDialoge->show();
 }
+
+//void MainWindow::on_actionLoad_triggered()
+//{
+//    qDebug() << "loadtest";
+//    fileName = QFileDialog::getOpenFileName(this, tr("Open file"), "/", tr("XML Files (*.xml)"));
+//}
 
 void MainWindow::on_actionExit_triggered()
 {
@@ -167,48 +121,6 @@ void MainWindow::on_actionAbout_triggered()
     QMessageBox::information(this, "About", "Qt System for cultural mediation\nVersion 0.1.9\nAlexander Radacki 2016\nh_da University of Applied Sciences");
 }
 
-void MainWindow::on_checkBox_clicked()
-{
-    QObject* obj = sender();
-    qDebug() <<"checkbox " << obj->objectName();
-    if (obj->objectName() == "checkbox 0") screen0 = !screen0;
-    else if (obj->objectName() == "checkbox 1") screen1 = !screen1;
-}
-
-void MainWindow::on_testScreenButton_pressed()
-{
-    if(player->state() > 0) player->stop();
-
-    if(fileName.isEmpty())
-    {
-
-        fileName = QFileDialog::getOpenFileUrl(this, tr("Open Media"), QUrl("/"), tr("Media Files (*.avi *.mp4 *.mov)"));
-        player->setMedia(fileName);
-        ui->fileNameLabel->setText(fileName.toString());
-        qDebug() <<"Play file: " << player->currentMedia().canonicalUrl();
-    }
-
-    if(screen0 && !screen1)
-    {
-        videoWidget->setFullScreen(true);
-        videoWidget->setGeometry(QApplication::screens().at(0)->geometry());
-    }
-    else if(screen1 && !screen0)
-    {
-        videoWidget->setFullScreen(true);
-        videoWidget->setGeometry(QApplication::screens().at(1)->geometry());
-    }
-    else if(screen1 && screen0)
-    {
-        videoWidget->setFullScreen(true);
-        int x = QApplication::screens().at(0)->geometry().width() + QApplication::screens().at(1)->geometry().width();
-        int y = (QApplication::screens().at(0)->geometry().height() > QApplication::screens().at(1)->geometry().height()) ? QApplication::screens().at(0)->geometry().height() : QApplication::screens().at(1)->geometry().height();
-        videoWidget->setGeometry(QRect(0,0,x,y));
-    }
-
-    player->play();
-}
-
 bool MainWindow::eventFilter(QObject *obj, QEvent *event)
 {
     if (event->type() == QEvent::KeyRelease)
@@ -217,17 +129,17 @@ bool MainWindow::eventFilter(QObject *obj, QEvent *event)
         if(keyEvent->isAutoRepeat() == false && lastKeyEventTime != keyEvent->timestamp())
         {
             qDebug() << "key " << keyEvent->key() << "from" << obj;
-            if(keyEvent->key() == Qt::Key_Enter)
-            {
-                videoWidget->setFullScreen(!videoWidget->isFullScreen());
-                if(videoWidget->isFullScreen()==false)
-                {
-                    videoWidget->setParent(ui->videoBox);
-                    videoWidget->setGeometry(QRect(15,20,300,180));
-                }
+//            if(keyEvent->key() == Qt::Key_Enter)
+//            {
+//                videoWidget->setFullScreen(!videoWidget->isFullScreen());
+//                if(videoWidget->isFullScreen()==false)
+//                {
+//                    videoWidget->setParent(ui->videoBox);
+//                    videoWidget->setGeometry(QRect(15,20,300,180));
+//                }
 
-            }
-            if(keyEvent->key() == Qt::Key_Q) QApplication::exit();
+//            }
+//            if(keyEvent->key() == Qt::Key_Q) QApplication::exit();
             lastKeyEventTime = keyEvent->timestamp();
         }
 
@@ -349,3 +261,4 @@ void MainWindow::createItem(QString name, QUrl path, QString type, QTime start, 
     ui->eventListTable->setItem(ui->eventListTable->rowCount()-1,2, new QTableWidgetItem(mediaEventArray[ui->eventListTable->rowCount()]->end.toString()));
     ui->eventListTable->setItem(ui->eventListTable->rowCount()-1,3, new QTableWidgetItem(mediaEventArray[ui->eventListTable->rowCount()]->type));
 }
+

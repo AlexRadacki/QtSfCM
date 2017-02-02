@@ -18,7 +18,6 @@
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QHeaderView>
 #include <QtWidgets/QLabel>
-#include <QtWidgets/QListWidget>
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QMenu>
 #include <QtWidgets/QMenuBar>
@@ -28,7 +27,6 @@
 #include <QtWidgets/QTableWidget>
 #include <QtWidgets/QTimeEdit>
 #include <QtWidgets/QToolBar>
-#include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QWidget>
 
 QT_BEGIN_NAMESPACE
@@ -36,19 +34,15 @@ QT_BEGIN_NAMESPACE
 class Ui_MainWindow
 {
 public:
-    QAction *actionLoad;
     QAction *actionExit;
     QAction *actionAbout;
+    QAction *actionSetup_Canvas;
+    QAction *actionSave;
+    QAction *actionImage;
+    QAction *actionVideo;
+    QAction *actionSound;
     QWidget *centralWidget;
-    QGroupBox *displayInfoBox;
-    QTableWidget *displayInfoTable;
-    QListWidget *videoAdapterlist;
-    QGroupBox *displaySelectorBox;
-    QWidget *verticalLayoutWidget;
-    QVBoxLayout *displaySelectorLayout;
-    QPushButton *testScreenButton;
     QGroupBox *videoBox;
-    QLabel *fileNameLabel;
     QGroupBox *eventListBox;
     QTableWidget *eventListTable;
     QGroupBox *timeLineBox;
@@ -64,6 +58,8 @@ public:
     QPushButton *pause_Button;
     QLabel *time_label;
     QGroupBox *addEventBox;
+    QWidget *horizontalLayoutWidget_2;
+    QHBoxLayout *horizontalLayout_2;
     QPushButton *addImageButton;
     QPushButton *addVideoButton;
     QPushButton *addSoundButton;
@@ -73,121 +69,69 @@ public:
     QMenuBar *menuBar;
     QMenu *menu;
     QMenu *menuFile;
+    QMenu *menuSettings;
 
     void setupUi(QMainWindow *MainWindow)
     {
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName(QStringLiteral("MainWindow"));
-        MainWindow->resize(1362, 630);
-        actionLoad = new QAction(MainWindow);
-        actionLoad->setObjectName(QStringLiteral("actionLoad"));
+        MainWindow->resize(934, 630);
         actionExit = new QAction(MainWindow);
         actionExit->setObjectName(QStringLiteral("actionExit"));
         actionAbout = new QAction(MainWindow);
         actionAbout->setObjectName(QStringLiteral("actionAbout"));
+        actionSetup_Canvas = new QAction(MainWindow);
+        actionSetup_Canvas->setObjectName(QStringLiteral("actionSetup_Canvas"));
+        actionSave = new QAction(MainWindow);
+        actionSave->setObjectName(QStringLiteral("actionSave"));
+        actionImage = new QAction(MainWindow);
+        actionImage->setObjectName(QStringLiteral("actionImage"));
+        actionVideo = new QAction(MainWindow);
+        actionVideo->setObjectName(QStringLiteral("actionVideo"));
+        actionSound = new QAction(MainWindow);
+        actionSound->setObjectName(QStringLiteral("actionSound"));
         centralWidget = new QWidget(MainWindow);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
-        displayInfoBox = new QGroupBox(centralWidget);
-        displayInfoBox->setObjectName(QStringLiteral("displayInfoBox"));
-        displayInfoBox->setGeometry(QRect(10, 10, 321, 521));
-        displayInfoTable = new QTableWidget(displayInfoBox);
-        if (displayInfoTable->columnCount() < 1)
-            displayInfoTable->setColumnCount(1);
-        QTableWidgetItem *__qtablewidgetitem = new QTableWidgetItem();
-        displayInfoTable->setHorizontalHeaderItem(0, __qtablewidgetitem);
-        if (displayInfoTable->rowCount() < 8)
-            displayInfoTable->setRowCount(8);
-        QTableWidgetItem *__qtablewidgetitem1 = new QTableWidgetItem();
-        displayInfoTable->setVerticalHeaderItem(0, __qtablewidgetitem1);
-        QTableWidgetItem *__qtablewidgetitem2 = new QTableWidgetItem();
-        displayInfoTable->setVerticalHeaderItem(1, __qtablewidgetitem2);
-        QTableWidgetItem *__qtablewidgetitem3 = new QTableWidgetItem();
-        displayInfoTable->setVerticalHeaderItem(2, __qtablewidgetitem3);
-        QTableWidgetItem *__qtablewidgetitem4 = new QTableWidgetItem();
-        displayInfoTable->setVerticalHeaderItem(3, __qtablewidgetitem4);
-        QTableWidgetItem *__qtablewidgetitem5 = new QTableWidgetItem();
-        displayInfoTable->setVerticalHeaderItem(4, __qtablewidgetitem5);
-        QTableWidgetItem *__qtablewidgetitem6 = new QTableWidgetItem();
-        displayInfoTable->setVerticalHeaderItem(5, __qtablewidgetitem6);
-        QTableWidgetItem *__qtablewidgetitem7 = new QTableWidgetItem();
-        displayInfoTable->setVerticalHeaderItem(6, __qtablewidgetitem7);
-        QTableWidgetItem *__qtablewidgetitem8 = new QTableWidgetItem();
-        displayInfoTable->setVerticalHeaderItem(7, __qtablewidgetitem8);
-        displayInfoTable->setObjectName(QStringLiteral("displayInfoTable"));
-        displayInfoTable->setEnabled(true);
-        displayInfoTable->setGeometry(QRect(10, 230, 301, 271));
-        displayInfoTable->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-        displayInfoTable->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-        displayInfoTable->setSizeAdjustPolicy(QAbstractScrollArea::AdjustIgnored);
-        displayInfoTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
-        displayInfoTable->setTabKeyNavigation(false);
-        displayInfoTable->setSelectionMode(QAbstractItemView::NoSelection);
-        displayInfoTable->setCornerButtonEnabled(false);
-        displayInfoTable->horizontalHeader()->setVisible(true);
-        displayInfoTable->horizontalHeader()->setHighlightSections(false);
-        displayInfoTable->verticalHeader()->setHighlightSections(false);
-        videoAdapterlist = new QListWidget(displayInfoBox);
-        videoAdapterlist->setObjectName(QStringLiteral("videoAdapterlist"));
-        videoAdapterlist->setGeometry(QRect(10, 20, 301, 191));
-        videoAdapterlist->setEditTriggers(QAbstractItemView::NoEditTriggers);
-        displaySelectorBox = new QGroupBox(centralWidget);
-        displaySelectorBox->setObjectName(QStringLiteral("displaySelectorBox"));
-        displaySelectorBox->setGeometry(QRect(350, 10, 181, 221));
-        verticalLayoutWidget = new QWidget(displaySelectorBox);
-        verticalLayoutWidget->setObjectName(QStringLiteral("verticalLayoutWidget"));
-        verticalLayoutWidget->setGeometry(QRect(10, 20, 160, 191));
-        displaySelectorLayout = new QVBoxLayout(verticalLayoutWidget);
-        displaySelectorLayout->setSpacing(6);
-        displaySelectorLayout->setContentsMargins(11, 11, 11, 11);
-        displaySelectorLayout->setObjectName(QStringLiteral("displaySelectorLayout"));
-        displaySelectorLayout->setSizeConstraint(QLayout::SetMinimumSize);
-        displaySelectorLayout->setContentsMargins(0, 0, 0, 0);
-        testScreenButton = new QPushButton(centralWidget);
-        testScreenButton->setObjectName(QStringLiteral("testScreenButton"));
-        testScreenButton->setGeometry(QRect(350, 240, 331, 31));
         videoBox = new QGroupBox(centralWidget);
         videoBox->setObjectName(QStringLiteral("videoBox"));
-        videoBox->setGeometry(QRect(690, 10, 311, 221));
-        fileNameLabel = new QLabel(centralWidget);
-        fileNameLabel->setObjectName(QStringLiteral("fileNameLabel"));
-        fileNameLabel->setGeometry(QRect(700, 250, 331, 16));
+        videoBox->setGeometry(QRect(360, 10, 561, 331));
         eventListBox = new QGroupBox(centralWidget);
         eventListBox->setObjectName(QStringLiteral("eventListBox"));
-        eventListBox->setGeometry(QRect(1010, 10, 341, 491));
+        eventListBox->setGeometry(QRect(10, 80, 341, 431));
         eventListTable = new QTableWidget(eventListBox);
         if (eventListTable->columnCount() < 4)
             eventListTable->setColumnCount(4);
-        QTableWidgetItem *__qtablewidgetitem9 = new QTableWidgetItem();
-        eventListTable->setHorizontalHeaderItem(0, __qtablewidgetitem9);
-        QTableWidgetItem *__qtablewidgetitem10 = new QTableWidgetItem();
-        eventListTable->setHorizontalHeaderItem(1, __qtablewidgetitem10);
-        QTableWidgetItem *__qtablewidgetitem11 = new QTableWidgetItem();
-        eventListTable->setHorizontalHeaderItem(2, __qtablewidgetitem11);
-        QTableWidgetItem *__qtablewidgetitem12 = new QTableWidgetItem();
-        eventListTable->setHorizontalHeaderItem(3, __qtablewidgetitem12);
+        QTableWidgetItem *__qtablewidgetitem = new QTableWidgetItem();
+        eventListTable->setHorizontalHeaderItem(0, __qtablewidgetitem);
+        QTableWidgetItem *__qtablewidgetitem1 = new QTableWidgetItem();
+        eventListTable->setHorizontalHeaderItem(1, __qtablewidgetitem1);
+        QTableWidgetItem *__qtablewidgetitem2 = new QTableWidgetItem();
+        eventListTable->setHorizontalHeaderItem(2, __qtablewidgetitem2);
+        QTableWidgetItem *__qtablewidgetitem3 = new QTableWidgetItem();
+        eventListTable->setHorizontalHeaderItem(3, __qtablewidgetitem3);
         eventListTable->setObjectName(QStringLiteral("eventListTable"));
-        eventListTable->setGeometry(QRect(10, 20, 321, 461));
+        eventListTable->setGeometry(QRect(10, 20, 321, 401));
         eventListTable->setSizeAdjustPolicy(QAbstractScrollArea::AdjustToContents);
         eventListTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
         eventListTable->setRowCount(0);
         eventListTable->horizontalHeader()->setDefaultSectionSize(76);
         timeLineBox = new QGroupBox(centralWidget);
         timeLineBox->setObjectName(QStringLiteral("timeLineBox"));
-        timeLineBox->setGeometry(QRect(350, 310, 441, 221));
+        timeLineBox->setGeometry(QRect(360, 350, 441, 161));
         label = new QLabel(timeLineBox);
         label->setObjectName(QStringLiteral("label"));
-        label->setGeometry(QRect(10, 190, 61, 16));
+        label->setGeometry(QRect(10, 100, 61, 16));
         timeEdit = new QTimeEdit(timeLineBox);
         timeEdit->setObjectName(QStringLiteral("timeEdit"));
-        timeEdit->setGeometry(QRect(70, 190, 81, 22));
+        timeEdit->setGeometry(QRect(10, 120, 81, 22));
         timeEdit->setCurrentSection(QDateTimeEdit::HourSection);
         timeEdit->setTime(QTime(0, 5, 0));
         checkBox = new QCheckBox(timeLineBox);
         checkBox->setObjectName(QStringLiteral("checkBox"));
-        checkBox->setGeometry(QRect(360, 190, 61, 17));
+        checkBox->setGeometry(QRect(380, 120, 51, 17));
         horizontalLayoutWidget = new QWidget(timeLineBox);
         horizontalLayoutWidget->setObjectName(QStringLiteral("horizontalLayoutWidget"));
-        horizontalLayoutWidget->setGeometry(QRect(10, 100, 421, 51));
+        horizontalLayoutWidget->setGeometry(QRect(100, 100, 271, 51));
         horizontalLayout = new QHBoxLayout(horizontalLayoutWidget);
         horizontalLayout->setSpacing(6);
         horizontalLayout->setContentsMargins(11, 11, 11, 11);
@@ -260,19 +204,33 @@ public:
         time_label->setAlignment(Qt::AlignCenter);
         addEventBox = new QGroupBox(centralWidget);
         addEventBox->setObjectName(QStringLiteral("addEventBox"));
-        addEventBox->setGeometry(QRect(540, 10, 141, 221));
-        addImageButton = new QPushButton(addEventBox);
+        addEventBox->setGeometry(QRect(10, 10, 341, 61));
+        horizontalLayoutWidget_2 = new QWidget(addEventBox);
+        horizontalLayoutWidget_2->setObjectName(QStringLiteral("horizontalLayoutWidget_2"));
+        horizontalLayoutWidget_2->setGeometry(QRect(10, 20, 321, 31));
+        horizontalLayout_2 = new QHBoxLayout(horizontalLayoutWidget_2);
+        horizontalLayout_2->setSpacing(6);
+        horizontalLayout_2->setContentsMargins(11, 11, 11, 11);
+        horizontalLayout_2->setObjectName(QStringLiteral("horizontalLayout_2"));
+        horizontalLayout_2->setContentsMargins(0, 0, 0, 0);
+        addImageButton = new QPushButton(horizontalLayoutWidget_2);
         addImageButton->setObjectName(QStringLiteral("addImageButton"));
-        addImageButton->setGeometry(QRect(10, 30, 121, 23));
-        addVideoButton = new QPushButton(addEventBox);
+
+        horizontalLayout_2->addWidget(addImageButton);
+
+        addVideoButton = new QPushButton(horizontalLayoutWidget_2);
         addVideoButton->setObjectName(QStringLiteral("addVideoButton"));
-        addVideoButton->setGeometry(QRect(10, 60, 121, 23));
-        addSoundButton = new QPushButton(addEventBox);
+
+        horizontalLayout_2->addWidget(addVideoButton);
+
+        addSoundButton = new QPushButton(horizontalLayoutWidget_2);
         addSoundButton->setObjectName(QStringLiteral("addSoundButton"));
-        addSoundButton->setGeometry(QRect(10, 90, 121, 23));
+
+        horizontalLayout_2->addWidget(addSoundButton);
+
         progressBar = new QSlider(centralWidget);
         progressBar->setObjectName(QStringLiteral("progressBar"));
-        progressBar->setGeometry(QRect(10, 550, 1341, 22));
+        progressBar->setGeometry(QRect(10, 550, 911, 22));
         progressBar->setOrientation(Qt::Horizontal);
         MainWindow->setCentralWidget(centralWidget);
         mainToolBar = new QToolBar(MainWindow);
@@ -283,24 +241,26 @@ public:
         MainWindow->setStatusBar(statusBar);
         menuBar = new QMenuBar(MainWindow);
         menuBar->setObjectName(QStringLiteral("menuBar"));
-        menuBar->setGeometry(QRect(0, 0, 1362, 21));
+        menuBar->setGeometry(QRect(0, 0, 934, 21));
         menu = new QMenu(menuBar);
         menu->setObjectName(QStringLiteral("menu"));
         menuFile = new QMenu(menuBar);
         menuFile->setObjectName(QStringLiteral("menuFile"));
+        menuSettings = new QMenu(menuBar);
+        menuSettings->setObjectName(QStringLiteral("menuSettings"));
         MainWindow->setMenuBar(menuBar);
 
         menuBar->addAction(menuFile->menuAction());
+        menuBar->addAction(menuSettings->menuAction());
         menuBar->addAction(menu->menuAction());
         menu->addAction(actionAbout);
-        menuFile->addAction(actionLoad);
+        menuFile->addSeparator();
+        menuFile->addAction(actionSave);
         menuFile->addSeparator();
         menuFile->addAction(actionExit);
+        menuSettings->addAction(actionSetup_Canvas);
 
         retranslateUi(MainWindow);
-
-        videoAdapterlist->setCurrentRow(-1);
-
 
         QMetaObject::connectSlotsByName(MainWindow);
     } // setupUi
@@ -308,41 +268,23 @@ public:
     void retranslateUi(QMainWindow *MainWindow)
     {
         MainWindow->setWindowTitle(QApplication::translate("MainWindow", "MainWindow", 0));
-        actionLoad->setText(QApplication::translate("MainWindow", "Load file...", 0));
         actionExit->setText(QApplication::translate("MainWindow", "Exit", 0));
         actionAbout->setText(QApplication::translate("MainWindow", "About", 0));
-        displayInfoBox->setTitle(QApplication::translate("MainWindow", "Display Information", 0));
-        QTableWidgetItem *___qtablewidgetitem = displayInfoTable->horizontalHeaderItem(0);
-        ___qtablewidgetitem->setText(QApplication::translate("MainWindow", "Details", 0));
-        QTableWidgetItem *___qtablewidgetitem1 = displayInfoTable->verticalHeaderItem(0);
-        ___qtablewidgetitem1->setText(QApplication::translate("MainWindow", "Name", 0));
-        QTableWidgetItem *___qtablewidgetitem2 = displayInfoTable->verticalHeaderItem(1);
-        ___qtablewidgetitem2->setText(QApplication::translate("MainWindow", "X", 0));
-        QTableWidgetItem *___qtablewidgetitem3 = displayInfoTable->verticalHeaderItem(2);
-        ___qtablewidgetitem3->setText(QApplication::translate("MainWindow", "Y", 0));
-        QTableWidgetItem *___qtablewidgetitem4 = displayInfoTable->verticalHeaderItem(3);
-        ___qtablewidgetitem4->setText(QApplication::translate("MainWindow", "Width", 0));
-        QTableWidgetItem *___qtablewidgetitem5 = displayInfoTable->verticalHeaderItem(4);
-        ___qtablewidgetitem5->setText(QApplication::translate("MainWindow", "Height", 0));
-        QTableWidgetItem *___qtablewidgetitem6 = displayInfoTable->verticalHeaderItem(5);
-        ___qtablewidgetitem6->setText(QApplication::translate("MainWindow", "Refresh rate", 0));
-        QTableWidgetItem *___qtablewidgetitem7 = displayInfoTable->verticalHeaderItem(6);
-        ___qtablewidgetitem7->setText(QApplication::translate("MainWindow", "DPI", 0));
-        QTableWidgetItem *___qtablewidgetitem8 = displayInfoTable->verticalHeaderItem(7);
-        ___qtablewidgetitem8->setText(QApplication::translate("MainWindow", "Depth", 0));
-        displaySelectorBox->setTitle(QApplication::translate("MainWindow", "Select Output", 0));
-        testScreenButton->setText(QApplication::translate("MainWindow", "Test Screen(s)", 0));
+        actionSetup_Canvas->setText(QApplication::translate("MainWindow", "Setup Canvas...", 0));
+        actionSave->setText(QApplication::translate("MainWindow", "Save...", 0));
+        actionImage->setText(QApplication::translate("MainWindow", "Image...", 0));
+        actionVideo->setText(QApplication::translate("MainWindow", "Video...", 0));
+        actionSound->setText(QApplication::translate("MainWindow", "Sound...", 0));
         videoBox->setTitle(QApplication::translate("MainWindow", "Preview", 0));
-        fileNameLabel->setText(QApplication::translate("MainWindow", "No file", 0));
         eventListBox->setTitle(QApplication::translate("MainWindow", "Events", 0));
-        QTableWidgetItem *___qtablewidgetitem9 = eventListTable->horizontalHeaderItem(0);
-        ___qtablewidgetitem9->setText(QApplication::translate("MainWindow", "Event", 0));
-        QTableWidgetItem *___qtablewidgetitem10 = eventListTable->horizontalHeaderItem(1);
-        ___qtablewidgetitem10->setText(QApplication::translate("MainWindow", "Start", 0));
-        QTableWidgetItem *___qtablewidgetitem11 = eventListTable->horizontalHeaderItem(2);
-        ___qtablewidgetitem11->setText(QApplication::translate("MainWindow", "End", 0));
-        QTableWidgetItem *___qtablewidgetitem12 = eventListTable->horizontalHeaderItem(3);
-        ___qtablewidgetitem12->setText(QApplication::translate("MainWindow", "Type", 0));
+        QTableWidgetItem *___qtablewidgetitem = eventListTable->horizontalHeaderItem(0);
+        ___qtablewidgetitem->setText(QApplication::translate("MainWindow", "Event", 0));
+        QTableWidgetItem *___qtablewidgetitem1 = eventListTable->horizontalHeaderItem(1);
+        ___qtablewidgetitem1->setText(QApplication::translate("MainWindow", "Start", 0));
+        QTableWidgetItem *___qtablewidgetitem2 = eventListTable->horizontalHeaderItem(2);
+        ___qtablewidgetitem2->setText(QApplication::translate("MainWindow", "End", 0));
+        QTableWidgetItem *___qtablewidgetitem3 = eventListTable->horizontalHeaderItem(3);
+        ___qtablewidgetitem3->setText(QApplication::translate("MainWindow", "Type", 0));
         timeLineBox->setTitle(QApplication::translate("MainWindow", "Timeline", 0));
         label->setText(QApplication::translate("MainWindow", "End Time:", 0));
         timeEdit->setDisplayFormat(QApplication::translate("MainWindow", "HH:mm:ss", 0));
@@ -359,6 +301,7 @@ public:
         addSoundButton->setText(QApplication::translate("MainWindow", "Add Sound", 0));
         menu->setTitle(QApplication::translate("MainWindow", "?", 0));
         menuFile->setTitle(QApplication::translate("MainWindow", "File", 0));
+        menuSettings->setTitle(QApplication::translate("MainWindow", "Settings", 0));
     } // retranslateUi
 
 };

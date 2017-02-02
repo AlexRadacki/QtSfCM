@@ -45,20 +45,25 @@ public:
 
     MediaEvent *mediaEventArray[64];
 
+    struct Canvas
+    {
+        int x;
+        int y;
+
+        Canvas(){}
+        Canvas(int _x, int _y) : x(_x), y(_y){}
+    };
+
+    Canvas *mainCanvas;
+
 private slots:
     void updateTime();
 
-    void on_videoAdapterlist_itemClicked(QListWidgetItem *item);
-
-    void on_actionLoad_triggered();
+    //void on_actionLoad_triggered();
 
     void on_actionExit_triggered();
 
     void on_actionAbout_triggered();
-
-    void on_testScreenButton_pressed();
-
-    void on_checkBox_clicked();
 
     void on_timeEdit_userTimeChanged(const QTime &time);
 
@@ -78,26 +83,18 @@ private slots:
 
     void on_addSoundButton_pressed();
 
+    void on_actionSetup_Canvas_triggered();
+
 private:
     Ui::MainWindow *ui;
-    QMediaPlayer *player;
-    QVideoWidget *videoWidget;
-    QUrl fileName;
-    bool screen0;
-    bool screen1;
     ulong lastKeyEventTime;
     QObjectList timerElements;
-    QLCDNumber *m;
-    QLCDNumber *s;
-    QLCDNumber *ms;
     QTimer *timer;
     QTime elapsed_mainTime;
     bool isPaused;
     bool isPlaying;
     int lastTime;
     int totalMs;
-
-
 
 protected:
 

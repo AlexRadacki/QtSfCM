@@ -15,10 +15,13 @@ LIBS += -luser32
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    additemdialog.cpp
+    additemdialog.cpp \
+    setupcanvas.cpp
 
 HEADERS  += mainwindow.h \
-    additemdialog.h
+    additemdialog.h \
+    setupcanvas.h
 
 FORMS    += mainwindow.ui \
-    additemdialog.ui
+    additemdialog.ui \
+    setupcanvas.ui

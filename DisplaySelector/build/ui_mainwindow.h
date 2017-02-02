@@ -52,12 +52,9 @@ public:
     QGroupBox *eventListBox;
     QTableWidget *eventListTable;
     QGroupBox *timeLineBox;
-    QSlider *horizontalSlider;
     QLabel *label;
     QTimeEdit *timeEdit;
     QCheckBox *checkBox;
-    QGroupBox *timerDisplayBox;
-    QLabel *time_label;
     QWidget *horizontalLayoutWidget;
     QHBoxLayout *horizontalLayout;
     QPushButton *stop_Button;
@@ -65,10 +62,12 @@ public:
     QPushButton *play_Button;
     QPushButton *forward_Button;
     QPushButton *pause_Button;
+    QLabel *time_label;
     QGroupBox *addEventBox;
     QPushButton *addImageButton;
     QPushButton *addVideoButton;
     QPushButton *addSoundButton;
+    QSlider *progressBar;
     QToolBar *mainToolBar;
     QStatusBar *statusBar;
     QMenuBar *menuBar;
@@ -79,7 +78,7 @@ public:
     {
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName(QStringLiteral("MainWindow"));
-        MainWindow->resize(1041, 862);
+        MainWindow->resize(1362, 630);
         actionLoad = new QAction(MainWindow);
         actionLoad->setObjectName(QStringLiteral("actionLoad"));
         actionExit = new QAction(MainWindow);
@@ -130,6 +129,7 @@ public:
         videoAdapterlist = new QListWidget(displayInfoBox);
         videoAdapterlist->setObjectName(QStringLiteral("videoAdapterlist"));
         videoAdapterlist->setGeometry(QRect(10, 20, 301, 191));
+        videoAdapterlist->setEditTriggers(QAbstractItemView::NoEditTriggers);
         displaySelectorBox = new QGroupBox(centralWidget);
         displaySelectorBox->setObjectName(QStringLiteral("displaySelectorBox"));
         displaySelectorBox->setGeometry(QRect(350, 10, 181, 221));
@@ -147,13 +147,13 @@ public:
         testScreenButton->setGeometry(QRect(350, 240, 331, 31));
         videoBox = new QGroupBox(centralWidget);
         videoBox->setObjectName(QStringLiteral("videoBox"));
-        videoBox->setGeometry(QRect(350, 290, 331, 211));
+        videoBox->setGeometry(QRect(690, 10, 311, 221));
         fileNameLabel = new QLabel(centralWidget);
         fileNameLabel->setObjectName(QStringLiteral("fileNameLabel"));
-        fileNameLabel->setGeometry(QRect(350, 510, 331, 16));
+        fileNameLabel->setGeometry(QRect(700, 250, 331, 16));
         eventListBox = new QGroupBox(centralWidget);
         eventListBox->setObjectName(QStringLiteral("eventListBox"));
-        eventListBox->setGeometry(QRect(689, 10, 341, 491));
+        eventListBox->setGeometry(QRect(1010, 10, 341, 491));
         eventListTable = new QTableWidget(eventListBox);
         if (eventListTable->columnCount() < 4)
             eventListTable->setColumnCount(4);
@@ -165,37 +165,62 @@ public:
         eventListTable->setHorizontalHeaderItem(2, __qtablewidgetitem11);
         QTableWidgetItem *__qtablewidgetitem12 = new QTableWidgetItem();
         eventListTable->setHorizontalHeaderItem(3, __qtablewidgetitem12);
-        if (eventListTable->rowCount() < 1)
-            eventListTable->setRowCount(1);
-        QTableWidgetItem *__qtablewidgetitem13 = new QTableWidgetItem();
-        eventListTable->setVerticalHeaderItem(0, __qtablewidgetitem13);
         eventListTable->setObjectName(QStringLiteral("eventListTable"));
         eventListTable->setGeometry(QRect(10, 20, 321, 461));
         eventListTable->setSizeAdjustPolicy(QAbstractScrollArea::AdjustToContents);
-        eventListTable->setRowCount(1);
+        eventListTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
+        eventListTable->setRowCount(0);
         eventListTable->horizontalHeader()->setDefaultSectionSize(76);
         timeLineBox = new QGroupBox(centralWidget);
         timeLineBox->setObjectName(QStringLiteral("timeLineBox"));
-        timeLineBox->setGeometry(QRect(10, 540, 1021, 261));
-        horizontalSlider = new QSlider(timeLineBox);
-        horizontalSlider->setObjectName(QStringLiteral("horizontalSlider"));
-        horizontalSlider->setGeometry(QRect(10, 180, 1001, 22));
-        horizontalSlider->setOrientation(Qt::Horizontal);
+        timeLineBox->setGeometry(QRect(350, 310, 441, 221));
         label = new QLabel(timeLineBox);
         label->setObjectName(QStringLiteral("label"));
-        label->setGeometry(QRect(730, 20, 61, 16));
+        label->setGeometry(QRect(10, 190, 61, 16));
         timeEdit = new QTimeEdit(timeLineBox);
         timeEdit->setObjectName(QStringLiteral("timeEdit"));
-        timeEdit->setGeometry(QRect(780, 20, 118, 22));
+        timeEdit->setGeometry(QRect(70, 190, 81, 22));
+        timeEdit->setCurrentSection(QDateTimeEdit::HourSection);
+        timeEdit->setTime(QTime(0, 5, 0));
         checkBox = new QCheckBox(timeLineBox);
         checkBox->setObjectName(QStringLiteral("checkBox"));
-        checkBox->setGeometry(QRect(940, 20, 61, 17));
-        timerDisplayBox = new QGroupBox(timeLineBox);
-        timerDisplayBox->setObjectName(QStringLiteral("timerDisplayBox"));
-        timerDisplayBox->setGeometry(QRect(260, 19, 421, 91));
-        time_label = new QLabel(timerDisplayBox);
+        checkBox->setGeometry(QRect(360, 190, 61, 17));
+        horizontalLayoutWidget = new QWidget(timeLineBox);
+        horizontalLayoutWidget->setObjectName(QStringLiteral("horizontalLayoutWidget"));
+        horizontalLayoutWidget->setGeometry(QRect(10, 100, 421, 51));
+        horizontalLayout = new QHBoxLayout(horizontalLayoutWidget);
+        horizontalLayout->setSpacing(6);
+        horizontalLayout->setContentsMargins(11, 11, 11, 11);
+        horizontalLayout->setObjectName(QStringLiteral("horizontalLayout"));
+        horizontalLayout->setContentsMargins(0, 0, 0, 0);
+        stop_Button = new QPushButton(horizontalLayoutWidget);
+        stop_Button->setObjectName(QStringLiteral("stop_Button"));
+
+        horizontalLayout->addWidget(stop_Button);
+
+        backward_Button = new QPushButton(horizontalLayoutWidget);
+        backward_Button->setObjectName(QStringLiteral("backward_Button"));
+
+        horizontalLayout->addWidget(backward_Button);
+
+        play_Button = new QPushButton(horizontalLayoutWidget);
+        play_Button->setObjectName(QStringLiteral("play_Button"));
+
+        horizontalLayout->addWidget(play_Button);
+
+        forward_Button = new QPushButton(horizontalLayoutWidget);
+        forward_Button->setObjectName(QStringLiteral("forward_Button"));
+
+        horizontalLayout->addWidget(forward_Button);
+
+        pause_Button = new QPushButton(horizontalLayoutWidget);
+        pause_Button->setObjectName(QStringLiteral("pause_Button"));
+
+        horizontalLayout->addWidget(pause_Button);
+
+        time_label = new QLabel(timeLineBox);
         time_label->setObjectName(QStringLiteral("time_label"));
-        time_label->setGeometry(QRect(10, 20, 401, 61));
+        time_label->setGeometry(QRect(10, 30, 421, 61));
         QPalette palette;
         QBrush brush(QColor(0, 255, 0, 255));
         brush.setStyle(Qt::SolidPattern);
@@ -233,45 +258,6 @@ public:
         time_label->setAutoFillBackground(true);
         time_label->setTextFormat(Qt::PlainText);
         time_label->setAlignment(Qt::AlignCenter);
-        horizontalLayoutWidget = new QWidget(timeLineBox);
-        horizontalLayoutWidget->setObjectName(QStringLiteral("horizontalLayoutWidget"));
-        horizontalLayoutWidget->setGeometry(QRect(259, 120, 421, 51));
-        horizontalLayout = new QHBoxLayout(horizontalLayoutWidget);
-        horizontalLayout->setSpacing(6);
-        horizontalLayout->setContentsMargins(11, 11, 11, 11);
-        horizontalLayout->setObjectName(QStringLiteral("horizontalLayout"));
-        horizontalLayout->setContentsMargins(0, 0, 0, 0);
-        stop_Button = new QPushButton(horizontalLayoutWidget);
-        stop_Button->setObjectName(QStringLiteral("stop_Button"));
-
-        horizontalLayout->addWidget(stop_Button);
-
-        backward_Button = new QPushButton(horizontalLayoutWidget);
-        backward_Button->setObjectName(QStringLiteral("backward_Button"));
-
-        horizontalLayout->addWidget(backward_Button);
-
-        play_Button = new QPushButton(horizontalLayoutWidget);
-        play_Button->setObjectName(QStringLiteral("play_Button"));
-
-        horizontalLayout->addWidget(play_Button);
-
-        forward_Button = new QPushButton(horizontalLayoutWidget);
-        forward_Button->setObjectName(QStringLiteral("forward_Button"));
-
-        horizontalLayout->addWidget(forward_Button);
-
-        pause_Button = new QPushButton(horizontalLayoutWidget);
-        pause_Button->setObjectName(QStringLiteral("pause_Button"));
-
-        horizontalLayout->addWidget(pause_Button);
-
-        timerDisplayBox->raise();
-        horizontalSlider->raise();
-        label->raise();
-        timeEdit->raise();
-        checkBox->raise();
-        horizontalLayoutWidget->raise();
         addEventBox = new QGroupBox(centralWidget);
         addEventBox->setObjectName(QStringLiteral("addEventBox"));
         addEventBox->setGeometry(QRect(540, 10, 141, 221));
@@ -284,6 +270,10 @@ public:
         addSoundButton = new QPushButton(addEventBox);
         addSoundButton->setObjectName(QStringLiteral("addSoundButton"));
         addSoundButton->setGeometry(QRect(10, 90, 121, 23));
+        progressBar = new QSlider(centralWidget);
+        progressBar->setObjectName(QStringLiteral("progressBar"));
+        progressBar->setGeometry(QRect(10, 550, 1341, 22));
+        progressBar->setOrientation(Qt::Horizontal);
         MainWindow->setCentralWidget(centralWidget);
         mainToolBar = new QToolBar(MainWindow);
         mainToolBar->setObjectName(QStringLiteral("mainToolBar"));
@@ -293,7 +283,7 @@ public:
         MainWindow->setStatusBar(statusBar);
         menuBar = new QMenuBar(MainWindow);
         menuBar->setObjectName(QStringLiteral("menuBar"));
-        menuBar->setGeometry(QRect(0, 0, 1041, 21));
+        menuBar->setGeometry(QRect(0, 0, 1362, 21));
         menu = new QMenu(menuBar);
         menu->setObjectName(QStringLiteral("menu"));
         menuFile = new QMenu(menuBar);
@@ -353,18 +343,16 @@ public:
         ___qtablewidgetitem11->setText(QApplication::translate("MainWindow", "End", 0));
         QTableWidgetItem *___qtablewidgetitem12 = eventListTable->horizontalHeaderItem(3);
         ___qtablewidgetitem12->setText(QApplication::translate("MainWindow", "Type", 0));
-        QTableWidgetItem *___qtablewidgetitem13 = eventListTable->verticalHeaderItem(0);
-        ___qtablewidgetitem13->setText(QApplication::translate("MainWindow", "1", 0));
         timeLineBox->setTitle(QApplication::translate("MainWindow", "Timeline", 0));
         label->setText(QApplication::translate("MainWindow", "End Time:", 0));
+        timeEdit->setDisplayFormat(QApplication::translate("MainWindow", "HH:mm:ss", 0));
         checkBox->setText(QApplication::translate("MainWindow", "Loop", 0));
-        timerDisplayBox->setTitle(QApplication::translate("MainWindow", "Time", 0));
-        time_label->setText(QApplication::translate("MainWindow", "88:88:888", 0));
         stop_Button->setText(QApplication::translate("MainWindow", "[ ]", 0));
         backward_Button->setText(QApplication::translate("MainWindow", "<<", 0));
         play_Button->setText(QApplication::translate("MainWindow", ">", 0));
         forward_Button->setText(QApplication::translate("MainWindow", ">>", 0));
         pause_Button->setText(QApplication::translate("MainWindow", "I I", 0));
+        time_label->setText(QApplication::translate("MainWindow", "00:00:00:000", 0));
         addEventBox->setTitle(QApplication::translate("MainWindow", "Add Media", 0));
         addImageButton->setText(QApplication::translate("MainWindow", "Add Image", 0));
         addVideoButton->setText(QApplication::translate("MainWindow", "Add Video", 0));
