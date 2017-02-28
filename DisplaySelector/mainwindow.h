@@ -10,6 +10,7 @@
 #include <QKeyEvent>
 #include <QTime>
 #include <QLCDNumber>
+#include "webcampreview.h"
 
 namespace Ui {
 class MainWindow;
@@ -85,6 +86,8 @@ private slots:
 
     void on_actionSetup_Canvas_triggered();
 
+    void on_actionWebcam_triggered();
+
 private:
     Ui::MainWindow *ui;
     ulong lastKeyEventTime;
@@ -95,6 +98,8 @@ private:
     bool isPlaying;
     int lastTime;
     int totalMs;
+    QMediaPlayer *previewPlayer;
+    QVideoWidget *previewVideoWidget;
 
 protected:
 

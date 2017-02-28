@@ -7,6 +7,9 @@
 #include <QVideoWidget>
 #include <QFileDialog>
 #include <QTimer>
+#include <QGraphicsScene>
+#include <QGraphicsView>
+#include <QGraphicsPixmapItem>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -14,7 +17,8 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     qApp->installEventFilter(this);
     ui->setupUi(this);
-
+    isPlaying = false;
+    isPaused = false;
         totalMs = QTime(0,0,0).msecsTo(ui->timeEdit->time());
         ui->progressBar->setRange(0,totalMs);
         int n;
@@ -26,12 +30,12 @@ MainWindow::MainWindow(QWidget *parent) :
         mainCanvas = new Canvas(1280,720);
 
 
-//       player = new QMediaPlayer;
-//       videoWidget = new QVideoWidget;
-//       player->setVideoOutput(videoWidget);
-//       videoWidget->setParent(ui->videoBox);
-//       videoWidget->setGeometry(QRect(15,20,300,180));
-//       videoWidget->show();
+       previewPlayer = new QMediaPlayer;
+       previewVideoWidget = new QVideoWidget;
+       previewPlayer->setVideoOutput(previewVideoWidget);
+       previewVideoWidget->setParent(ui->videoBox);
+       previewVideoWidget->setGeometry(ui->videoBox->rect());
+       previewVideoWidget->show();
 
 }
 
@@ -73,15 +77,29 @@ void MainWindow::updateTime()
                     if(mediaEventArray[i]->type == "Video" || mediaEventArray[i]->type == "Sound")
                     {
                         qDebug()<<"play " + mediaEventArray[i]->path.toString();
-                        QMediaPlayer *player = new QMediaPlayer();
-                        player->setMedia(mediaEventArray[i]->path);
-                        player->play();
+                        //QMediaPlayer *player = new QMediaPlayer();
+                        previewPlayer->setMedia(mediaEventArray[i]->path);
+                        previewPlayer->play();
                     }
+                    if(mediaEventArray[i]->type == "Image")
+                    {
+                        qDebug()<<"show " + mediaEventArray[i]->path.toLocalFile();
+                        QPixmap file(mediaEventArray[i]->path.toLocalFile());
+                        QLabel *imageLabel = new QLabel();
+                        imageLabel->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
+                        imageLabel->setScaledContents(true);
+                        imageLabel->setPixmap(file);
+                        imageLabel->setParent(ui->videoBox);
+                        imageLabel->setGeometry(ui->videoBox->rect());
+                        imageLabel->show();
+
+                    }
+
                 }
 
                 if(QTime(0,0,0).msecsTo(mediaEventArray[i]->end) <= currentMs && mediaEventArray[i]->hasStarted)
                 {
-                    //player->stop();
+                   previewPlayer->stop();
                 }
             }
         }
@@ -160,8 +178,10 @@ void MainWindow::on_timeEdit_userTimeChanged(const QTime &time)
 
 void MainWindow::on_play_Button_pressed()
 {
+     qDebug()<<isPlaying;
     if (!isPlaying)
     {
+        qDebug()<<"test";
         mainTime.restart();
         elapsed_mainTime.setHMS(0,0,0);
         lastTime = 0;
@@ -171,7 +191,9 @@ void MainWindow::on_play_Button_pressed()
         timer->start(100);
 
         isPlaying = true;
+
     }
+
 }
 
 void MainWindow::on_pause_Button_pressed()
@@ -262,3 +284,9 @@ void MainWindow::createItem(QString name, QUrl path, QString type, QTime start, 
     ui->eventListTable->setItem(ui->eventListTable->rowCount()-1,3, new QTableWidgetItem(mediaEventArray[ui->eventListTable->rowCount()]->type));
 }
 
+
+void MainWindow::on_actionWebcam_triggered()
+{
+    WebcamPreview *newWebcam = new WebcamPreview();
+    newWebcam->show();
+}

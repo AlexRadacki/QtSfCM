@@ -8,13 +8,14 @@
 #include "setupcanvas.h"
 #include "ui_setupcanvas.h"
 
+
 SetupCanvas::SetupCanvas(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::SetupCanvas)
 {
     ui->setupUi(this);
-
     ui->displayInfoTable->setColumnWidth(0, 220);
+    mouseEventEater = new MouseEventEater(this);
 
     DISPLAY_DEVICE dd;
        dd.cb = sizeof(dd);
@@ -51,6 +52,18 @@ SetupCanvas::SetupCanvas(QWidget *parent) :
 
            ++deviceIndex;
        }
+
+       canvasFrame = new QFrame();
+       canvasFrame->setParent(ui->canvaspreviewBox);
+       canvasFrame->setFrameShape(QFrame::Box);
+       canvasFrame->setFrameShadow(QFrame::Plain);
+       QPalette* palette = new QPalette();
+       palette->setColor(QPalette::Foreground,Qt::red);
+       canvasFrame->setPalette(*palette);
+       canvasFrame->setLineWidth(5);
+       canvasFrame->setObjectName("CanvasFrame");
+       canvasFrame->setGeometry(0,0,0,0);
+
 }
 
 void SetupCanvas::on_videoAdapterlist_itemClicked(QListWidgetItem *item)
@@ -113,6 +126,62 @@ void SetupCanvas::on_testScreenButton_pressed()
 //    }
 
 //    player->play();
+    UpdateCanvasFrame();
+
+}
+
+
+
+void SetupCanvas::UpdateCanvasFrame()
+{
+    int i;
+    int lowestXVal = 65000;
+    int indexOfLowestX = 0;
+    int highestXVal = 0;
+    int indexOfHighestX = 0;
+
+    for(i = 0; i < canvasItems.length(); i++)
+    {
+
+        if(canvasItems.at(i)->geometry().x() < lowestXVal)
+        {
+            lowestXVal = canvasItems.at(i)->geometry().x();
+            indexOfLowestX = i;
+
+        }
+
+            if(canvasItems.at(i)->geometry().x() > highestXVal)
+            {
+                highestXVal = canvasItems.at(i)->geometry().x();
+                indexOfHighestX = i;
+
+            }
+    }
+
+    int x,y,w,h;
+
+    if(canvasItems.at(indexOfLowestX)->geometry().y() > canvasItems.at(indexOfHighestX)->geometry().y())
+    {
+         x = canvasItems.at(indexOfLowestX)->geometry().bottomLeft().x();
+         y = canvasItems.at(indexOfHighestX)->geometry().topRight().y();
+         w = canvasItems.at(indexOfHighestX)->geometry().topRight().x() - x;
+         h = canvasItems.at(indexOfLowestX)->geometry().bottomLeft().y() - y;
+    }
+    else
+    {
+         x = canvasItems.at(indexOfLowestX)->geometry().topLeft().x();
+         y = canvasItems.at(indexOfLowestX)->geometry().topLeft().y();
+         w = canvasItems.at(indexOfHighestX)->geometry().bottomRight().x() - x + 1;
+         h = canvasItems.at(indexOfHighestX)->geometry().bottomRight().y() - y + 1;
+    }
+
+
+    canvasFrame->setGeometry(x,y,w,h);
+
+    canvasFrame->show();
+
+    ui->canvasXlabel->setText( "Canvas X: " + QString::number(w * 10));
+    ui->canvasYlabel->setText( "Canvas Y: " + QString::number(h* 10));
 }
 
 void SetupCanvas::on_checkBox_clicked()
@@ -137,7 +206,8 @@ void SetupCanvas::on_checkBox_clicked()
     if(checkbox->isChecked())
     {
 
-        QFrame *newFrame = new QFrame(ui->canvaspreviewBox);
+        QFrame *newFrame = new QFrame();
+
         newFrame->setParent(ui->canvaspreviewBox);
         newFrame->setGeometry(ui->canvaspreviewBox->width()/2, ui->canvaspreviewBox->height()/2, QApplication::screens().at(i)->geometry().width() / 10, QApplication::screens().at(i)->geometry().height() / 10);
         newFrame->setFrameShape(QFrame::Box);
@@ -145,39 +215,16 @@ void SetupCanvas::on_checkBox_clicked()
         newFrame->setLineWidth(3);
         newFrame->setMouseTracking(true);;
         newFrame->setObjectName("DisplayDevice");
+        newFrame->installEventFilter(mouseEventEater);
         newFrame->show();
-        canvasItems[i] = newFrame;
+        canvasItems.append(newFrame);
 
     }
     else
     {
-        QFrame *tmpFrame = canvasItems[i];
+        QFrame *tmpFrame = canvasItems.at(i);
         tmpFrame->~QFrame();
     }
 
 }
 
-void SetupCanvas::mousePressEvent(QMouseEvent *event)
-{
-    qDebug() << childAt(event->pos())->metaObject()->className();
-    child = qobject_cast<QFrame*>(childAt(event->pos()));
-    deltaMouse = event->pos();
-    //offset = mapToGlobal(event->pos());
-    //qDebug() << QString::number(event->pos().x()) + "," + QString::number(event->pos().y());
-    //qDebug() << QString::number(offset.x()) + "," + QString::number(offset.y());
-}
-
-void SetupCanvas::mouseMoveEvent(QMouseEvent *event)
-{
-    if(event->buttons() & Qt::LeftButton)
-    {
-        if(child)
-        {
-            //qDebug() << "moving: " + child->objectName() + " from: " + QString::number(child->pos().x())+","+QString::number(child->pos().y());
-            //child->move( child->mapFromGlobal(mapToGlobal(event->pos())-offset));
-            //qDebug() << "moving: " + child->objectName() + " to: " + QString::number(mapToParent(event->pos() - offset).x()) + "," + QString::number(mapToParent(event->pos() - offset).y());
-            child->move(child->pos() + (event->pos() - deltaMouse));
-            deltaMouse = event->pos();
-        }
-    }
-}

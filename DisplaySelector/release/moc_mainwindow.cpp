@@ -19,8 +19,8 @@
 
 QT_BEGIN_MOC_NAMESPACE
 struct qt_meta_stringdata_MainWindow_t {
-    QByteArrayData data[16];
-    char stringdata0[338];
+    QByteArrayData data[17];
+    char stringdata0[364];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -44,7 +44,8 @@ QT_MOC_LITERAL(11, 202, 25), // "on_forward_Button_pressed"
 QT_MOC_LITERAL(12, 228, 25), // "on_addImageButton_pressed"
 QT_MOC_LITERAL(13, 254, 25), // "on_addVideoButton_pressed"
 QT_MOC_LITERAL(14, 280, 25), // "on_addSoundButton_pressed"
-QT_MOC_LITERAL(15, 306, 31) // "on_actionSetup_Canvas_triggered"
+QT_MOC_LITERAL(15, 306, 31), // "on_actionSetup_Canvas_triggered"
+QT_MOC_LITERAL(16, 338, 25) // "on_actionWebcam_triggered"
 
     },
     "MainWindow\0updateTime\0\0on_actionExit_triggered\0"
@@ -57,7 +58,8 @@ QT_MOC_LITERAL(15, 306, 31) // "on_actionSetup_Canvas_triggered"
     "on_addImageButton_pressed\0"
     "on_addVideoButton_pressed\0"
     "on_addSoundButton_pressed\0"
-    "on_actionSetup_Canvas_triggered"
+    "on_actionSetup_Canvas_triggered\0"
+    "on_actionWebcam_triggered"
 };
 #undef QT_MOC_LITERAL
 
@@ -67,7 +69,7 @@ static const uint qt_meta_data_MainWindow[] = {
        7,       // revision
        0,       // classname
        0,    0, // classinfo
-      13,   14, // methods
+      14,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -75,25 +77,27 @@ static const uint qt_meta_data_MainWindow[] = {
        0,       // signalCount
 
  // slots: name, argc, parameters, tag, flags
-       1,    0,   79,    2, 0x08 /* Private */,
-       3,    0,   80,    2, 0x08 /* Private */,
-       4,    0,   81,    2, 0x08 /* Private */,
-       5,    1,   82,    2, 0x08 /* Private */,
-       7,    0,   85,    2, 0x08 /* Private */,
-       8,    0,   86,    2, 0x08 /* Private */,
-       9,    0,   87,    2, 0x08 /* Private */,
-      10,    0,   88,    2, 0x08 /* Private */,
-      11,    0,   89,    2, 0x08 /* Private */,
-      12,    0,   90,    2, 0x08 /* Private */,
-      13,    0,   91,    2, 0x08 /* Private */,
-      14,    0,   92,    2, 0x08 /* Private */,
-      15,    0,   93,    2, 0x08 /* Private */,
+       1,    0,   84,    2, 0x08 /* Private */,
+       3,    0,   85,    2, 0x08 /* Private */,
+       4,    0,   86,    2, 0x08 /* Private */,
+       5,    1,   87,    2, 0x08 /* Private */,
+       7,    0,   90,    2, 0x08 /* Private */,
+       8,    0,   91,    2, 0x08 /* Private */,
+       9,    0,   92,    2, 0x08 /* Private */,
+      10,    0,   93,    2, 0x08 /* Private */,
+      11,    0,   94,    2, 0x08 /* Private */,
+      12,    0,   95,    2, 0x08 /* Private */,
+      13,    0,   96,    2, 0x08 /* Private */,
+      14,    0,   97,    2, 0x08 /* Private */,
+      15,    0,   98,    2, 0x08 /* Private */,
+      16,    0,   99,    2, 0x08 /* Private */,
 
  // slots: parameters
     QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void, QMetaType::QTime,    6,
+    QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
@@ -126,6 +130,7 @@ void MainWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
         case 10: _t->on_addVideoButton_pressed(); break;
         case 11: _t->on_addSoundButton_pressed(); break;
         case 12: _t->on_actionSetup_Canvas_triggered(); break;
+        case 13: _t->on_actionWebcam_triggered(); break;
         default: ;
         }
     }
@@ -156,13 +161,13 @@ int MainWindow::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 13)
+        if (_id < 14)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 13;
+        _id -= 14;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 13)
+        if (_id < 14)
             *reinterpret_cast<int*>(_a[0]) = -1;
-        _id -= 13;
+        _id -= 14;
     }
     return _id;
 }

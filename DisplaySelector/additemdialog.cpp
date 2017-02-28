@@ -17,7 +17,18 @@ AddItemDialog::~AddItemDialog()
 
 void AddItemDialog::on_loadFileButton_pressed()
 {
-    if(mediaType == "Image") fileName = QFileDialog::getOpenFileUrl(this, tr("Open Media"), QUrl("/"), tr("Media Files (*.bmp *.jpg *.png)"));
+    if(mediaType == "Image")
+    {
+        fileName = QFileDialog::getOpenFileUrl(this, tr("Open Media"), QUrl("/"), tr("Media Files (*.bmp *.jpg *.png)"));
+        QPixmap file(fileName.toLocalFile());
+        QLabel *imageLabel = new QLabel();
+        imageLabel->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
+        imageLabel->setScaledContents(true);
+        imageLabel->setPixmap(file);
+        imageLabel->setParent(ui->previewBox);
+        imageLabel->setGeometry(ui->previewBox->rect());
+        imageLabel->show();
+    }
     else if (mediaType == "Video") fileName = QFileDialog::getOpenFileUrl(this, tr("Open Media"), QUrl("/"), tr("Media Files (*.avi *.mp4 *.mov)"));
     else if (mediaType == "Sound") fileName = QFileDialog::getOpenFileUrl(this, tr("Open Media"), QUrl("/"), tr("Media Files (*.wav *.ogg *.mp3)"));
 }

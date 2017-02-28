@@ -41,6 +41,7 @@ public:
     QAction *actionImage;
     QAction *actionVideo;
     QAction *actionSound;
+    QAction *actionWebcam;
     QWidget *centralWidget;
     QGroupBox *videoBox;
     QGroupBox *eventListBox;
@@ -90,6 +91,8 @@ public:
         actionVideo->setObjectName(QStringLiteral("actionVideo"));
         actionSound = new QAction(MainWindow);
         actionSound->setObjectName(QStringLiteral("actionSound"));
+        actionWebcam = new QAction(MainWindow);
+        actionWebcam->setObjectName(QStringLiteral("actionWebcam"));
         centralWidget = new QWidget(MainWindow);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         videoBox = new QGroupBox(centralWidget);
@@ -131,7 +134,7 @@ public:
         checkBox->setGeometry(QRect(380, 120, 51, 17));
         horizontalLayoutWidget = new QWidget(timeLineBox);
         horizontalLayoutWidget->setObjectName(QStringLiteral("horizontalLayoutWidget"));
-        horizontalLayoutWidget->setGeometry(QRect(100, 100, 271, 51));
+        horizontalLayoutWidget->setGeometry(QRect(100, 100, 331, 51));
         horizontalLayout = new QHBoxLayout(horizontalLayoutWidget);
         horizontalLayout->setSpacing(6);
         horizontalLayout->setContentsMargins(11, 11, 11, 11);
@@ -259,6 +262,7 @@ public:
         menuFile->addSeparator();
         menuFile->addAction(actionExit);
         menuSettings->addAction(actionSetup_Canvas);
+        menuSettings->addAction(actionWebcam);
 
         retranslateUi(MainWindow);
 
@@ -275,6 +279,7 @@ public:
         actionImage->setText(QApplication::translate("MainWindow", "Image...", 0));
         actionVideo->setText(QApplication::translate("MainWindow", "Video...", 0));
         actionSound->setText(QApplication::translate("MainWindow", "Sound...", 0));
+        actionWebcam->setText(QApplication::translate("MainWindow", "Webcam...", 0));
         videoBox->setTitle(QApplication::translate("MainWindow", "Preview", 0));
         eventListBox->setTitle(QApplication::translate("MainWindow", "Events", 0));
         QTableWidgetItem *___qtablewidgetitem = eventListTable->horizontalHeaderItem(0);

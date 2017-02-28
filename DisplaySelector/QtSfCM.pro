@@ -16,12 +16,17 @@ LIBS += -luser32
 SOURCES += main.cpp\
         mainwindow.cpp \
     additemdialog.cpp \
-    setupcanvas.cpp
+    setupcanvas.cpp \
+    mouseeventeater.cpp \
+    webcampreview.cpp
 
 HEADERS  += mainwindow.h \
     additemdialog.h \
-    setupcanvas.h
+    setupcanvas.h \
+    mouseeventeater.h \
+    webcampreview.h
 
 FORMS    += mainwindow.ui \
     additemdialog.ui \
-    setupcanvas.ui
+    setupcanvas.ui \
+    webcampreview.ui

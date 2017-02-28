@@ -3,6 +3,8 @@
 #include <QMouseEvent>
 #include <QDialog>
 #include "mainwindow.h"
+#include "mouseeventeater.h"
+#include <QList>
 
 namespace Ui {
 class SetupCanvas;
@@ -15,6 +17,8 @@ class SetupCanvas : public QDialog
 public:
     explicit SetupCanvas(QWidget *parent = 0);
     MainWindow *mainWindow;
+    QFrame *canvasFrame;
+    void UpdateCanvasFrame();
     ~SetupCanvas();
 
 private slots:
@@ -28,17 +32,21 @@ private slots:
 
         void on_checkBox_clicked();
 
-        void mousePressEvent(QMouseEvent *event);
+       // void mousePressEvent(QMouseEvent *event);
 
-        void mouseMoveEvent(QMouseEvent *event);
+       // void mouseMoveEvent(QMouseEvent *event);
 
 private:
     Ui::SetupCanvas *ui;
     int canvas_width;
     int canvas_height;
-    QFrame *canvasItems[64];
+    QList<QFrame*> canvasItems;
     QFrame *child;
     QPoint deltaMouse;
+    MouseEventEater *mouseEventEater;
+protected:
+
+    //bool eventFilter(QObject *obj, QEvent *event);
 
 };
 

@@ -148,7 +148,7 @@
       <rect>
        <x>100</x>
        <y>100</y>
-       <width>271</width>
+       <width>331</width>
        <height>51</height>
       </rect>
      </property>
@@ -515,6 +515,7 @@
      <string>Settings</string>
     </property>
     <addaction name="actionSetup_Canvas"/>
+    <addaction name="actionWebcam"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuSettings"/>
@@ -553,6 +554,11 @@
   <action name="actionSound">
    <property name="text">
     <string>Sound...</string>
+   </property>
+  </action>
+  <action name="actionWebcam">
+   <property name="text">
+    <string>Webcam...</string>
    </property>
   </action>
  </widget>
