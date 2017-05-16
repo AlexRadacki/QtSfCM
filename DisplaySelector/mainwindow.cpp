@@ -305,13 +305,11 @@ void MainWindow::createItem(QString name, QUrl path, QString type, QTime start, 
     qDebug() << "create item of type: " + type + " from: " + path.toString() + " at: " + start.toString() + " to: " +end.toString();
     ui->eventListTable->setRowCount(ui->eventListTable->rowCount()+1);
 
-    mediaEventArray[ui->eventListTable->rowCount()] = new MediaEvent(name, path, type, start, end, rect);
-    ui->eventListTable->setItem(ui->eventListTable->rowCount()-1,0, new QTableWidgetItem(mediaEventArray[ui->eventListTable->rowCount()]->name));
-    ui->eventListTable->setItem(ui->eventListTable->rowCount()-1,1, new QTableWidgetItem(mediaEventArray[ui->eventListTable->rowCount()]->start.toString()));
-    ui->eventListTable->setItem(ui->eventListTable->rowCount()-1,2, new QTableWidgetItem(mediaEventArray[ui->eventListTable->rowCount()]->end.toString()));
-    ui->eventListTable->setItem(ui->eventListTable->rowCount()-1,3, new QTableWidgetItem(mediaEventArray[ui->eventListTable->rowCount()]->type));
-
-
+    mediaEventArray[ui->eventListTable->rowCount()-1] = new MediaEvent(name, path, type, start, end, rect);
+    ui->eventListTable->setItem(ui->eventListTable->rowCount()-1,0, new QTableWidgetItem(mediaEventArray[ui->eventListTable->rowCount()-1]->name));
+    ui->eventListTable->setItem(ui->eventListTable->rowCount()-1,1, new QTableWidgetItem(mediaEventArray[ui->eventListTable->rowCount()-1]->start.toString()));
+    ui->eventListTable->setItem(ui->eventListTable->rowCount()-1,2, new QTableWidgetItem(mediaEventArray[ui->eventListTable->rowCount()-1]->end.toString()));
+    ui->eventListTable->setItem(ui->eventListTable->rowCount()-1,3, new QTableWidgetItem(mediaEventArray[ui->eventListTable->rowCount()-1]->type));
 }
 
 void MainWindow::on_actionWebcam_triggered()

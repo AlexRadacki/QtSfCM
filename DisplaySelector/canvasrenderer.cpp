@@ -13,6 +13,9 @@ CanvasRenderer::~CanvasRenderer()
 
 void CanvasRenderer::initializeGL()
 {
+
+    objectCount = 0;
+
     initializeOpenGLFunctions();
 
     glEnable(GL_DEPTH_TEST);

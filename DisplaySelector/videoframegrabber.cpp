@@ -14,8 +14,7 @@ VideoFrameGrabber::VideoFrameGrabber(QObject *parent): QAbstractVideoSurface(par
 
 bool VideoFrameGrabber::present(const QVideoFrame &frame)
 {
-    if(frames < 20)frames++;
-    if(frames == 20 && frame.isValid())
+    if(frame.isValid())
         {
             QVideoFrame videoFrame(frame);
 
