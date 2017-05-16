@@ -52,10 +52,10 @@ public:
     QCheckBox *checkBox;
     QWidget *horizontalLayoutWidget;
     QHBoxLayout *horizontalLayout;
+    QPushButton *forward_Button;
     QPushButton *stop_Button;
     QPushButton *backward_Button;
     QPushButton *play_Button;
-    QPushButton *forward_Button;
     QPushButton *pause_Button;
     QLabel *time_label;
     QGroupBox *addEventBox;
@@ -134,12 +134,17 @@ public:
         checkBox->setGeometry(QRect(380, 120, 51, 17));
         horizontalLayoutWidget = new QWidget(timeLineBox);
         horizontalLayoutWidget->setObjectName(QStringLiteral("horizontalLayoutWidget"));
-        horizontalLayoutWidget->setGeometry(QRect(100, 100, 331, 51));
+        horizontalLayoutWidget->setGeometry(QRect(100, 100, 271, 51));
         horizontalLayout = new QHBoxLayout(horizontalLayoutWidget);
         horizontalLayout->setSpacing(6);
         horizontalLayout->setContentsMargins(11, 11, 11, 11);
         horizontalLayout->setObjectName(QStringLiteral("horizontalLayout"));
         horizontalLayout->setContentsMargins(0, 0, 0, 0);
+        forward_Button = new QPushButton(horizontalLayoutWidget);
+        forward_Button->setObjectName(QStringLiteral("forward_Button"));
+
+        horizontalLayout->addWidget(forward_Button);
+
         stop_Button = new QPushButton(horizontalLayoutWidget);
         stop_Button->setObjectName(QStringLiteral("stop_Button"));
 
@@ -154,11 +159,6 @@ public:
         play_Button->setObjectName(QStringLiteral("play_Button"));
 
         horizontalLayout->addWidget(play_Button);
-
-        forward_Button = new QPushButton(horizontalLayoutWidget);
-        forward_Button->setObjectName(QStringLiteral("forward_Button"));
-
-        horizontalLayout->addWidget(forward_Button);
 
         pause_Button = new QPushButton(horizontalLayoutWidget);
         pause_Button->setObjectName(QStringLiteral("pause_Button"));
@@ -294,10 +294,10 @@ public:
         label->setText(QApplication::translate("MainWindow", "End Time:", 0));
         timeEdit->setDisplayFormat(QApplication::translate("MainWindow", "HH:mm:ss", 0));
         checkBox->setText(QApplication::translate("MainWindow", "Loop", 0));
+        forward_Button->setText(QApplication::translate("MainWindow", ">>", 0));
         stop_Button->setText(QApplication::translate("MainWindow", "[ ]", 0));
         backward_Button->setText(QApplication::translate("MainWindow", "<<", 0));
         play_Button->setText(QApplication::translate("MainWindow", ">", 0));
-        forward_Button->setText(QApplication::translate("MainWindow", ">>", 0));
         pause_Button->setText(QApplication::translate("MainWindow", "I I", 0));
         time_label->setText(QApplication::translate("MainWindow", "00:00:00:000", 0));
         addEventBox->setTitle(QApplication::translate("MainWindow", "Add Media", 0));

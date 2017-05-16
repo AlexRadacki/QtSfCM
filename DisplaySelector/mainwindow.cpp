@@ -10,6 +10,8 @@
 #include <QGraphicsScene>
 #include <QGraphicsView>
 #include <QGraphicsPixmapItem>
+#include <QOpenGLTexture>
+
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -27,8 +29,7 @@ MainWindow::MainWindow(QWidget *parent) :
             mediaEventArray[n] = nullptr;
         }
 
-        mainCanvas = new Canvas(1280,720);
-
+        mainCanvas = new Canvas(0,0, 1920,1080);
 
        previewPlayer = new QMediaPlayer;
        previewVideoWidget = new QVideoWidget;
@@ -37,16 +38,25 @@ MainWindow::MainWindow(QWidget *parent) :
        previewVideoWidget->setGeometry(ui->videoBox->rect());
        previewVideoWidget->show();
 
+         // Set the window up
+         canvasrenderer = new CanvasRenderer();
+         canvasrenderer->setGeometry(QRect(1920,0,1920,1080));
+         canvasrenderer->show();
+
+         int maxitemCount = 4;
+         int j;
+         for(j = 0; j < maxitemCount; j++)
+         createItem(QString::number(j), QUrl("C:/Users/Alex/Videos/asd.avi"), "Video", QTime(0,0,j), QTime(1,0,0), QRect(0,0,100,100));
 }
 
-//main update function
+//main update
 
 void MainWindow::updateTime()
 {
     int currentMs = QTime(0,0,0).msecsTo(elapsed_mainTime);
     if(currentMs >= totalMs)
     {
-        timer->stop();
+        timer.stop();
         elapsed_mainTime.setHMS(0,0,0);
         lastTime = 0;
         ui->time_label->setText("00:00:00:000");
@@ -66,7 +76,7 @@ void MainWindow::updateTime()
 
         ui->progressBar->setValue(currentMs);
         int i;
-        for(i = 0; i < 64; i++)
+        for(i = 0; i < ui->eventListTable->rowCount(); i++)
         {
             if(mediaEventArray[i] != nullptr)
             {
@@ -77,14 +87,31 @@ void MainWindow::updateTime()
                     if(mediaEventArray[i]->type == "Video" || mediaEventArray[i]->type == "Sound")
                     {
                         qDebug()<<"play " + mediaEventArray[i]->path.toString();
-                        //QMediaPlayer *player = new QMediaPlayer();
-                        previewPlayer->setMedia(mediaEventArray[i]->path);
-                        previewPlayer->play();
+
+                        QMediaPlayer *player = new QMediaPlayer();
+                        //QVideoWidget *newVideoWidget = new QVideoWidget;
+
+                        VideoFrameGrabber *vidGrabber = new VideoFrameGrabber();
+                        //connect(vidGrabber, SIGNAL(frameAvailable(QImage)), this, SLOT(processFrame(QImage)));
+                        vidGrabber->renderer = canvasrenderer;
+                        //newVideoWidget->setParent(ui->videoBox);
+                        //newVideoWidget->setGeometry( mediaEventArray[i]->rect);
+                        //newVideoWidget->setWindowFlags(Qt::FramelessWindowHint);
+                        //newVideoWidget->setWindowOpacity(0.2);
+                        //newVideoWidget->show();
+                        player->setVideoOutput(vidGrabber);
+                        player->setMedia(mediaEventArray[i]->path);
+                        player->play();
+                        //previewPlayer->setMedia(mediaEventArray[i]->path);
+                        //previewPlayer->play();
                     }
                     if(mediaEventArray[i]->type == "Image")
                     {
                         qDebug()<<"show " + mediaEventArray[i]->path.toLocalFile();
                         QPixmap file(mediaEventArray[i]->path.toLocalFile());
+                        QImage imageTexture = file.toImage();
+                        QOpenGLTexture *glTex = new QOpenGLTexture(imageTexture);
+                        canvasrenderer->createSurface(glTex);
                         QLabel *imageLabel = new QLabel();
                         imageLabel->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
                         imageLabel->setScaledContents(true);
@@ -94,7 +121,6 @@ void MainWindow::updateTime()
                         imageLabel->show();
 
                     }
-
                 }
 
                 if(QTime(0,0,0).msecsTo(mediaEventArray[i]->end) <= currentMs && mediaEventArray[i]->hasStarted)
@@ -104,15 +130,15 @@ void MainWindow::updateTime()
             }
         }
     }
+
+    canvasrenderer->paintGL();
+    canvasrenderer->update();
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
 }
-
-
-
 
 // menu items
 
@@ -155,16 +181,12 @@ bool MainWindow::eventFilter(QObject *obj, QEvent *event)
 //                    videoWidget->setParent(ui->videoBox);
 //                    videoWidget->setGeometry(QRect(15,20,300,180));
 //                }
-
 //            }
 //            if(keyEvent->key() == Qt::Key_Q) QApplication::exit();
             lastKeyEventTime = keyEvent->timestamp();
         }
-
     }
-
     return QObject::eventFilter(obj, event);
-
 }
 
 void MainWindow::on_timeEdit_userTimeChanged(const QTime &time)
@@ -181,19 +203,25 @@ void MainWindow::on_play_Button_pressed()
      qDebug()<<isPlaying;
     if (!isPlaying)
     {
-        qDebug()<<"test";
         mainTime.restart();
         elapsed_mainTime.setHMS(0,0,0);
         lastTime = 0;
 
-        timer = new QTimer(this);
-        connect(timer, SIGNAL(timeout()), this, SLOT(updateTime()));
-        timer->start(100);
+
+        //connect(timer, SIGNAL(timeout()), this, SLOT(updateTime()));
+        timer.start(1000/25, this);
 
         isPlaying = true;
-
     }
+}
 
+void MainWindow::timerEvent(QTimerEvent *event)
+{
+    if (event->timerId() == timer.timerId()) {
+        updateTime();
+    } else {
+        QWidget::timerEvent(event);
+    }
 }
 
 void MainWindow::on_pause_Button_pressed()
@@ -205,8 +233,8 @@ void MainWindow::on_pause_Button_pressed()
         mainTime.restart();
         lastTime = 0;
 
-        if(isPaused) timer->stop();
-        else timer->start(100);
+        if(isPaused) timer.stop();
+        else timer.start(1000/20,this);
     }
 }
 
@@ -214,7 +242,7 @@ void MainWindow::on_stop_Button_pressed()
 {
     if(isPlaying)
     {
-        timer->stop();
+        timer.stop();
         elapsed_mainTime.setHMS(0,0,0);
         lastTime = 0;
         ui->time_label->setText("00:00:00:000");
@@ -239,7 +267,7 @@ void MainWindow::on_forward_Button_pressed()
     int secondsToEnd = QTime(0,0,0).secsTo(ui->timeEdit->time()) - QTime(0, 0, 0).secsTo(elapsed_mainTime);
     if(secondsToEnd<10)
     {
-        timer->stop();
+        timer.stop();
         elapsed_mainTime.setHMS(0,0,0);
         lastTime = 0;
         ui->time_label->setText("00:00:00:000");
@@ -272,18 +300,19 @@ void MainWindow::on_addSoundButton_pressed()
     newItemAdder->show();
 }
 
-void MainWindow::createItem(QString name, QUrl path, QString type, QTime start, QTime end)
+void MainWindow::createItem(QString name, QUrl path, QString type, QTime start, QTime end, QRect rect)
 {
     qDebug() << "create item of type: " + type + " from: " + path.toString() + " at: " + start.toString() + " to: " +end.toString();
     ui->eventListTable->setRowCount(ui->eventListTable->rowCount()+1);
 
-    mediaEventArray[ui->eventListTable->rowCount()] = new MediaEvent(name, path, type, start, end);
-    ui->eventListTable->setItem(ui->eventListTable->rowCount()-1,0, new QTableWidgetItem( mediaEventArray[ui->eventListTable->rowCount()]->name));
+    mediaEventArray[ui->eventListTable->rowCount()] = new MediaEvent(name, path, type, start, end, rect);
+    ui->eventListTable->setItem(ui->eventListTable->rowCount()-1,0, new QTableWidgetItem(mediaEventArray[ui->eventListTable->rowCount()]->name));
     ui->eventListTable->setItem(ui->eventListTable->rowCount()-1,1, new QTableWidgetItem(mediaEventArray[ui->eventListTable->rowCount()]->start.toString()));
     ui->eventListTable->setItem(ui->eventListTable->rowCount()-1,2, new QTableWidgetItem(mediaEventArray[ui->eventListTable->rowCount()]->end.toString()));
     ui->eventListTable->setItem(ui->eventListTable->rowCount()-1,3, new QTableWidgetItem(mediaEventArray[ui->eventListTable->rowCount()]->type));
-}
 
+
+}
 
 void MainWindow::on_actionWebcam_triggered()
 {

@@ -52,6 +52,7 @@ public:
     QLabel *label_6;
     QSpinBox *spinBox_3;
     QSpinBox *spinBox_4;
+    QSpinBox *spinBox_Alpha;
 
     void setupUi(QDialog *AddItemDialog)
     {
@@ -111,10 +112,12 @@ public:
         label_4->setGeometry(QRect(10, 70, 47, 13));
         spinBox = new QSpinBox(groupBox);
         spinBox->setObjectName(QStringLiteral("spinBox"));
-        spinBox->setGeometry(QRect(40, 40, 42, 22));
+        spinBox->setGeometry(QRect(31, 40, 51, 22));
+        spinBox->setMaximum(9999);
         spinBox_2 = new QSpinBox(groupBox);
         spinBox_2->setObjectName(QStringLiteral("spinBox_2"));
-        spinBox_2->setGeometry(QRect(40, 70, 42, 22));
+        spinBox_2->setGeometry(QRect(31, 70, 51, 22));
+        spinBox_2->setMaximum(9999);
         label_5 = new QLabel(groupBox);
         label_5->setObjectName(QStringLiteral("label_5"));
         label_5->setGeometry(QRect(100, 40, 47, 13));
@@ -123,10 +126,17 @@ public:
         label_6->setGeometry(QRect(100, 70, 47, 13));
         spinBox_3 = new QSpinBox(groupBox);
         spinBox_3->setObjectName(QStringLiteral("spinBox_3"));
-        spinBox_3->setGeometry(QRect(150, 40, 42, 22));
+        spinBox_3->setGeometry(QRect(141, 40, 51, 22));
+        spinBox_3->setMaximum(9999);
+        spinBox_3->setValue(0);
         spinBox_4 = new QSpinBox(groupBox);
         spinBox_4->setObjectName(QStringLiteral("spinBox_4"));
-        spinBox_4->setGeometry(QRect(150, 70, 42, 22));
+        spinBox_4->setGeometry(QRect(141, 70, 51, 22));
+        spinBox_4->setMaximum(9999);
+        spinBox_Alpha = new QSpinBox(displayOptionsBox);
+        spinBox_Alpha->setObjectName(QStringLiteral("spinBox_Alpha"));
+        spinBox_Alpha->setGeometry(QRect(131, 90, 51, 22));
+        spinBox_Alpha->setMaximum(100);
 
         retranslateUi(AddItemDialog);
 
@@ -146,12 +156,6 @@ public:
         applyButton->setText(QApplication::translate("AddItemDialog", "Apply", 0));
         label->setText(QApplication::translate("AddItemDialog", "Name:", 0));
         displayOptionsBox->setTitle(QApplication::translate("AddItemDialog", "Display options", 0));
-        comboBox->clear();
-        comboBox->insertItems(0, QStringList()
-         << QApplication::translate("AddItemDialog", "Canvas", 0)
-         << QApplication::translate("AddItemDialog", "DISPLAY 1", 0)
-         << QApplication::translate("AddItemDialog", "DISPLAY 2", 0)
-        );
         label_2->setText(QApplication::translate("AddItemDialog", "Display on", 0));
         checkBox->setText(QApplication::translate("AddItemDialog", "Fullscreen", 0));
         groupBox->setTitle(QApplication::translate("AddItemDialog", "Rect", 0));

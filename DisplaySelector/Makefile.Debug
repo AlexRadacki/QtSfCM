@@ -11,7 +11,7 @@ MAKEFILE      = Makefile.Debug
 
 CC            = cl
 CXX           = cl
-DEFINES       = -DUNICODE -DWIN32 -DWIN64 -DQT_MULTIMEDIAWIDGETS_LIB -DQT_MULTIMEDIA_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB
+DEFINES       = -DUNICODE -DWIN32 -DWIN64 -DQT_QML_DEBUG -DQT_MULTIMEDIAWIDGETS_LIB -DQT_MULTIMEDIA_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB
 CFLAGS        = -nologo -Zc:wchar_t -FS -Zc:strictStrings -Zi -MDd -W3 -w44456 -w44457 -w44458 /Fddebug\QtSfCM.pdb $(DEFINES)
 CXXFLAGS      = -nologo -Zc:wchar_t -FS -Zc:strictStrings -Zc:throwingNew -Zi -MDd -GR -W3 -w34100 -w34189 -w44996 -w44456 -w44457 -w44458 -wd4577 -EHsc /Fddebug\QtSfCM.pdb $(DEFINES)
 INCPATH       = -I. -IC:\Qt\5.7\msvc2015_64\include -IC:\Qt\5.7\msvc2015_64\include\QtMultimediaWidgets -IC:\Qt\5.7\msvc2015_64\include\QtMultimedia -IC:\Qt\5.7\msvc2015_64\include\QtWidgets -IC:\Qt\5.7\msvc2015_64\include\QtGui -IC:\Qt\5.7\msvc2015_64\include\QtANGLE -IC:\Qt\5.7\msvc2015_64\include\QtNetwork -IC:\Qt\5.7\msvc2015_64\include\QtCore -Idebug -I. -IC:\Qt\5.7\msvc2015_64\mkspecs\win32-msvc2015 
@@ -48,33 +48,52 @@ SOURCES       = main.cpp \
 		additemdialog.cpp \
 		setupcanvas.cpp \
 		mouseeventeater.cpp \
-		webcampreview.cpp debug\moc_mainwindow.cpp \
+		webcampreview.cpp \
+		canvasrenderer.cpp \
+		openglobject.cpp \
+		videoframegrabber.cpp debug\qrc_resources.cpp \
+		debug\moc_mainwindow.cpp \
 		debug\moc_additemdialog.cpp \
 		debug\moc_setupcanvas.cpp \
 		debug\moc_mouseeventeater.cpp \
-		debug\moc_webcampreview.cpp
+		debug\moc_webcampreview.cpp \
+		debug\moc_canvasrenderer.cpp \
+		debug\moc_videoframegrabber.cpp
 OBJECTS       = debug\main.obj \
 		debug\mainwindow.obj \
 		debug\additemdialog.obj \
 		debug\setupcanvas.obj \
 		debug\mouseeventeater.obj \
 		debug\webcampreview.obj \
+		debug\canvasrenderer.obj \
+		debug\openglobject.obj \
+		debug\videoframegrabber.obj \
+		debug\qrc_resources.obj \
 		debug\moc_mainwindow.obj \
 		debug\moc_additemdialog.obj \
 		debug\moc_setupcanvas.obj \
 		debug\moc_mouseeventeater.obj \
-		debug\moc_webcampreview.obj
+		debug\moc_webcampreview.obj \
+		debug\moc_canvasrenderer.obj \
+		debug\moc_videoframegrabber.obj
 
 DIST          =  mainwindow.h \
 		additemdialog.h \
 		setupcanvas.h \
 		mouseeventeater.h \
-		webcampreview.h main.cpp \
+		webcampreview.h \
+		canvasrenderer.h \
+		vertex.h \
+		openglobject.h \
+		videoframegrabber.h main.cpp \
 		mainwindow.cpp \
 		additemdialog.cpp \
 		setupcanvas.cpp \
 		mouseeventeater.cpp \
-		webcampreview.cpp
+		webcampreview.cpp \
+		canvasrenderer.cpp \
+		openglobject.cpp \
+		videoframegrabber.cpp
 QMAKE_TARGET  = QtSfCM
 DESTDIR        = debug\ #avoid trailing-slash linebreak
 TARGET         = QtSfCM.exe
@@ -135,15 +154,15 @@ $(OBJECTS) $(LIBS)
 <<
 
 qmake: FORCE
-	@$(QMAKE) -spec win32-msvc2015 -o Makefile.Debug QtSfCM.pro
+	@$(QMAKE) -spec win32-msvc2015 "CONFIG+=debug" "CONFIG+=qml_debug" -o Makefile.Debug QtSfCM.pro
 
 qmake_all: FORCE
 
 dist:
-	$(ZIP) QtSfCM.zip $(SOURCES) $(DIST) QtSfCM.pro C:\Qt\5.7\msvc2015_64\mkspecs\features\spec_pre.prf C:\Qt\5.7\msvc2015_64\mkspecs\common\angle.conf C:\Qt\5.7\msvc2015_64\mkspecs\common\msvc-base.conf C:\Qt\5.7\msvc2015_64\mkspecs\common\msvc-desktop.conf C:\Qt\5.7\msvc2015_64\mkspecs\qconfig.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_3dcore.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_3dcore_private.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_3dextras.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_3dextras_private.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_3dinput.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_3dinput_private.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_3dlogic.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_3dlogic_private.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_3dquick.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_3dquick_private.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_3dquickextras.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_3dquickextras_private.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_3dquickinput.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_3dquickinput_private.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_3dquickrender.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_3dquickrender_private.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_3drender.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_3drender_private.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_axbase.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_axbase_private.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_axcontainer.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_axcontainer_private.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_axserver.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_axserver_private.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_bluetooth.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_bluetooth_private.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_bootstrap_private.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_clucene_private.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_concurrent.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_concurrent_private.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_core.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_core_private.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_dbus.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_dbus_private.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_designer.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_designer_private.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_designercomponents_private.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_gamepad.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_gamepad_private.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_gui.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_gui_private.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_help.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_help_private.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_location.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_location_private.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_multimedia.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_multimedia_private.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_multimediawidgets.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_multimediawidgets_private.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_network.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_network_private.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_nfc.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_nfc_private.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_opengl.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_opengl_private.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_openglextensions.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_openglextensions_private.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_packetprotocol_private.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_platformsupport_private.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_positioning.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_positioning_private.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_printsupport.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_printsupport_private.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_purchasing.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_purchasing_private.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_qml.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_qml_private.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_qmldebug_private.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_qmldevtools_private.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_qmltest.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_qmltest_private.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_qtmultimediaquicktools_private.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_quick.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_quick_private.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_quickcontrols2.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_quickcontrols2_private.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_quickparticles_private.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_quicktemplates2_private.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_quickwidgets.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_quickwidgets_private.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_script.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_script_private.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_scripttools.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_scripttools_private.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_scxml.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_scxml_private.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_sensors.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_sensors_private.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_serialbus.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_serialbus_private.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_serialport.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_serialport_private.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_sql.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_sql_private.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_svg.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_svg_private.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_testlib.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_testlib_private.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_uiplugin.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_uitools.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_uitools_private.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_webchannel.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_webchannel_private.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_webengine.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_webengine_private.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_webenginecore.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_webenginecore_private.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_webenginecoreheaders_private.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_webenginewidgets.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_webenginewidgets_private.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_websockets.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_websockets_private.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_webview.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_webview_private.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_widgets.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_widgets_private.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_winextras.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_winextras_private.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_xml.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_xml_private.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_xmlpatterns.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_xmlpatterns_private.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_zlib_private.pri C:\Qt\5.7\msvc2015_64\mkspecs\features\qt_functions.prf C:\Qt\5.7\msvc2015_64\mkspecs\features\qt_config.prf C:\Qt\5.7\msvc2015_64\mkspecs\features\win32\qt_config.prf C:\Qt\5.7\msvc2015_64\mkspecs\win32-msvc2015\qmake.conf C:\Qt\5.7\msvc2015_64\mkspecs\features\spec_post.prf C:\Qt\5.7\msvc2015_64\mkspecs\features\exclusive_builds.prf C:\Qt\5.7\msvc2015_64\mkspecs\features\default_pre.prf C:\Qt\5.7\msvc2015_64\mkspecs\features\win32\default_pre.prf C:\Qt\5.7\msvc2015_64\mkspecs\features\resolve_config.prf C:\Qt\5.7\msvc2015_64\mkspecs\features\exclusive_builds_post.prf C:\Qt\5.7\msvc2015_64\mkspecs\features\default_post.prf C:\Qt\5.7\msvc2015_64\mkspecs\features\build_pass.prf C:\Qt\5.7\msvc2015_64\mkspecs\features\win32\rtti.prf C:\Qt\5.7\msvc2015_64\mkspecs\features\precompile_header.prf C:\Qt\5.7\msvc2015_64\mkspecs\features\warn_on.prf C:\Qt\5.7\msvc2015_64\mkspecs\features\qt.prf C:\Qt\5.7\msvc2015_64\mkspecs\features\resources.prf C:\Qt\5.7\msvc2015_64\mkspecs\features\moc.prf C:\Qt\5.7\msvc2015_64\mkspecs\features\win32\opengl.prf C:\Qt\5.7\msvc2015_64\mkspecs\features\uic.prf C:\Qt\5.7\msvc2015_64\mkspecs\features\file_copies.prf C:\Qt\5.7\msvc2015_64\mkspecs\features\win32\windows.prf C:\Qt\5.7\msvc2015_64\mkspecs\features\testcase_targets.prf C:\Qt\5.7\msvc2015_64\mkspecs\features\exceptions.prf C:\Qt\5.7\msvc2015_64\mkspecs\features\yacc.prf C:\Qt\5.7\msvc2015_64\mkspecs\features\lex.prf QtSfCM.pro C:\Qt\5.7\msvc2015_64\lib\qtmaind.prl C:\Qt\5.7\msvc2015_64\lib\Qt5MultimediaWidgetsd.prl C:\Qt\5.7\msvc2015_64\lib\Qt5Multimediad.prl C:\Qt\5.7\msvc2015_64\lib\Qt5Widgetsd.prl C:\Qt\5.7\msvc2015_64\lib\Qt5Guid.prl C:\Qt\5.7\msvc2015_64\lib\Qt5Networkd.prl C:\Qt\5.7\msvc2015_64\lib\Qt5Cored.prl  NO_PCH_SOURCES RESOURCES HEADERS SOURCES OBJECTIVE_SOURCES FORMS YACCSOURCES YACCSOURCES LEXSOURCES 
+	$(ZIP) QtSfCM.zip $(SOURCES) $(DIST) QtSfCM.pro C:\Qt\5.7\msvc2015_64\mkspecs\features\spec_pre.prf C:\Qt\5.7\msvc2015_64\mkspecs\common\angle.conf C:\Qt\5.7\msvc2015_64\mkspecs\common\msvc-base.conf C:\Qt\5.7\msvc2015_64\mkspecs\common\msvc-desktop.conf C:\Qt\5.7\msvc2015_64\mkspecs\qconfig.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_3dcore.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_3dcore_private.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_3dextras.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_3dextras_private.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_3dinput.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_3dinput_private.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_3dlogic.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_3dlogic_private.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_3dquick.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_3dquick_private.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_3dquickextras.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_3dquickextras_private.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_3dquickinput.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_3dquickinput_private.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_3dquickrender.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_3dquickrender_private.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_3drender.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_3drender_private.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_axbase.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_axbase_private.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_axcontainer.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_axcontainer_private.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_axserver.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_axserver_private.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_bluetooth.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_bluetooth_private.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_bootstrap_private.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_clucene_private.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_concurrent.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_concurrent_private.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_core.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_core_private.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_dbus.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_dbus_private.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_designer.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_designer_private.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_designercomponents_private.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_gamepad.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_gamepad_private.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_gui.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_gui_private.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_help.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_help_private.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_location.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_location_private.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_multimedia.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_multimedia_private.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_multimediawidgets.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_multimediawidgets_private.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_network.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_network_private.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_nfc.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_nfc_private.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_opengl.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_opengl_private.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_openglextensions.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_openglextensions_private.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_packetprotocol_private.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_platformsupport_private.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_positioning.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_positioning_private.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_printsupport.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_printsupport_private.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_purchasing.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_purchasing_private.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_qml.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_qml_private.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_qmldebug_private.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_qmldevtools_private.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_qmltest.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_qmltest_private.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_qtmultimediaquicktools_private.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_quick.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_quick_private.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_quickcontrols2.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_quickcontrols2_private.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_quickparticles_private.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_quicktemplates2_private.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_quickwidgets.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_quickwidgets_private.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_script.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_script_private.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_scripttools.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_scripttools_private.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_scxml.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_scxml_private.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_sensors.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_sensors_private.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_serialbus.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_serialbus_private.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_serialport.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_serialport_private.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_sql.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_sql_private.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_svg.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_svg_private.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_testlib.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_testlib_private.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_uiplugin.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_uitools.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_uitools_private.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_webchannel.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_webchannel_private.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_webengine.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_webengine_private.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_webenginecore.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_webenginecore_private.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_webenginecoreheaders_private.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_webenginewidgets.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_webenginewidgets_private.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_websockets.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_websockets_private.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_webview.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_webview_private.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_widgets.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_widgets_private.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_winextras.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_winextras_private.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_xml.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_xml_private.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_xmlpatterns.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_xmlpatterns_private.pri C:\Qt\5.7\msvc2015_64\mkspecs\modules\qt_lib_zlib_private.pri C:\Qt\5.7\msvc2015_64\mkspecs\features\qt_functions.prf C:\Qt\5.7\msvc2015_64\mkspecs\features\qt_config.prf C:\Qt\5.7\msvc2015_64\mkspecs\features\win32\qt_config.prf C:\Qt\5.7\msvc2015_64\mkspecs\win32-msvc2015\qmake.conf C:\Qt\5.7\msvc2015_64\mkspecs\features\spec_post.prf C:\Qt\5.7\msvc2015_64\mkspecs\features\exclusive_builds.prf C:\Qt\5.7\msvc2015_64\mkspecs\features\default_pre.prf C:\Qt\5.7\msvc2015_64\mkspecs\features\win32\default_pre.prf C:\Qt\5.7\msvc2015_64\mkspecs\features\resolve_config.prf C:\Qt\5.7\msvc2015_64\mkspecs\features\exclusive_builds_post.prf C:\Qt\5.7\msvc2015_64\mkspecs\features\default_post.prf C:\Qt\5.7\msvc2015_64\mkspecs\features\build_pass.prf C:\Qt\5.7\msvc2015_64\mkspecs\features\qml_debug.prf C:\Qt\5.7\msvc2015_64\mkspecs\features\win32\rtti.prf C:\Qt\5.7\msvc2015_64\mkspecs\features\precompile_header.prf C:\Qt\5.7\msvc2015_64\mkspecs\features\warn_on.prf C:\Qt\5.7\msvc2015_64\mkspecs\features\qt.prf C:\Qt\5.7\msvc2015_64\mkspecs\features\resources.prf C:\Qt\5.7\msvc2015_64\mkspecs\features\moc.prf C:\Qt\5.7\msvc2015_64\mkspecs\features\win32\opengl.prf C:\Qt\5.7\msvc2015_64\mkspecs\features\uic.prf C:\Qt\5.7\msvc2015_64\mkspecs\features\file_copies.prf C:\Qt\5.7\msvc2015_64\mkspecs\features\win32\windows.prf C:\Qt\5.7\msvc2015_64\mkspecs\features\testcase_targets.prf C:\Qt\5.7\msvc2015_64\mkspecs\features\exceptions.prf C:\Qt\5.7\msvc2015_64\mkspecs\features\yacc.prf C:\Qt\5.7\msvc2015_64\mkspecs\features\lex.prf QtSfCM.pro resources.qrc C:\Qt\5.7\msvc2015_64\lib\qtmaind.prl C:\Qt\5.7\msvc2015_64\lib\Qt5MultimediaWidgetsd.prl C:\Qt\5.7\msvc2015_64\lib\Qt5Multimediad.prl C:\Qt\5.7\msvc2015_64\lib\Qt5Widgetsd.prl C:\Qt\5.7\msvc2015_64\lib\Qt5Guid.prl C:\Qt\5.7\msvc2015_64\lib\Qt5Networkd.prl C:\Qt\5.7\msvc2015_64\lib\Qt5Cored.prl  NO_PCH_SOURCES RESOURCES HEADERS SOURCES OBJECTIVE_SOURCES FORMS YACCSOURCES YACCSOURCES LEXSOURCES 
 
 clean: compiler_clean 
-	-$(DEL_FILE) debug\main.obj debug\mainwindow.obj debug\additemdialog.obj debug\setupcanvas.obj debug\mouseeventeater.obj debug\webcampreview.obj debug\moc_mainwindow.obj debug\moc_additemdialog.obj debug\moc_setupcanvas.obj debug\moc_mouseeventeater.obj debug\moc_webcampreview.obj
+	-$(DEL_FILE) debug\main.obj debug\mainwindow.obj debug\additemdialog.obj debug\setupcanvas.obj debug\mouseeventeater.obj debug\webcampreview.obj debug\canvasrenderer.obj debug\openglobject.obj debug\videoframegrabber.obj debug\qrc_resources.obj debug\moc_mainwindow.obj debug\moc_additemdialog.obj debug\moc_setupcanvas.obj debug\moc_mouseeventeater.obj debug\moc_webcampreview.obj debug\moc_canvasrenderer.obj debug\moc_videoframegrabber.obj
 	-$(DEL_FILE) debug\QtSfCM.exp debug\QtSfCM.ilk debug\QtSfCM.idb
 
 distclean: clean 
@@ -161,11 +180,19 @@ benchmark: first
 
 compiler_no_pch_compiler_make_all:
 compiler_no_pch_compiler_clean:
-compiler_rcc_make_all:
+compiler_rcc_make_all: debug\qrc_resources.cpp
 compiler_rcc_clean:
-compiler_moc_header_make_all: debug\moc_mainwindow.cpp debug\moc_additemdialog.cpp debug\moc_setupcanvas.cpp debug\moc_mouseeventeater.cpp debug\moc_webcampreview.cpp
+	-$(DEL_FILE) debug\qrc_resources.cpp
+debug\qrc_resources.cpp: resources.qrc \
+		C:\Qt\5.7\msvc2015_64\bin\rcc.exe \
+		shaders\simple.frag \
+		shaders\uvtest.jpg \
+		shaders\simple.vert
+	C:\Qt\5.7\msvc2015_64\bin\rcc.exe -name resources resources.qrc -o debug\qrc_resources.cpp
+
+compiler_moc_header_make_all: debug\moc_mainwindow.cpp debug\moc_additemdialog.cpp debug\moc_setupcanvas.cpp debug\moc_mouseeventeater.cpp debug\moc_webcampreview.cpp debug\moc_canvasrenderer.cpp debug\moc_videoframegrabber.cpp
 compiler_moc_header_clean:
-	-$(DEL_FILE) debug\moc_mainwindow.cpp debug\moc_additemdialog.cpp debug\moc_setupcanvas.cpp debug\moc_mouseeventeater.cpp debug\moc_webcampreview.cpp
+	-$(DEL_FILE) debug\moc_mainwindow.cpp debug\moc_additemdialog.cpp debug\moc_setupcanvas.cpp debug\moc_mouseeventeater.cpp debug\moc_webcampreview.cpp debug\moc_canvasrenderer.cpp debug\moc_videoframegrabber.cpp
 debug\moc_mainwindow.cpp: C:\Qt\5.7\msvc2015_64\include\QtWidgets\QMainWindow \
 		C:\Qt\5.7\msvc2015_64\include\QtWidgets\qmainwindow.h \
 		C:\Qt\5.7\msvc2015_64\include\QtWidgets\qwidget.h \
@@ -312,6 +339,80 @@ debug\moc_mainwindow.cpp: C:\Qt\5.7\msvc2015_64\include\QtWidgets\QMainWindow \
 		webcampreview.h \
 		C:\Qt\5.7\msvc2015_64\include\QtWidgets\QDialog \
 		C:\Qt\5.7\msvc2015_64\include\QtWidgets\qdialog.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\QCamera \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\qcamera.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\qmediacontrol.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\qmediaservice.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\qcameraexposure.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\qcamerafocus.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\qcameraimageprocessing.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\qcameraviewfindersettings.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\qvideoframe.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\qabstractvideobuffer.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimediaWidgets\QCameraViewfinder \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimediaWidgets\qcameraviewfinder.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimediaWidgets\qvideowidget.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimediaWidgets\qtmultimediawidgetdefs.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\qmediabindableinterface.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\QCameraInfo \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\qcamerainfo.h \
+		C:\Qt\5.7\msvc2015_64\include\QtWidgets\QAbstractButton \
+		C:\Qt\5.7\msvc2015_64\include\QtWidgets\qabstractbutton.h \
+		canvasrenderer.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\QOpenGLWindow \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qopenglwindow.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\QPaintDeviceWindow \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qpaintdevicewindow.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\QWindow \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qwindow.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\QObject \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\QEvent \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\QMargins \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\QRect \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qsurface.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qsurfaceformat.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\QPaintDevice \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\QOpenGLContext \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qopenglcontext.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\QScopedPointer \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\QSurfaceFormat \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qopengl.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qt_windows.h \
+		C:\Qt\5.7\msvc2015_64\include\QtANGLE\GLES3\gl3.h \
+		C:\Qt\5.7\msvc2015_64\include\QtANGLE\GLES3\gl3platform.h \
+		C:\Qt\5.7\msvc2015_64\include\QtANGLE\KHR\khrplatform.h \
+		C:\Qt\5.7\msvc2015_64\include\QtANGLE\GLES2\gl2.h \
+		C:\Qt\5.7\msvc2015_64\include\QtANGLE\GLES2\gl2platform.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qopengles2ext.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qopenglext.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qopenglversionfunctions.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\QImage \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\QOpenGLFunctions \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qopenglfunctions.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\QOpenGLBuffer \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qopenglbuffer.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\QOpenGLVertexArrayObject \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qopenglvertexarrayobject.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\QOpenGLTexture \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qopengltexture.h \
+		openglobject.h \
+		vertex.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\QVector3D \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qvector3d.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\QMatrix4x4 \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qmatrix4x4.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qvector4d.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qquaternion.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qgenericmatrix.h \
+		videoframegrabber.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\QList \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\QVideoFrame \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\QVideoSurfaceFormat \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\qvideosurfaceformat.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\QAbstractVideoSurface \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\qabstractvideosurface.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\QBasicTimer \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qbasictimer.h \
 		mainwindow.h \
 		C:\Qt\5.7\msvc2015_64\bin\moc.exe
 	C:\Qt\5.7\msvc2015_64\bin\moc.exe $(DEFINES) -D_MSC_VER=1900 -D_WIN32 -D_WIN64 -IC:/Qt/5.7/msvc2015_64/mkspecs/win32-msvc2015 -IC:/Users/Alex/Documents/GitHub/QtSfCM/DisplaySelector -IC:/Qt/5.7/msvc2015_64/include -IC:/Qt/5.7/msvc2015_64/include/QtMultimediaWidgets -IC:/Qt/5.7/msvc2015_64/include/QtMultimedia -IC:/Qt/5.7/msvc2015_64/include/QtWidgets -IC:/Qt/5.7/msvc2015_64/include/QtGui -IC:/Qt/5.7/msvc2015_64/include/QtANGLE -IC:/Qt/5.7/msvc2015_64/include/QtNetwork -IC:/Qt/5.7/msvc2015_64/include/QtCore mainwindow.h -o debug\moc_mainwindow.cpp
@@ -463,6 +564,80 @@ debug\moc_additemdialog.cpp: mainwindow.h \
 		webcampreview.h \
 		C:\Qt\5.7\msvc2015_64\include\QtWidgets\QDialog \
 		C:\Qt\5.7\msvc2015_64\include\QtWidgets\qdialog.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\QCamera \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\qcamera.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\qmediacontrol.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\qmediaservice.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\qcameraexposure.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\qcamerafocus.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\qcameraimageprocessing.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\qcameraviewfindersettings.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\qvideoframe.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\qabstractvideobuffer.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimediaWidgets\QCameraViewfinder \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimediaWidgets\qcameraviewfinder.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimediaWidgets\qvideowidget.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimediaWidgets\qtmultimediawidgetdefs.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\qmediabindableinterface.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\QCameraInfo \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\qcamerainfo.h \
+		C:\Qt\5.7\msvc2015_64\include\QtWidgets\QAbstractButton \
+		C:\Qt\5.7\msvc2015_64\include\QtWidgets\qabstractbutton.h \
+		canvasrenderer.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\QOpenGLWindow \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qopenglwindow.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\QPaintDeviceWindow \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qpaintdevicewindow.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\QWindow \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qwindow.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\QObject \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\QEvent \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\QMargins \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\QRect \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qsurface.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qsurfaceformat.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\QPaintDevice \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\QOpenGLContext \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qopenglcontext.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\QScopedPointer \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\QSurfaceFormat \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qopengl.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qt_windows.h \
+		C:\Qt\5.7\msvc2015_64\include\QtANGLE\GLES3\gl3.h \
+		C:\Qt\5.7\msvc2015_64\include\QtANGLE\GLES3\gl3platform.h \
+		C:\Qt\5.7\msvc2015_64\include\QtANGLE\KHR\khrplatform.h \
+		C:\Qt\5.7\msvc2015_64\include\QtANGLE\GLES2\gl2.h \
+		C:\Qt\5.7\msvc2015_64\include\QtANGLE\GLES2\gl2platform.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qopengles2ext.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qopenglext.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qopenglversionfunctions.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\QImage \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\QOpenGLFunctions \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qopenglfunctions.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\QOpenGLBuffer \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qopenglbuffer.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\QOpenGLVertexArrayObject \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qopenglvertexarrayobject.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\QOpenGLTexture \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qopengltexture.h \
+		openglobject.h \
+		vertex.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\QVector3D \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qvector3d.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\QMatrix4x4 \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qmatrix4x4.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qvector4d.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qquaternion.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qgenericmatrix.h \
+		videoframegrabber.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\QList \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\QVideoFrame \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\QVideoSurfaceFormat \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\qvideosurfaceformat.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\QAbstractVideoSurface \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\qabstractvideosurface.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\QBasicTimer \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qbasictimer.h \
 		additemdialog.h \
 		C:\Qt\5.7\msvc2015_64\bin\moc.exe
 	C:\Qt\5.7\msvc2015_64\bin\moc.exe $(DEFINES) -D_MSC_VER=1900 -D_WIN32 -D_WIN64 -IC:/Qt/5.7/msvc2015_64/mkspecs/win32-msvc2015 -IC:/Users/Alex/Documents/GitHub/QtSfCM/DisplaySelector -IC:/Qt/5.7/msvc2015_64/include -IC:/Qt/5.7/msvc2015_64/include/QtMultimediaWidgets -IC:/Qt/5.7/msvc2015_64/include/QtMultimedia -IC:/Qt/5.7/msvc2015_64/include/QtWidgets -IC:/Qt/5.7/msvc2015_64/include/QtGui -IC:/Qt/5.7/msvc2015_64/include/QtANGLE -IC:/Qt/5.7/msvc2015_64/include/QtNetwork -IC:/Qt/5.7/msvc2015_64/include/QtCore additemdialog.h -o debug\moc_additemdialog.cpp
@@ -615,11 +790,82 @@ debug\moc_setupcanvas.cpp: C:\Qt\5.7\msvc2015_64\include\QtGui\QMouseEvent \
 		C:\Qt\5.7\msvc2015_64\include\QtWidgets\QLCDNumber \
 		C:\Qt\5.7\msvc2015_64\include\QtWidgets\qlcdnumber.h \
 		webcampreview.h \
-		mouseeventeater.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\QCamera \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\qcamera.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\qmediacontrol.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\qmediaservice.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\qcameraexposure.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\qcamerafocus.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\qcameraimageprocessing.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\qcameraviewfindersettings.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\qvideoframe.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\qabstractvideobuffer.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimediaWidgets\QCameraViewfinder \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimediaWidgets\qcameraviewfinder.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimediaWidgets\qvideowidget.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimediaWidgets\qtmultimediawidgetdefs.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\qmediabindableinterface.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\QCameraInfo \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\qcamerainfo.h \
+		C:\Qt\5.7\msvc2015_64\include\QtWidgets\QAbstractButton \
+		C:\Qt\5.7\msvc2015_64\include\QtWidgets\qabstractbutton.h \
+		canvasrenderer.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\QOpenGLWindow \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qopenglwindow.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\QPaintDeviceWindow \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qpaintdevicewindow.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\QWindow \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qwindow.h \
 		C:\Qt\5.7\msvc2015_64\include\QtCore\QObject \
 		C:\Qt\5.7\msvc2015_64\include\QtCore\QEvent \
-		C:\Qt\5.7\msvc2015_64\include\QtWidgets\QFrame \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\QMargins \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\QRect \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qsurface.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qsurfaceformat.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\QPaintDevice \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\QOpenGLContext \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qopenglcontext.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\QScopedPointer \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\QSurfaceFormat \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qopengl.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qt_windows.h \
+		C:\Qt\5.7\msvc2015_64\include\QtANGLE\GLES3\gl3.h \
+		C:\Qt\5.7\msvc2015_64\include\QtANGLE\GLES3\gl3platform.h \
+		C:\Qt\5.7\msvc2015_64\include\QtANGLE\KHR\khrplatform.h \
+		C:\Qt\5.7\msvc2015_64\include\QtANGLE\GLES2\gl2.h \
+		C:\Qt\5.7\msvc2015_64\include\QtANGLE\GLES2\gl2platform.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qopengles2ext.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qopenglext.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qopenglversionfunctions.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\QImage \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\QOpenGLFunctions \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qopenglfunctions.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\QOpenGLBuffer \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qopenglbuffer.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\QOpenGLVertexArrayObject \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qopenglvertexarrayobject.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\QOpenGLTexture \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qopengltexture.h \
+		openglobject.h \
+		vertex.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\QVector3D \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qvector3d.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\QMatrix4x4 \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qmatrix4x4.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qvector4d.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qquaternion.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qgenericmatrix.h \
+		videoframegrabber.h \
 		C:\Qt\5.7\msvc2015_64\include\QtCore\QList \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\QVideoFrame \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\QVideoSurfaceFormat \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\qvideosurfaceformat.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\QAbstractVideoSurface \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\qabstractvideosurface.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\QBasicTimer \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qbasictimer.h \
+		mouseeventeater.h \
+		C:\Qt\5.7\msvc2015_64\include\QtWidgets\QFrame \
 		setupcanvas.h \
 		C:\Qt\5.7\msvc2015_64\bin\moc.exe
 	C:\Qt\5.7\msvc2015_64\bin\moc.exe $(DEFINES) -D_MSC_VER=1900 -D_WIN32 -D_WIN64 -IC:/Qt/5.7/msvc2015_64/mkspecs/win32-msvc2015 -IC:/Users/Alex/Documents/GitHub/QtSfCM/DisplaySelector -IC:/Qt/5.7/msvc2015_64/include -IC:/Qt/5.7/msvc2015_64/include/QtMultimediaWidgets -IC:/Qt/5.7/msvc2015_64/include/QtMultimedia -IC:/Qt/5.7/msvc2015_64/include/QtWidgets -IC:/Qt/5.7/msvc2015_64/include/QtGui -IC:/Qt/5.7/msvc2015_64/include/QtANGLE -IC:/Qt/5.7/msvc2015_64/include/QtNetwork -IC:/Qt/5.7/msvc2015_64/include/QtCore setupcanvas.h -o debug\moc_setupcanvas.cpp
@@ -827,9 +1073,323 @@ debug\moc_webcampreview.cpp: C:\Qt\5.7\msvc2015_64\include\QtWidgets\QDialog \
 		C:\Qt\5.7\msvc2015_64\include\QtCore\qfiledevice.h \
 		C:\Qt\5.7\msvc2015_64\include\QtGui\qvector2d.h \
 		C:\Qt\5.7\msvc2015_64\include\QtGui\qtouchdevice.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\QCamera \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\qcamera.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\qmediacontrol.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\qtmultimediadefs.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\qmediaobject.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\qmultimedia.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\qmediaservice.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\qcameraexposure.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\qmediaenumdebug.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qmetaobject.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\qcamerafocus.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\qcameraimageprocessing.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\qcameraviewfindersettings.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\qvideoframe.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\qabstractvideobuffer.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimediaWidgets\QCameraViewfinder \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimediaWidgets\qcameraviewfinder.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimediaWidgets\qvideowidget.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimediaWidgets\qtmultimediawidgetdefs.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\qmediabindableinterface.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\QCameraInfo \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\qcamerainfo.h \
+		C:\Qt\5.7\msvc2015_64\include\QtWidgets\QAbstractButton \
+		C:\Qt\5.7\msvc2015_64\include\QtWidgets\qabstractbutton.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qicon.h \
 		webcampreview.h \
 		C:\Qt\5.7\msvc2015_64\bin\moc.exe
 	C:\Qt\5.7\msvc2015_64\bin\moc.exe $(DEFINES) -D_MSC_VER=1900 -D_WIN32 -D_WIN64 -IC:/Qt/5.7/msvc2015_64/mkspecs/win32-msvc2015 -IC:/Users/Alex/Documents/GitHub/QtSfCM/DisplaySelector -IC:/Qt/5.7/msvc2015_64/include -IC:/Qt/5.7/msvc2015_64/include/QtMultimediaWidgets -IC:/Qt/5.7/msvc2015_64/include/QtMultimedia -IC:/Qt/5.7/msvc2015_64/include/QtWidgets -IC:/Qt/5.7/msvc2015_64/include/QtGui -IC:/Qt/5.7/msvc2015_64/include/QtANGLE -IC:/Qt/5.7/msvc2015_64/include/QtNetwork -IC:/Qt/5.7/msvc2015_64/include/QtCore webcampreview.h -o debug\moc_webcampreview.cpp
+
+debug\moc_canvasrenderer.cpp: C:\Qt\5.7\msvc2015_64\include\QtGui\QOpenGLWindow \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qopenglwindow.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qglobal.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qconfig.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qfeatures.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qsystemdetection.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qprocessordetection.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qcompilerdetection.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qtypeinfo.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qtypetraits.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qisenum.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qsysinfo.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qlogging.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qflags.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qatomic.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qbasicatomic.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qatomic_bootstrap.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qgenericatomic.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qatomic_cxx11.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qatomic_msvc.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qglobalstatic.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qmutex.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qnumeric.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qversiontagging.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\QPaintDeviceWindow \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qpaintdevicewindow.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\QWindow \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qwindow.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\QObject \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qobject.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qobjectdefs.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qnamespace.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qobjectdefs_impl.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qstring.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qchar.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qbytearray.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qrefcount.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qarraydata.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qstringbuilder.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qlist.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qalgorithms.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qiterator.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qhashfunctions.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qpair.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qbytearraylist.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qstringlist.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qregexp.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qstringmatcher.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qcoreevent.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qscopedpointer.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qmetatype.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qvarlengtharray.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qcontainerfwd.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qobject_impl.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\QEvent \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\QMargins \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qmargins.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\QRect \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qrect.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qsize.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qpoint.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qsurface.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qsurfaceformat.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qwindowdefs.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qwindowdefs_win.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qicon.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qpixmap.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qpaintdevice.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qcolor.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qrgb.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qrgba64.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qsharedpointer.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qshareddata.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qhash.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qsharedpointer_impl.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qimage.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qpixelformat.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qtransform.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qmatrix.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qpolygon.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qvector.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qregion.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qdatastream.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qiodevice.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qline.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qpainterpath.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qcursor.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\QPaintDevice \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\QOpenGLContext \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qopenglcontext.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\QScopedPointer \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\QSurfaceFormat \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qopengl.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qt_windows.h \
+		C:\Qt\5.7\msvc2015_64\include\QtANGLE\GLES3\gl3.h \
+		C:\Qt\5.7\msvc2015_64\include\QtANGLE\GLES3\gl3platform.h \
+		C:\Qt\5.7\msvc2015_64\include\QtANGLE\KHR\khrplatform.h \
+		C:\Qt\5.7\msvc2015_64\include\QtANGLE\GLES2\gl2.h \
+		C:\Qt\5.7\msvc2015_64\include\QtANGLE\GLES2\gl2platform.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qopengles2ext.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qopenglext.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qopenglversionfunctions.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qvariant.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qmap.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qdebug.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qtextstream.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qlocale.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qset.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qcontiguouscache.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\QImage \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\QOpenGLFunctions \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qopenglfunctions.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\QOpenGLBuffer \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qopenglbuffer.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\QOpenGLVertexArrayObject \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qopenglvertexarrayobject.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\QOpenGLTexture \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qopengltexture.h \
+		openglobject.h \
+		vertex.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\QVector3D \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qvector3d.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\QMatrix4x4 \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qmatrix4x4.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qvector4d.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qquaternion.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qgenericmatrix.h \
+		canvasrenderer.h \
+		C:\Qt\5.7\msvc2015_64\bin\moc.exe
+	C:\Qt\5.7\msvc2015_64\bin\moc.exe $(DEFINES) -D_MSC_VER=1900 -D_WIN32 -D_WIN64 -IC:/Qt/5.7/msvc2015_64/mkspecs/win32-msvc2015 -IC:/Users/Alex/Documents/GitHub/QtSfCM/DisplaySelector -IC:/Qt/5.7/msvc2015_64/include -IC:/Qt/5.7/msvc2015_64/include/QtMultimediaWidgets -IC:/Qt/5.7/msvc2015_64/include/QtMultimedia -IC:/Qt/5.7/msvc2015_64/include/QtWidgets -IC:/Qt/5.7/msvc2015_64/include/QtGui -IC:/Qt/5.7/msvc2015_64/include/QtANGLE -IC:/Qt/5.7/msvc2015_64/include/QtNetwork -IC:/Qt/5.7/msvc2015_64/include/QtCore canvasrenderer.h -o debug\moc_canvasrenderer.cpp
+
+debug\moc_videoframegrabber.cpp: C:\Qt\5.7\msvc2015_64\include\QtCore\QList \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qlist.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qalgorithms.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qglobal.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qconfig.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qfeatures.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qsystemdetection.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qprocessordetection.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qcompilerdetection.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qtypeinfo.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qtypetraits.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qisenum.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qsysinfo.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qlogging.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qflags.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qatomic.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qbasicatomic.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qatomic_bootstrap.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qgenericatomic.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qatomic_cxx11.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qatomic_msvc.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qglobalstatic.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qmutex.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qnumeric.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qversiontagging.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qiterator.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qrefcount.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qarraydata.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qhashfunctions.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qchar.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qpair.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qbytearraylist.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qbytearray.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qnamespace.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qstring.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qstringbuilder.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qstringlist.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qregexp.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qstringmatcher.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\QVideoFrame \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\qvideoframe.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qmetatype.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qvarlengtharray.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qcontainerfwd.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qobjectdefs.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qobjectdefs_impl.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qshareddata.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qhash.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qimage.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qcolor.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qrgb.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qrgba64.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qpaintdevice.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qwindowdefs.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qwindowdefs_win.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qrect.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qmargins.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qsize.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qpoint.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qpixelformat.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qtransform.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qmatrix.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qpolygon.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qvector.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qregion.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qdatastream.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qscopedpointer.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qiodevice.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qobject.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qcoreevent.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qobject_impl.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qline.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qpainterpath.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\qabstractvideobuffer.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\qtmultimediadefs.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\qmultimedia.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qvariant.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qmap.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qdebug.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qtextstream.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qlocale.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qset.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qcontiguouscache.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qsharedpointer.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qsharedpointer_impl.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\QVideoSurfaceFormat \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\qvideosurfaceformat.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\QMediaPlayer \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\qmediaplayer.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\qmediaobject.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\qmediacontent.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\qmediaresource.h \
+		C:\Qt\5.7\msvc2015_64\include\QtNetwork\qnetworkrequest.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\QSharedDataPointer \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\QString \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\QUrl \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qurl.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qurlquery.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\QVariant \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\qmediaenumdebug.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qmetaobject.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\qaudio.h \
+		C:\Qt\5.7\msvc2015_64\include\QtNetwork\qnetworkconfiguration.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\QAbstractVideoSurface \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\qabstractvideosurface.h \
+		canvasrenderer.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\QOpenGLWindow \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qopenglwindow.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\QPaintDeviceWindow \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qpaintdevicewindow.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\QWindow \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qwindow.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\QObject \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\QEvent \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\QMargins \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\QRect \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qsurface.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qsurfaceformat.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qicon.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qpixmap.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qcursor.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\QPaintDevice \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\QOpenGLContext \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qopenglcontext.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\QScopedPointer \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\QSurfaceFormat \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qopengl.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qt_windows.h \
+		C:\Qt\5.7\msvc2015_64\include\QtANGLE\GLES3\gl3.h \
+		C:\Qt\5.7\msvc2015_64\include\QtANGLE\GLES3\gl3platform.h \
+		C:\Qt\5.7\msvc2015_64\include\QtANGLE\KHR\khrplatform.h \
+		C:\Qt\5.7\msvc2015_64\include\QtANGLE\GLES2\gl2.h \
+		C:\Qt\5.7\msvc2015_64\include\QtANGLE\GLES2\gl2platform.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qopengles2ext.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qopenglext.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qopenglversionfunctions.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\QImage \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\QOpenGLFunctions \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qopenglfunctions.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\QOpenGLBuffer \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qopenglbuffer.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\QOpenGLVertexArrayObject \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qopenglvertexarrayobject.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\QOpenGLTexture \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qopengltexture.h \
+		openglobject.h \
+		vertex.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\QVector3D \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qvector3d.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\QMatrix4x4 \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qmatrix4x4.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qvector4d.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qquaternion.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qgenericmatrix.h \
+		videoframegrabber.h \
+		C:\Qt\5.7\msvc2015_64\bin\moc.exe
+	C:\Qt\5.7\msvc2015_64\bin\moc.exe $(DEFINES) -D_MSC_VER=1900 -D_WIN32 -D_WIN64 -IC:/Qt/5.7/msvc2015_64/mkspecs/win32-msvc2015 -IC:/Users/Alex/Documents/GitHub/QtSfCM/DisplaySelector -IC:/Qt/5.7/msvc2015_64/include -IC:/Qt/5.7/msvc2015_64/include/QtMultimediaWidgets -IC:/Qt/5.7/msvc2015_64/include/QtMultimedia -IC:/Qt/5.7/msvc2015_64/include/QtWidgets -IC:/Qt/5.7/msvc2015_64/include/QtGui -IC:/Qt/5.7/msvc2015_64/include/QtANGLE -IC:/Qt/5.7/msvc2015_64/include/QtNetwork -IC:/Qt/5.7/msvc2015_64/include/QtCore videoframegrabber.h -o debug\moc_videoframegrabber.cpp
 
 compiler_moc_source_make_all:
 compiler_moc_source_clean:
@@ -858,7 +1418,7 @@ compiler_yacc_impl_make_all:
 compiler_yacc_impl_clean:
 compiler_lex_make_all:
 compiler_lex_clean:
-compiler_clean: compiler_moc_header_clean compiler_uic_clean 
+compiler_clean: compiler_rcc_clean compiler_moc_header_clean compiler_uic_clean 
 
 
 
@@ -1011,6 +1571,80 @@ debug\main.obj: main.cpp mainwindow.h \
 		webcampreview.h \
 		C:\Qt\5.7\msvc2015_64\include\QtWidgets\QDialog \
 		C:\Qt\5.7\msvc2015_64\include\QtWidgets\qdialog.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\QCamera \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\qcamera.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\qmediacontrol.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\qmediaservice.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\qcameraexposure.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\qcamerafocus.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\qcameraimageprocessing.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\qcameraviewfindersettings.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\qvideoframe.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\qabstractvideobuffer.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimediaWidgets\QCameraViewfinder \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimediaWidgets\qcameraviewfinder.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimediaWidgets\qvideowidget.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimediaWidgets\qtmultimediawidgetdefs.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\qmediabindableinterface.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\QCameraInfo \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\qcamerainfo.h \
+		C:\Qt\5.7\msvc2015_64\include\QtWidgets\QAbstractButton \
+		C:\Qt\5.7\msvc2015_64\include\QtWidgets\qabstractbutton.h \
+		canvasrenderer.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\QOpenGLWindow \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qopenglwindow.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\QPaintDeviceWindow \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qpaintdevicewindow.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\QWindow \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qwindow.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\QObject \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\QEvent \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\QMargins \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\QRect \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qsurface.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qsurfaceformat.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\QPaintDevice \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\QOpenGLContext \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qopenglcontext.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\QScopedPointer \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\QSurfaceFormat \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qopengl.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qt_windows.h \
+		C:\Qt\5.7\msvc2015_64\include\QtANGLE\GLES3\gl3.h \
+		C:\Qt\5.7\msvc2015_64\include\QtANGLE\GLES3\gl3platform.h \
+		C:\Qt\5.7\msvc2015_64\include\QtANGLE\KHR\khrplatform.h \
+		C:\Qt\5.7\msvc2015_64\include\QtANGLE\GLES2\gl2.h \
+		C:\Qt\5.7\msvc2015_64\include\QtANGLE\GLES2\gl2platform.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qopengles2ext.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qopenglext.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qopenglversionfunctions.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\QImage \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\QOpenGLFunctions \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qopenglfunctions.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\QOpenGLBuffer \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qopenglbuffer.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\QOpenGLVertexArrayObject \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qopenglvertexarrayobject.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\QOpenGLTexture \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qopengltexture.h \
+		openglobject.h \
+		vertex.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\QVector3D \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qvector3d.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\QMatrix4x4 \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qmatrix4x4.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qvector4d.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qquaternion.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qgenericmatrix.h \
+		videoframegrabber.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\QList \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\QVideoFrame \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\QVideoSurfaceFormat \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\qvideosurfaceformat.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\QAbstractVideoSurface \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\qabstractvideosurface.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\QBasicTimer \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qbasictimer.h \
 		C:\Qt\5.7\msvc2015_64\include\QtWidgets\QApplication \
 		C:\Qt\5.7\msvc2015_64\include\QtWidgets\qapplication.h \
 		C:\Qt\5.7\msvc2015_64\include\QtCore\qcoreapplication.h \
@@ -1165,6 +1799,80 @@ debug\mainwindow.obj: mainwindow.cpp mainwindow.h \
 		webcampreview.h \
 		C:\Qt\5.7\msvc2015_64\include\QtWidgets\QDialog \
 		C:\Qt\5.7\msvc2015_64\include\QtWidgets\qdialog.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\QCamera \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\qcamera.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\qmediacontrol.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\qmediaservice.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\qcameraexposure.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\qcamerafocus.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\qcameraimageprocessing.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\qcameraviewfindersettings.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\qvideoframe.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\qabstractvideobuffer.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimediaWidgets\QCameraViewfinder \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimediaWidgets\qcameraviewfinder.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimediaWidgets\qvideowidget.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimediaWidgets\qtmultimediawidgetdefs.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\qmediabindableinterface.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\QCameraInfo \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\qcamerainfo.h \
+		C:\Qt\5.7\msvc2015_64\include\QtWidgets\QAbstractButton \
+		C:\Qt\5.7\msvc2015_64\include\QtWidgets\qabstractbutton.h \
+		canvasrenderer.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\QOpenGLWindow \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qopenglwindow.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\QPaintDeviceWindow \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qpaintdevicewindow.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\QWindow \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qwindow.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\QObject \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\QEvent \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\QMargins \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\QRect \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qsurface.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qsurfaceformat.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\QPaintDevice \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\QOpenGLContext \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qopenglcontext.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\QScopedPointer \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\QSurfaceFormat \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qopengl.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qt_windows.h \
+		C:\Qt\5.7\msvc2015_64\include\QtANGLE\GLES3\gl3.h \
+		C:\Qt\5.7\msvc2015_64\include\QtANGLE\GLES3\gl3platform.h \
+		C:\Qt\5.7\msvc2015_64\include\QtANGLE\KHR\khrplatform.h \
+		C:\Qt\5.7\msvc2015_64\include\QtANGLE\GLES2\gl2.h \
+		C:\Qt\5.7\msvc2015_64\include\QtANGLE\GLES2\gl2platform.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qopengles2ext.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qopenglext.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qopenglversionfunctions.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\QImage \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\QOpenGLFunctions \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qopenglfunctions.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\QOpenGLBuffer \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qopenglbuffer.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\QOpenGLVertexArrayObject \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qopenglvertexarrayobject.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\QOpenGLTexture \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qopengltexture.h \
+		openglobject.h \
+		vertex.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\QVector3D \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qvector3d.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\QMatrix4x4 \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qmatrix4x4.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qvector4d.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qquaternion.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qgenericmatrix.h \
+		videoframegrabber.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\QList \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\QVideoFrame \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\QVideoSurfaceFormat \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\qvideosurfaceformat.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\QAbstractVideoSurface \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\qabstractvideosurface.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\QBasicTimer \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qbasictimer.h \
 		additemdialog.h \
 		ui_mainwindow.h \
 		C:\Qt\5.7\msvc2015_64\include\QtWidgets\QAction \
@@ -1180,7 +1888,6 @@ debug\mainwindow.obj: mainwindow.cpp mainwindow.h \
 		C:\Qt\5.7\msvc2015_64\include\QtWidgets\qbuttongroup.h \
 		C:\Qt\5.7\msvc2015_64\include\QtWidgets\QCheckBox \
 		C:\Qt\5.7\msvc2015_64\include\QtWidgets\qcheckbox.h \
-		C:\Qt\5.7\msvc2015_64\include\QtWidgets\qabstractbutton.h \
 		C:\Qt\5.7\msvc2015_64\include\QtWidgets\QGroupBox \
 		C:\Qt\5.7\msvc2015_64\include\QtWidgets\qgroupbox.h \
 		C:\Qt\5.7\msvc2015_64\include\QtWidgets\QHBoxLayout \
@@ -1211,23 +1918,16 @@ debug\mainwindow.obj: mainwindow.cpp mainwindow.h \
 		setupcanvas.h \
 		C:\Qt\5.7\msvc2015_64\include\QtGui\QMouseEvent \
 		mouseeventeater.h \
-		C:\Qt\5.7\msvc2015_64\include\QtCore\QObject \
-		C:\Qt\5.7\msvc2015_64\include\QtCore\QEvent \
 		C:\Qt\5.7\msvc2015_64\include\QtWidgets\QFrame \
-		C:\Qt\5.7\msvc2015_64\include\QtCore\QList \
 		C:\Qt\5.7\msvc2015_64\include\QtWidgets\QMessageBox \
 		C:\Qt\5.7\msvc2015_64\include\QtWidgets\qmessagebox.h \
 		C:\Qt\5.7\msvc2015_64\include\QtMultimediaWidgets\QVideoWidget \
-		C:\Qt\5.7\msvc2015_64\include\QtMultimediaWidgets\qvideowidget.h \
-		C:\Qt\5.7\msvc2015_64\include\QtMultimediaWidgets\qtmultimediawidgetdefs.h \
-		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\qmediabindableinterface.h \
 		C:\Qt\5.7\msvc2015_64\include\QtWidgets\QFileDialog \
 		C:\Qt\5.7\msvc2015_64\include\QtWidgets\qfiledialog.h \
 		C:\Qt\5.7\msvc2015_64\include\QtCore\qdir.h \
 		C:\Qt\5.7\msvc2015_64\include\QtCore\qfileinfo.h \
 		C:\Qt\5.7\msvc2015_64\include\QtCore\QTimer \
 		C:\Qt\5.7\msvc2015_64\include\QtCore\qtimer.h \
-		C:\Qt\5.7\msvc2015_64\include\QtCore\qbasictimer.h \
 		C:\Qt\5.7\msvc2015_64\include\QtWidgets\QGraphicsScene \
 		C:\Qt\5.7\msvc2015_64\include\QtWidgets\qgraphicsscene.h \
 		C:\Qt\5.7\msvc2015_64\include\QtGui\qpen.h \
@@ -1387,6 +2087,80 @@ debug\additemdialog.obj: additemdialog.cpp additemdialog.h \
 		webcampreview.h \
 		C:\Qt\5.7\msvc2015_64\include\QtWidgets\QDialog \
 		C:\Qt\5.7\msvc2015_64\include\QtWidgets\qdialog.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\QCamera \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\qcamera.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\qmediacontrol.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\qmediaservice.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\qcameraexposure.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\qcamerafocus.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\qcameraimageprocessing.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\qcameraviewfindersettings.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\qvideoframe.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\qabstractvideobuffer.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimediaWidgets\QCameraViewfinder \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimediaWidgets\qcameraviewfinder.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimediaWidgets\qvideowidget.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimediaWidgets\qtmultimediawidgetdefs.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\qmediabindableinterface.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\QCameraInfo \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\qcamerainfo.h \
+		C:\Qt\5.7\msvc2015_64\include\QtWidgets\QAbstractButton \
+		C:\Qt\5.7\msvc2015_64\include\QtWidgets\qabstractbutton.h \
+		canvasrenderer.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\QOpenGLWindow \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qopenglwindow.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\QPaintDeviceWindow \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qpaintdevicewindow.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\QWindow \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qwindow.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\QObject \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\QEvent \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\QMargins \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\QRect \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qsurface.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qsurfaceformat.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\QPaintDevice \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\QOpenGLContext \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qopenglcontext.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\QScopedPointer \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\QSurfaceFormat \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qopengl.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qt_windows.h \
+		C:\Qt\5.7\msvc2015_64\include\QtANGLE\GLES3\gl3.h \
+		C:\Qt\5.7\msvc2015_64\include\QtANGLE\GLES3\gl3platform.h \
+		C:\Qt\5.7\msvc2015_64\include\QtANGLE\KHR\khrplatform.h \
+		C:\Qt\5.7\msvc2015_64\include\QtANGLE\GLES2\gl2.h \
+		C:\Qt\5.7\msvc2015_64\include\QtANGLE\GLES2\gl2platform.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qopengles2ext.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qopenglext.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qopenglversionfunctions.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\QImage \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\QOpenGLFunctions \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qopenglfunctions.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\QOpenGLBuffer \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qopenglbuffer.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\QOpenGLVertexArrayObject \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qopenglvertexarrayobject.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\QOpenGLTexture \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qopengltexture.h \
+		openglobject.h \
+		vertex.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\QVector3D \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qvector3d.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\QMatrix4x4 \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qmatrix4x4.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qvector4d.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qquaternion.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qgenericmatrix.h \
+		videoframegrabber.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\QList \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\QVideoFrame \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\QVideoSurfaceFormat \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\qvideosurfaceformat.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\QAbstractVideoSurface \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\qabstractvideosurface.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\QBasicTimer \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qbasictimer.h \
 		ui_additemdialog.h \
 		C:\Qt\5.7\msvc2015_64\include\QtWidgets\QAction \
 		C:\Qt\5.7\msvc2015_64\include\QtWidgets\qaction.h \
@@ -1401,7 +2175,6 @@ debug\additemdialog.obj: additemdialog.cpp additemdialog.h \
 		C:\Qt\5.7\msvc2015_64\include\QtWidgets\qbuttongroup.h \
 		C:\Qt\5.7\msvc2015_64\include\QtWidgets\QCheckBox \
 		C:\Qt\5.7\msvc2015_64\include\QtWidgets\qcheckbox.h \
-		C:\Qt\5.7\msvc2015_64\include\QtWidgets\qabstractbutton.h \
 		C:\Qt\5.7\msvc2015_64\include\QtWidgets\QComboBox \
 		C:\Qt\5.7\msvc2015_64\include\QtWidgets\qcombobox.h \
 		C:\Qt\5.7\msvc2015_64\include\QtWidgets\QGroupBox \
@@ -1427,7 +2200,12 @@ debug\additemdialog.obj: additemdialog.cpp additemdialog.h \
 		C:\Qt\5.7\msvc2015_64\include\QtWidgets\QFileDialog \
 		C:\Qt\5.7\msvc2015_64\include\QtWidgets\qfiledialog.h \
 		C:\Qt\5.7\msvc2015_64\include\QtCore\qdir.h \
-		C:\Qt\5.7\msvc2015_64\include\QtCore\qfileinfo.h
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qfileinfo.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\QScreen \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qscreen.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\QSize \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\QSizeF \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\QTransform
 
 debug\setupcanvas.obj: setupcanvas.cpp C:\Qt\5.7\msvc2015_64\include\QtWidgets\QCheckBox \
 		C:\Qt\5.7\msvc2015_64\include\QtWidgets\qcheckbox.h \
@@ -1597,8 +2375,77 @@ debug\setupcanvas.obj: setupcanvas.cpp C:\Qt\5.7\msvc2015_64\include\QtWidgets\Q
 		C:\Qt\5.7\msvc2015_64\include\QtWidgets\QLCDNumber \
 		C:\Qt\5.7\msvc2015_64\include\QtWidgets\qlcdnumber.h \
 		webcampreview.h \
-		mouseeventeater.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\QCamera \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\qcamera.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\qmediacontrol.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\qmediaservice.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\qcameraexposure.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\qcamerafocus.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\qcameraimageprocessing.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\qcameraviewfindersettings.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\qvideoframe.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\qabstractvideobuffer.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimediaWidgets\QCameraViewfinder \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimediaWidgets\qcameraviewfinder.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimediaWidgets\qvideowidget.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimediaWidgets\qtmultimediawidgetdefs.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\qmediabindableinterface.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\QCameraInfo \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\qcamerainfo.h \
+		C:\Qt\5.7\msvc2015_64\include\QtWidgets\QAbstractButton \
+		canvasrenderer.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\QOpenGLWindow \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qopenglwindow.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\QPaintDeviceWindow \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qpaintdevicewindow.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\QWindow \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qwindow.h \
 		C:\Qt\5.7\msvc2015_64\include\QtCore\QEvent \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\QMargins \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qsurface.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qsurfaceformat.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\QPaintDevice \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\QOpenGLContext \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qopenglcontext.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\QScopedPointer \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\QSurfaceFormat \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qopengl.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qt_windows.h \
+		C:\Qt\5.7\msvc2015_64\include\QtANGLE\GLES3\gl3.h \
+		C:\Qt\5.7\msvc2015_64\include\QtANGLE\GLES3\gl3platform.h \
+		C:\Qt\5.7\msvc2015_64\include\QtANGLE\KHR\khrplatform.h \
+		C:\Qt\5.7\msvc2015_64\include\QtANGLE\GLES2\gl2.h \
+		C:\Qt\5.7\msvc2015_64\include\QtANGLE\GLES2\gl2platform.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qopengles2ext.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qopenglext.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qopenglversionfunctions.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\QImage \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\QOpenGLFunctions \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qopenglfunctions.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\QOpenGLBuffer \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qopenglbuffer.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\QOpenGLVertexArrayObject \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qopenglvertexarrayobject.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\QOpenGLTexture \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qopengltexture.h \
+		openglobject.h \
+		vertex.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\QVector3D \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qvector3d.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\QMatrix4x4 \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qmatrix4x4.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qvector4d.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qquaternion.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qgenericmatrix.h \
+		videoframegrabber.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\QVideoFrame \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\QVideoSurfaceFormat \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\qvideosurfaceformat.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\QAbstractVideoSurface \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\qabstractvideosurface.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\QBasicTimer \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qbasictimer.h \
+		mouseeventeater.h \
 		C:\Qt\5.7\msvc2015_64\include\QtWidgets\QFrame \
 		ui_setupcanvas.h \
 		C:\Qt\5.7\msvc2015_64\include\QtWidgets\QAction \
@@ -1621,6 +2468,8 @@ debug\setupcanvas.obj: setupcanvas.cpp C:\Qt\5.7\msvc2015_64\include\QtWidgets\Q
 		C:\Qt\5.7\msvc2015_64\include\QtWidgets\QListWidget \
 		C:\Qt\5.7\msvc2015_64\include\QtWidgets\QPushButton \
 		C:\Qt\5.7\msvc2015_64\include\QtWidgets\qpushbutton.h \
+		C:\Qt\5.7\msvc2015_64\include\QtWidgets\QSpinBox \
+		C:\Qt\5.7\msvc2015_64\include\QtWidgets\qspinbox.h \
 		C:\Qt\5.7\msvc2015_64\include\QtWidgets\QTableWidget \
 		C:\Qt\5.7\msvc2015_64\include\QtWidgets\qtablewidget.h \
 		C:\Qt\5.7\msvc2015_64\include\QtWidgets\qtableview.h \
@@ -1833,7 +2682,490 @@ debug\webcampreview.obj: webcampreview.cpp webcampreview.h \
 		C:\Qt\5.7\msvc2015_64\include\QtCore\qfiledevice.h \
 		C:\Qt\5.7\msvc2015_64\include\QtGui\qvector2d.h \
 		C:\Qt\5.7\msvc2015_64\include\QtGui\qtouchdevice.h \
-		ui_webcampreview.h
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\QCamera \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\qcamera.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\qmediacontrol.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\qtmultimediadefs.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\qmediaobject.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\qmultimedia.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\qmediaservice.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\qcameraexposure.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\qmediaenumdebug.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qmetaobject.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\qcamerafocus.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\qcameraimageprocessing.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\qcameraviewfindersettings.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\qvideoframe.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\qabstractvideobuffer.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimediaWidgets\QCameraViewfinder \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimediaWidgets\qcameraviewfinder.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimediaWidgets\qvideowidget.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimediaWidgets\qtmultimediawidgetdefs.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\qmediabindableinterface.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\QCameraInfo \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\qcamerainfo.h \
+		C:\Qt\5.7\msvc2015_64\include\QtWidgets\QAbstractButton \
+		C:\Qt\5.7\msvc2015_64\include\QtWidgets\qabstractbutton.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qicon.h \
+		ui_webcampreview.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\QVariant \
+		C:\Qt\5.7\msvc2015_64\include\QtWidgets\QAction \
+		C:\Qt\5.7\msvc2015_64\include\QtWidgets\qaction.h \
+		C:\Qt\5.7\msvc2015_64\include\QtWidgets\qactiongroup.h \
+		C:\Qt\5.7\msvc2015_64\include\QtWidgets\QApplication \
+		C:\Qt\5.7\msvc2015_64\include\QtWidgets\qapplication.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qcoreapplication.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qeventloop.h \
+		C:\Qt\5.7\msvc2015_64\include\QtWidgets\qdesktopwidget.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qguiapplication.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qinputmethod.h \
+		C:\Qt\5.7\msvc2015_64\include\QtWidgets\QButtonGroup \
+		C:\Qt\5.7\msvc2015_64\include\QtWidgets\qbuttongroup.h \
+		C:\Qt\5.7\msvc2015_64\include\QtWidgets\QDialogButtonBox \
+		C:\Qt\5.7\msvc2015_64\include\QtWidgets\qdialogbuttonbox.h \
+		C:\Qt\5.7\msvc2015_64\include\QtWidgets\QGroupBox \
+		C:\Qt\5.7\msvc2015_64\include\QtWidgets\qgroupbox.h \
+		C:\Qt\5.7\msvc2015_64\include\QtWidgets\qframe.h \
+		C:\Qt\5.7\msvc2015_64\include\QtWidgets\QHeaderView \
+		C:\Qt\5.7\msvc2015_64\include\QtWidgets\qheaderview.h \
+		C:\Qt\5.7\msvc2015_64\include\QtWidgets\qabstractitemview.h \
+		C:\Qt\5.7\msvc2015_64\include\QtWidgets\qabstractscrollarea.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qabstractitemmodel.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qitemselectionmodel.h \
+		C:\Qt\5.7\msvc2015_64\include\QtWidgets\qabstractitemdelegate.h \
+		C:\Qt\5.7\msvc2015_64\include\QtWidgets\qstyleoption.h \
+		C:\Qt\5.7\msvc2015_64\include\QtWidgets\qabstractspinbox.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qvalidator.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qregularexpression.h \
+		C:\Qt\5.7\msvc2015_64\include\QtWidgets\qslider.h \
+		C:\Qt\5.7\msvc2015_64\include\QtWidgets\qabstractslider.h \
+		C:\Qt\5.7\msvc2015_64\include\QtWidgets\qstyle.h \
+		C:\Qt\5.7\msvc2015_64\include\QtWidgets\qtabbar.h \
+		C:\Qt\5.7\msvc2015_64\include\QtWidgets\qtabwidget.h \
+		C:\Qt\5.7\msvc2015_64\include\QtWidgets\qrubberband.h
+
+debug\canvasrenderer.obj: canvasrenderer.cpp canvasrenderer.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\QOpenGLWindow \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qopenglwindow.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qglobal.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qconfig.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qfeatures.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qsystemdetection.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qprocessordetection.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qcompilerdetection.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qtypeinfo.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qtypetraits.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qisenum.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qsysinfo.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qlogging.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qflags.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qatomic.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qbasicatomic.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qatomic_bootstrap.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qgenericatomic.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qatomic_cxx11.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qatomic_msvc.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qglobalstatic.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qmutex.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qnumeric.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qversiontagging.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\QPaintDeviceWindow \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qpaintdevicewindow.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\QWindow \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qwindow.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\QObject \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qobject.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qobjectdefs.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qnamespace.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qobjectdefs_impl.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qstring.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qchar.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qbytearray.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qrefcount.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qarraydata.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qstringbuilder.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qlist.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qalgorithms.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qiterator.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qhashfunctions.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qpair.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qbytearraylist.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qstringlist.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qregexp.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qstringmatcher.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qcoreevent.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qscopedpointer.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qmetatype.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qvarlengtharray.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qcontainerfwd.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qobject_impl.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\QEvent \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\QMargins \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qmargins.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\QRect \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qrect.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qsize.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qpoint.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qsurface.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qsurfaceformat.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qwindowdefs.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qwindowdefs_win.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qicon.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qpixmap.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qpaintdevice.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qcolor.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qrgb.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qrgba64.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qsharedpointer.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qshareddata.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qhash.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qsharedpointer_impl.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qimage.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qpixelformat.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qtransform.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qmatrix.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qpolygon.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qvector.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qregion.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qdatastream.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qiodevice.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qline.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qpainterpath.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qcursor.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\QPaintDevice \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\QOpenGLContext \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qopenglcontext.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\QScopedPointer \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\QSurfaceFormat \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qopengl.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qt_windows.h \
+		C:\Qt\5.7\msvc2015_64\include\QtANGLE\GLES3\gl3.h \
+		C:\Qt\5.7\msvc2015_64\include\QtANGLE\GLES3\gl3platform.h \
+		C:\Qt\5.7\msvc2015_64\include\QtANGLE\KHR\khrplatform.h \
+		C:\Qt\5.7\msvc2015_64\include\QtANGLE\GLES2\gl2.h \
+		C:\Qt\5.7\msvc2015_64\include\QtANGLE\GLES2\gl2platform.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qopengles2ext.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qopenglext.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qopenglversionfunctions.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qvariant.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qmap.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qdebug.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qtextstream.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qlocale.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qset.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qcontiguouscache.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\QImage \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\QOpenGLFunctions \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qopenglfunctions.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\QOpenGLBuffer \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qopenglbuffer.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\QOpenGLVertexArrayObject \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qopenglvertexarrayobject.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\QOpenGLTexture \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qopengltexture.h \
+		openglobject.h \
+		vertex.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\QVector3D \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qvector3d.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\QMatrix4x4 \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qmatrix4x4.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qvector4d.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qquaternion.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qgenericmatrix.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\QDebug \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\QString \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\QOpenGLShaderProgram \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qopenglshaderprogram.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qvector2d.h \
+		videoframegrabber.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\QList \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\QVideoFrame \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\qvideoframe.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\qabstractvideobuffer.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\qtmultimediadefs.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\qmultimedia.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\QVideoSurfaceFormat \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\qvideosurfaceformat.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\QMediaPlayer \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\qmediaplayer.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\qmediaobject.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\qmediacontent.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\qmediaresource.h \
+		C:\Qt\5.7\msvc2015_64\include\QtNetwork\qnetworkrequest.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\QSharedDataPointer \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\QUrl \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qurl.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qurlquery.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\QVariant \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\qmediaenumdebug.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qmetaobject.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\qaudio.h \
+		C:\Qt\5.7\msvc2015_64\include\QtNetwork\qnetworkconfiguration.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\QAbstractVideoSurface \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\qabstractvideosurface.h
+
+debug\openglobject.obj: openglobject.cpp openglobject.h \
+		vertex.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\QVector3D \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qvector3d.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qpoint.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qnamespace.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qglobal.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qconfig.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qfeatures.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qsystemdetection.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qprocessordetection.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qcompilerdetection.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qtypeinfo.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qtypetraits.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qisenum.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qsysinfo.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qlogging.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qflags.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qatomic.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qbasicatomic.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qatomic_bootstrap.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qgenericatomic.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qatomic_cxx11.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qatomic_msvc.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qglobalstatic.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qmutex.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qnumeric.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qversiontagging.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qmetatype.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qbytearray.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qrefcount.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qarraydata.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qstring.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qchar.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qstringbuilder.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qvarlengtharray.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qcontainerfwd.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qalgorithms.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qobjectdefs.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qobjectdefs_impl.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\QMatrix4x4 \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qmatrix4x4.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qvector4d.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qquaternion.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qgenericmatrix.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qdebug.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qhash.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qiterator.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qlist.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qhashfunctions.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qpair.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qbytearraylist.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qstringlist.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qregexp.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qstringmatcher.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qmap.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qtextstream.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qiodevice.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qobject.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qcoreevent.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qscopedpointer.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qobject_impl.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qlocale.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qvariant.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qshareddata.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qvector.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qset.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qcontiguouscache.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qsharedpointer.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qsharedpointer_impl.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qdatastream.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qrect.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qmargins.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qsize.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\QOpenGLTexture \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qopengltexture.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qopengl.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qt_windows.h \
+		C:\Qt\5.7\msvc2015_64\include\QtANGLE\GLES3\gl3.h \
+		C:\Qt\5.7\msvc2015_64\include\QtANGLE\GLES3\gl3platform.h \
+		C:\Qt\5.7\msvc2015_64\include\QtANGLE\KHR\khrplatform.h \
+		C:\Qt\5.7\msvc2015_64\include\QtANGLE\GLES2\gl2.h \
+		C:\Qt\5.7\msvc2015_64\include\QtANGLE\GLES2\gl2platform.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qopengles2ext.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qopenglext.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qimage.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qcolor.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qrgb.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qrgba64.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qpaintdevice.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qwindowdefs.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qwindowdefs_win.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qpixelformat.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qtransform.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qmatrix.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qpolygon.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qregion.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qline.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qpainterpath.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\QScopedPointer \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\QOpenGLBuffer \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qopenglbuffer.h
+
+debug\videoframegrabber.obj: videoframegrabber.cpp videoframegrabber.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\QList \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qlist.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qalgorithms.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qglobal.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qconfig.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qfeatures.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qsystemdetection.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qprocessordetection.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qcompilerdetection.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qtypeinfo.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qtypetraits.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qisenum.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qsysinfo.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qlogging.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qflags.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qatomic.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qbasicatomic.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qatomic_bootstrap.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qgenericatomic.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qatomic_cxx11.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qatomic_msvc.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qglobalstatic.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qmutex.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qnumeric.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qversiontagging.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qiterator.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qrefcount.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qarraydata.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qhashfunctions.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qchar.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qpair.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qbytearraylist.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qbytearray.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qnamespace.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qstring.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qstringbuilder.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qstringlist.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qregexp.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qstringmatcher.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\QVideoFrame \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\qvideoframe.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qmetatype.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qvarlengtharray.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qcontainerfwd.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qobjectdefs.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qobjectdefs_impl.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qshareddata.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qhash.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qimage.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qcolor.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qrgb.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qrgba64.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qpaintdevice.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qwindowdefs.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qwindowdefs_win.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qrect.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qmargins.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qsize.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qpoint.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qpixelformat.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qtransform.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qmatrix.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qpolygon.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qvector.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qregion.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qdatastream.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qscopedpointer.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qiodevice.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qobject.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qcoreevent.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qobject_impl.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qline.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qpainterpath.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\qabstractvideobuffer.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\qtmultimediadefs.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\qmultimedia.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qvariant.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qmap.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qdebug.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qtextstream.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qlocale.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qset.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qcontiguouscache.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qsharedpointer.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qsharedpointer_impl.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\QVideoSurfaceFormat \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\qvideosurfaceformat.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\QMediaPlayer \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\qmediaplayer.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\qmediaobject.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\qmediacontent.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\qmediaresource.h \
+		C:\Qt\5.7\msvc2015_64\include\QtNetwork\qnetworkrequest.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\QSharedDataPointer \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\QString \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\QUrl \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qurl.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qurlquery.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\QVariant \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\qmediaenumdebug.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qmetaobject.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\qaudio.h \
+		C:\Qt\5.7\msvc2015_64\include\QtNetwork\qnetworkconfiguration.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\QAbstractVideoSurface \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\qabstractvideosurface.h \
+		canvasrenderer.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\QOpenGLWindow \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qopenglwindow.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\QPaintDeviceWindow \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qpaintdevicewindow.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\QWindow \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qwindow.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\QObject \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\QEvent \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\QMargins \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\QRect \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qsurface.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qsurfaceformat.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qicon.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qpixmap.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qcursor.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\QPaintDevice \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\QOpenGLContext \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qopenglcontext.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\QScopedPointer \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\QSurfaceFormat \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qopengl.h \
+		C:\Qt\5.7\msvc2015_64\include\QtCore\qt_windows.h \
+		C:\Qt\5.7\msvc2015_64\include\QtANGLE\GLES3\gl3.h \
+		C:\Qt\5.7\msvc2015_64\include\QtANGLE\GLES3\gl3platform.h \
+		C:\Qt\5.7\msvc2015_64\include\QtANGLE\KHR\khrplatform.h \
+		C:\Qt\5.7\msvc2015_64\include\QtANGLE\GLES2\gl2.h \
+		C:\Qt\5.7\msvc2015_64\include\QtANGLE\GLES2\gl2platform.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qopengles2ext.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qopenglext.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qopenglversionfunctions.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\QImage \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\QOpenGLFunctions \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qopenglfunctions.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\QOpenGLBuffer \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qopenglbuffer.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\QOpenGLVertexArrayObject \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qopenglvertexarrayobject.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\QOpenGLTexture \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qopengltexture.h \
+		openglobject.h \
+		vertex.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\QVector3D \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qvector3d.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\QMatrix4x4 \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qmatrix4x4.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qvector4d.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qquaternion.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qgenericmatrix.h \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\QVideoProbe \
+		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\qvideoprobe.h
+
+debug\qrc_resources.obj: debug\qrc_resources.cpp 
 
 debug\moc_mainwindow.obj: debug\moc_mainwindow.cpp 
 
@@ -1844,6 +3176,10 @@ debug\moc_setupcanvas.obj: debug\moc_setupcanvas.cpp
 debug\moc_mouseeventeater.obj: debug\moc_mouseeventeater.cpp 
 
 debug\moc_webcampreview.obj: debug\moc_webcampreview.cpp 
+
+debug\moc_canvasrenderer.obj: debug\moc_canvasrenderer.cpp 
+
+debug\moc_videoframegrabber.obj: debug\moc_videoframegrabber.cpp 
 
 ####### Install
 

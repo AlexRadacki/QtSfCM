@@ -26,6 +26,10 @@ private slots:
 
     void on_applyButton_pressed();
 
+    void on_comboBox_currentIndexChanged(int index);
+
+    void on_checkBox_toggled(bool checked);
+
 private:
     Ui::AddItemDialog *ui;
 };

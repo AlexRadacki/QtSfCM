@@ -11,6 +11,9 @@
 #include <QTime>
 #include <QLCDNumber>
 #include "webcampreview.h"
+#include <canvasrenderer.h>
+#include "videoframegrabber.h"
+#include <QBasicTimer>
 
 namespace Ui {
 class MainWindow;
@@ -25,9 +28,9 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     QTime mainTime;
-    void createItem(QString name, QUrl path, QString type, QTime start, QTime end);
+    void createItem(QString name, QUrl path, QString type, QTime start, QTime end, QRect rect);
     ~MainWindow();
-
+    void timerEvent(QTimerEvent *event);
     struct MediaEvent
     {
         QString name;
@@ -35,10 +38,11 @@ public:
         QString type;
         QTime start;
         QTime end;
+        QRect rect;
         bool hasStarted;
         MediaEvent(){}
-        MediaEvent(QString _name, QUrl _path, QString _type, QTime _start, QTime _end)
-            : name(_name), path(_path), type(_type), start(_start), end(_end)
+        MediaEvent(QString _name, QUrl _path, QString _type, QTime _start, QTime _end, QRect _rect)
+            : name(_name), path(_path), type(_type), start(_start), end(_end), rect(_rect)
         {
             hasStarted = false;
         }
@@ -50,12 +54,15 @@ public:
     {
         int x;
         int y;
-
+        int width;
+        int height;
         Canvas(){}
-        Canvas(int _x, int _y) : x(_x), y(_y){}
+        Canvas(int _x, int _y, int _width, int _height) : x(_x), y(_y), width(_width), height(_height){}
     };
 
     Canvas *mainCanvas;
+    CanvasRenderer* canvasrenderer;
+
 
 private slots:
     void updateTime();
@@ -92,7 +99,7 @@ private:
     Ui::MainWindow *ui;
     ulong lastKeyEventTime;
     QObjectList timerElements;
-    QTimer *timer;
+    QBasicTimer timer;
     QTime elapsed_mainTime;
     bool isPaused;
     bool isPlaying;
@@ -100,6 +107,7 @@ private:
     int totalMs;
     QMediaPlayer *previewPlayer;
     QVideoWidget *previewVideoWidget;
+
 
 protected:
 

@@ -34,12 +34,12 @@ public:
     {
         if (TestWindow->objectName().isEmpty())
             TestWindow->setObjectName(QStringLiteral("TestWindow"));
-        TestWindow->resize(441, 465);
+        TestWindow->resize(989, 648);
         mainWindow = new QWidget(TestWindow);
         mainWindow->setObjectName(QStringLiteral("mainWindow"));
         myglwidget = new MyGLWidget(mainWindow);
         myglwidget->setObjectName(QStringLiteral("myglwidget"));
-        myglwidget->setGeometry(QRect(20, 20, 400, 400));
+        myglwidget->setGeometry(QRect(20, 20, 921, 521));
         label_fps = new QLabel(myglwidget);
         label_fps->setObjectName(QStringLiteral("label_fps"));
         label_fps->setGeometry(QRect(269, 10, 121, 31));
@@ -70,7 +70,7 @@ public:
         label_fps->setAlignment(Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter);
         pushButton_Color = new QPushButton(mainWindow);
         pushButton_Color->setObjectName(QStringLiteral("pushButton_Color"));
-        pushButton_Color->setGeometry(QRect(40, 430, 361, 23));
+        pushButton_Color->setGeometry(QRect(300, 570, 361, 23));
         TestWindow->setCentralWidget(mainWindow);
 
         retranslateUi(TestWindow);

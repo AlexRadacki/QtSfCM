@@ -43,7 +43,6 @@ SetupCanvas::SetupCanvas(QWidget *parent) :
            {
                ui->videoAdapterlist->addItem(QString::fromStdString(deviceName)+", "+QString::fromStdString(deviceString));
                ++monitorIndex;
-
                QCheckBox *checkBox = new QCheckBox(QString::fromStdString(deviceName));
                ui->verticalLayoutWidget->layout()->addWidget(checkBox);
                checkBox->setObjectName("checkbox " + QString::number(deviceIndex));
@@ -86,8 +85,13 @@ SetupCanvas::~SetupCanvas()
 
 void SetupCanvas::on_okButton_pressed()
 {
-    mainWindow->mainCanvas->x = canvas_width;
-    mainWindow->mainCanvas->y = canvas_height;
+    mainWindow->mainCanvas->x = ui->spinBoxX->value();
+    mainWindow->mainCanvas->y = ui->spinBoxY->value();
+    mainWindow->mainCanvas->width = ui->spinBoxW->value();
+    mainWindow->mainCanvas->height = ui->spinBoxH->value();
+
+    qDebug() <<"Canvas set to: " << QString::number(canvas_width) << "x, " << QString::number(canvas_height) << "y";
+    SetupCanvas::~SetupCanvas();
 }
 
 void SetupCanvas::on_cancelButton_pressed()
@@ -97,40 +101,8 @@ void SetupCanvas::on_cancelButton_pressed()
 
 void SetupCanvas::on_testScreenButton_pressed()
 {
-//    if(player->state() > 0) player->stop();
-
-//    if(fileName.isEmpty())
-//    {
-
-//        fileName = QFileDialog::getOpenFileUrl(this, tr("Open Media"), QUrl("/"), tr("Media Files (*.avi *.mp4 *.mov)"));
-//        player->setMedia(fileName);
-//        qDebug() <<"Play file: " << player->currentMedia().canonicalUrl();
-//    }
-
-//    if(screen0 && !screen1)
-//    {
-//        videoWidget->setFullScreen(true);
-//        videoWidget->setGeometry(QApplication::screens().at(0)->geometry());
-//    }
-//    else if(screen1 && !screen0)
-//    {
-//        videoWidget->setFullScreen(true);
-//        videoWidget->setGeometry(QApplication::screens().at(1)->geometry());
-//    }
-//    else if(screen1 && screen0)
-//    {
-//        videoWidget->setFullScreen(true);
-//        int x = QApplication::screens().at(0)->geometry().width() + QApplication::screens().at(1)->geometry().width();
-//        int y = (QApplication::screens().at(0)->geometry().height() > QApplication::screens().at(1)->geometry().height()) ? QApplication::screens().at(0)->geometry().height() : QApplication::screens().at(1)->geometry().height();
-//        videoWidget->setGeometry(QRect(0,0,x,y));
-//    }
-
-//    player->play();
     UpdateCanvasFrame();
-
 }
-
-
 
 void SetupCanvas::UpdateCanvasFrame()
 {
@@ -142,20 +114,17 @@ void SetupCanvas::UpdateCanvasFrame()
 
     for(i = 0; i < canvasItems.length(); i++)
     {
-
         if(canvasItems.at(i)->geometry().x() < lowestXVal)
         {
             lowestXVal = canvasItems.at(i)->geometry().x();
             indexOfLowestX = i;
 
         }
-
-            if(canvasItems.at(i)->geometry().x() > highestXVal)
-            {
-                highestXVal = canvasItems.at(i)->geometry().x();
-                indexOfHighestX = i;
-
-            }
+        if(canvasItems.at(i)->geometry().x() > highestXVal)
+        {
+            highestXVal = canvasItems.at(i)->geometry().x();
+            indexOfHighestX = i;
+        }
     }
 
     int x,y,w,h;
@@ -175,13 +144,14 @@ void SetupCanvas::UpdateCanvasFrame()
          h = canvasItems.at(indexOfHighestX)->geometry().bottomRight().y() - y + 1;
     }
 
-
     canvasFrame->setGeometry(x,y,w,h);
-
     canvasFrame->show();
 
-    ui->canvasXlabel->setText( "Canvas X: " + QString::number(w * 10));
-    ui->canvasYlabel->setText( "Canvas Y: " + QString::number(h* 10));
+    canvas_width = w * 10;
+    canvas_height = h * 10;
+
+    ui->spinBoxW->setValue(w * 10);
+    ui->spinBoxH->setValue(h * 10);
 }
 
 void SetupCanvas::on_checkBox_clicked()
@@ -198,33 +168,27 @@ void SetupCanvas::on_checkBox_clicked()
             qDebug() << "found item at: " + QString::number(i);
             break;
         }
-
     }
 
     if(i>0) i--;
 
     if(checkbox->isChecked())
     {
-
         QFrame *newFrame = new QFrame();
-
         newFrame->setParent(ui->canvaspreviewBox);
         newFrame->setGeometry(ui->canvaspreviewBox->width()/2, ui->canvaspreviewBox->height()/2, QApplication::screens().at(i)->geometry().width() / 10, QApplication::screens().at(i)->geometry().height() / 10);
         newFrame->setFrameShape(QFrame::Box);
         newFrame->setFrameShadow(QFrame::Plain);
         newFrame->setLineWidth(3);
-        newFrame->setMouseTracking(true);;
+        newFrame->setMouseTracking(true);
         newFrame->setObjectName("DisplayDevice");
         newFrame->installEventFilter(mouseEventEater);
         newFrame->show();
         canvasItems.append(newFrame);
-
     }
     else
     {
         QFrame *tmpFrame = canvasItems.at(i);
         tmpFrame->~QFrame();
     }
-
 }
-

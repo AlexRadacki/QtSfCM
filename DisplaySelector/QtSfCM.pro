@@ -18,15 +18,27 @@ SOURCES += main.cpp\
     additemdialog.cpp \
     setupcanvas.cpp \
     mouseeventeater.cpp \
-    webcampreview.cpp
+    webcampreview.cpp \
+    canvasrenderer.cpp \
+    openglobject.cpp \
+    videoframegrabber.cpp
 
 HEADERS  += mainwindow.h \
     additemdialog.h \
     setupcanvas.h \
     mouseeventeater.h \
-    webcampreview.h
+    webcampreview.h \
+    canvasrenderer.h \
+    vertex.h \
+    openglobject.h \
+    videoframegrabber.h
 
 FORMS    += mainwindow.ui \
     additemdialog.ui \
     setupcanvas.ui \
     webcampreview.ui
+
+DISTFILES +=
+
+RESOURCES += \
+    resources.qrc

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>441</width>
-    <height>465</height>
+    <width>989</width>
+    <height>648</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -19,8 +19,8 @@
      <rect>
       <x>20</x>
       <y>20</y>
-      <width>400</width>
-      <height>400</height>
+      <width>921</width>
+      <height>521</height>
      </rect>
     </property>
     <widget class="QLabel" name="label_fps">
@@ -145,8 +145,8 @@
    <widget class="QPushButton" name="pushButton_Color">
     <property name="geometry">
      <rect>
-      <x>40</x>
-      <y>430</y>
+      <x>300</x>
+      <y>570</y>
       <width>361</width>
       <height>23</height>
      </rect>

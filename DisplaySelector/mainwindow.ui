@@ -148,11 +148,18 @@
       <rect>
        <x>100</x>
        <y>100</y>
-       <width>331</width>
+       <width>271</width>
        <height>51</height>
       </rect>
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout">
+      <item>
+       <widget class="QPushButton" name="forward_Button">
+        <property name="text">
+         <string>&gt;&gt;</string>
+        </property>
+       </widget>
+      </item>
       <item>
        <widget class="QPushButton" name="stop_Button">
         <property name="text">
@@ -171,13 +178,6 @@
        <widget class="QPushButton" name="play_Button">
         <property name="text">
          <string>&gt;</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="forward_Button">
-        <property name="text">
-         <string>&gt;&gt;</string>
         </property>
        </widget>
       </item>

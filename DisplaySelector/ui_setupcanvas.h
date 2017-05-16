@@ -19,6 +19,7 @@
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QListWidget>
 #include <QtWidgets/QPushButton>
+#include <QtWidgets/QSpinBox>
 #include <QtWidgets/QTableWidget>
 #include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QWidget>
@@ -39,12 +40,18 @@ public:
     QLabel *canvasXlabel;
     QLabel *canvasYlabel;
     QGroupBox *canvaspreviewBox;
+    QSpinBox *spinBoxX;
+    QSpinBox *spinBoxY;
+    QLabel *canvasWlabel;
+    QLabel *canvasHlabel;
+    QSpinBox *spinBoxW;
+    QSpinBox *spinBoxH;
 
     void setupUi(QDialog *SetupCanvas)
     {
         if (SetupCanvas->objectName().isEmpty())
             SetupCanvas->setObjectName(QStringLiteral("SetupCanvas"));
-        SetupCanvas->resize(799, 569);
+        SetupCanvas->resize(800, 569);
         displayInfoTable = new QTableWidget(SetupCanvas);
         if (displayInfoTable->columnCount() < 1)
             displayInfoTable->setColumnCount(1);
@@ -72,7 +79,7 @@ public:
         displayInfoTable->setGeometry(QRect(10, 270, 281, 281));
         videoAdapterlist = new QListWidget(SetupCanvas);
         videoAdapterlist->setObjectName(QStringLiteral("videoAdapterlist"));
-        videoAdapterlist->setGeometry(QRect(10, 41, 281, 221));
+        videoAdapterlist->setGeometry(QRect(10, 31, 281, 231));
         testScreenButton = new QPushButton(SetupCanvas);
         testScreenButton->setObjectName(QStringLiteral("testScreenButton"));
         testScreenButton->setGeometry(QRect(510, 40, 171, 23));
@@ -100,6 +107,28 @@ public:
         canvaspreviewBox = new QGroupBox(SetupCanvas);
         canvaspreviewBox->setObjectName(QStringLiteral("canvaspreviewBox"));
         canvaspreviewBox->setGeometry(QRect(310, 280, 471, 241));
+        spinBoxX = new QSpinBox(SetupCanvas);
+        spinBoxX->setObjectName(QStringLiteral("spinBoxX"));
+        spinBoxX->setGeometry(QRect(640, 90, 61, 22));
+        spinBoxX->setMaximum(99999);
+        spinBoxY = new QSpinBox(SetupCanvas);
+        spinBoxY->setObjectName(QStringLiteral("spinBoxY"));
+        spinBoxY->setGeometry(QRect(640, 130, 61, 22));
+        spinBoxY->setMaximum(99999);
+        canvasWlabel = new QLabel(SetupCanvas);
+        canvasWlabel->setObjectName(QStringLiteral("canvasWlabel"));
+        canvasWlabel->setGeometry(QRect(510, 170, 121, 16));
+        canvasHlabel = new QLabel(SetupCanvas);
+        canvasHlabel->setObjectName(QStringLiteral("canvasHlabel"));
+        canvasHlabel->setGeometry(QRect(510, 210, 121, 16));
+        spinBoxW = new QSpinBox(SetupCanvas);
+        spinBoxW->setObjectName(QStringLiteral("spinBoxW"));
+        spinBoxW->setGeometry(QRect(640, 170, 61, 22));
+        spinBoxW->setMaximum(99999);
+        spinBoxH = new QSpinBox(SetupCanvas);
+        spinBoxH->setObjectName(QStringLiteral("spinBoxH"));
+        spinBoxH->setGeometry(QRect(640, 210, 61, 22));
+        spinBoxH->setMaximum(99999);
 
         retranslateUi(SetupCanvas);
 
@@ -127,13 +156,15 @@ public:
         ___qtablewidgetitem7->setText(QApplication::translate("SetupCanvas", "DPI", 0));
         QTableWidgetItem *___qtablewidgetitem8 = displayInfoTable->verticalHeaderItem(7);
         ___qtablewidgetitem8->setText(QApplication::translate("SetupCanvas", "Depth", 0));
-        testScreenButton->setText(QApplication::translate("SetupCanvas", "Test Screen(s)", 0));
+        testScreenButton->setText(QApplication::translate("SetupCanvas", "Set Canvas", 0));
         selectOutputBox->setTitle(QApplication::translate("SetupCanvas", "Select Output", 0));
         okButton->setText(QApplication::translate("SetupCanvas", "Ok", 0));
         cancelButton->setText(QApplication::translate("SetupCanvas", "Cancel", 0));
         canvasXlabel->setText(QApplication::translate("SetupCanvas", "Canvas X:", 0));
         canvasYlabel->setText(QApplication::translate("SetupCanvas", "Canvas Y:", 0));
         canvaspreviewBox->setTitle(QApplication::translate("SetupCanvas", "Canvas Preview", 0));
+        canvasWlabel->setText(QApplication::translate("SetupCanvas", "Canvas W:", 0));
+        canvasHlabel->setText(QApplication::translate("SetupCanvas", "Canvas H:", 0));
     } // retranslateUi
 
 };
