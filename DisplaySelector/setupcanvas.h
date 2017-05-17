@@ -36,6 +36,9 @@ private slots:
 
        // void mouseMoveEvent(QMouseEvent *event);
 
+
+        void on_glcheckBox_toggled(bool checked);
+
 private:
     Ui::SetupCanvas *ui;
     int canvas_width;

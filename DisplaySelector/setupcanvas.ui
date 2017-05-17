@@ -258,6 +258,19 @@
     <number>99999</number>
    </property>
   </widget>
+  <widget class="QCheckBox" name="glcheckBox">
+   <property name="geometry">
+    <rect>
+     <x>510</x>
+     <y>250</y>
+     <width>70</width>
+     <height>17</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>OpenGL</string>
+   </property>
+  </widget>
  </widget>
  <resources/>
  <connections/>

@@ -53,7 +53,7 @@ void AddItemDialog::on_applyButton_pressed()
     else
     {
         QRect rect = QRect(ui->spinBox->value(),ui->spinBox_2->value(),ui->spinBox_3->value(),ui->spinBox_4->value());
-        mainWindow->createItem(ui->nameLineEdit->text() ,fileName, mediaType, ui->timeEdit_start->time(),ui->timeEdit_end->time(), rect);
+        mainWindow->createItem(ui->nameLineEdit->text() ,fileName, mediaType, ui->timeEdit_start->time(),ui->timeEdit_end->time(), rect, ui->spinBox_Alpha->value());
         this->~AddItemDialog();
     }
 }
@@ -85,10 +85,11 @@ void AddItemDialog::on_checkBox_toggled(bool checked)
         //fullscreen on selected canvas / display
         if(ui->comboBox->currentIndex() == 0)
         {
-            ui->spinBox->setValue(mainWindow->mainCanvas->x);
-            ui->spinBox_2->setValue(mainWindow->mainCanvas->y);
-            ui->spinBox_3->setValue(mainWindow->mainCanvas->width);
-            ui->spinBox_4->setValue(mainWindow->mainCanvas->height);
+            ui->spinBox->setValue(mainWindow->mainCanvas->geometry().x());
+            ui->spinBox_2->setValue(mainWindow->mainCanvas->geometry().y());
+            ui->spinBox_3->setValue(mainWindow->mainCanvas->geometry().width());
+            ui->spinBox_4->setValue(mainWindow->mainCanvas->geometry().height());
+
         }
     }
 }

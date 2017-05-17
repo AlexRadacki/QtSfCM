@@ -137,6 +137,7 @@ public:
         spinBox_Alpha->setObjectName(QStringLiteral("spinBox_Alpha"));
         spinBox_Alpha->setGeometry(QRect(131, 90, 51, 22));
         spinBox_Alpha->setMaximum(100);
+        spinBox_Alpha->setValue(100);
 
         retranslateUi(AddItemDialog);
 

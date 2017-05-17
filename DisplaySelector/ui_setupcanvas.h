@@ -13,6 +13,7 @@
 #include <QtWidgets/QAction>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QButtonGroup>
+#include <QtWidgets/QCheckBox>
 #include <QtWidgets/QDialog>
 #include <QtWidgets/QGroupBox>
 #include <QtWidgets/QHeaderView>
@@ -46,6 +47,7 @@ public:
     QLabel *canvasHlabel;
     QSpinBox *spinBoxW;
     QSpinBox *spinBoxH;
+    QCheckBox *glcheckBox;
 
     void setupUi(QDialog *SetupCanvas)
     {
@@ -129,6 +131,9 @@ public:
         spinBoxH->setObjectName(QStringLiteral("spinBoxH"));
         spinBoxH->setGeometry(QRect(640, 210, 61, 22));
         spinBoxH->setMaximum(99999);
+        glcheckBox = new QCheckBox(SetupCanvas);
+        glcheckBox->setObjectName(QStringLiteral("glcheckBox"));
+        glcheckBox->setGeometry(QRect(510, 250, 70, 17));
 
         retranslateUi(SetupCanvas);
 
@@ -165,6 +170,7 @@ public:
         canvaspreviewBox->setTitle(QApplication::translate("SetupCanvas", "Canvas Preview", 0));
         canvasWlabel->setText(QApplication::translate("SetupCanvas", "Canvas W:", 0));
         canvasHlabel->setText(QApplication::translate("SetupCanvas", "Canvas H:", 0));
+        glcheckBox->setText(QApplication::translate("SetupCanvas", "OpenGL", 0));
     } // retranslateUi
 
 };

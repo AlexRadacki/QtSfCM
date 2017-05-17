@@ -28,7 +28,7 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     QTime mainTime;
-    void createItem(QString name, QUrl path, QString type, QTime start, QTime end, QRect rect);
+    void createItem(QString name, QUrl path, QString type, QTime start, QTime end, QRect rect, float alpha);
     ~MainWindow();
     void timerEvent(QTimerEvent *event);
     struct MediaEvent
@@ -39,30 +39,24 @@ public:
         QTime start;
         QTime end;
         QRect rect;
+        float alpha;
         bool hasStarted;
         MediaEvent(){}
-        MediaEvent(QString _name, QUrl _path, QString _type, QTime _start, QTime _end, QRect _rect)
-            : name(_name), path(_path), type(_type), start(_start), end(_end), rect(_rect)
+        MediaEvent(QString _name, QUrl _path, QString _type, QTime _start, QTime _end, QRect _rect, float _alpha)
+            : name(_name), path(_path), type(_type), start(_start), end(_end), rect(_rect), alpha (_alpha)
         {
             hasStarted = false;
         }
     };
 
-    MediaEvent *mediaEventArray[64];
-
-    struct Canvas
-    {
-        int x;
-        int y;
-        int width;
-        int height;
-        Canvas(){}
-        Canvas(int _x, int _y, int _width, int _height) : x(_x), y(_y), width(_width), height(_height){}
-    };
-
-    Canvas *mainCanvas;
+    QList<QMediaPlayer *> mediaPlayers;
+    QList<QWidget *> images;
+    QList<QWidget *> mediaPlayerWidgets;
+    QList<MediaEvent *>mediaEventArray;
+    QWidget *glBox;
+    QWidget *mainCanvas;
     CanvasRenderer* canvasrenderer;
-
+    bool glCanvas;
 
 private slots:
     void updateTime();

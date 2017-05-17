@@ -15,6 +15,7 @@ class CanvasRenderer : public QOpenGLWindow, protected QOpenGLFunctions
 {
     Q_OBJECT
 public:
+     CanvasRenderer(UpdateBehavior updateBehavior, QWindow *parent);
     ~CanvasRenderer();
       OpenGLObject *glObjects[64];
       void initializeGL();

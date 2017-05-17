@@ -5,6 +5,11 @@
 #include "vertex.h"
 #include "videoframegrabber.h"
 
+CanvasRenderer::CanvasRenderer(UpdateBehavior updateBehavior, QWindow *parent)
+{
+
+}
+
 CanvasRenderer::~CanvasRenderer()
 {
     makeCurrent();

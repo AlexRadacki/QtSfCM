@@ -11,6 +11,7 @@
 #include <QGraphicsView>
 #include <QGraphicsPixmapItem>
 #include <QOpenGLTexture>
+#include <QGraphicsOpacityEffect>
 
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -23,13 +24,12 @@ MainWindow::MainWindow(QWidget *parent) :
     isPaused = false;
         totalMs = QTime(0,0,0).msecsTo(ui->timeEdit->time());
         ui->progressBar->setRange(0,totalMs);
-        int n;
-        for(n=0;n<64;n++)
-        {
-            mediaEventArray[n] = nullptr;
-        }
 
-        mainCanvas = new Canvas(0,0, 1920,1080);
+        mainCanvas = new QWidget();
+        mainCanvas->setGeometry(1920,0,1920,1080);
+        mainCanvas->setStyleSheet("background-color:black;");
+        mainCanvas->setWindowFlags(Qt::FramelessWindowHint);
+        mainCanvas->show();
 
        previewPlayer = new QMediaPlayer;
        previewVideoWidget = new QVideoWidget;
@@ -39,14 +39,13 @@ MainWindow::MainWindow(QWidget *parent) :
        previewVideoWidget->show();
 
          // Set the window up
-         canvasrenderer = new CanvasRenderer();
-         canvasrenderer->setGeometry(QRect(1920,0,1920,1080));
-         canvasrenderer->show();
+       canvasrenderer = new CanvasRenderer(QOpenGLWindow::NoPartialUpdate, 0);
 
-         int maxitemCount = 4;
-         int j;
-         for(j = 0; j < maxitemCount; j++)
-         createItem(QString::number(j), QUrl("C:/Users/Alex/Videos/asd.avi"), "Video", QTime(0,0,j), QTime(1,0,0), QRect(0,0,100,100));
+        glCanvas = false;
+         //int maxitemCount = 20;
+         //int j;
+         //for(j = 0; j < maxitemCount; j++)
+         //createItem(QString::number(j), QUrl("C:/Users/Alex/Videos/asd.avi"), "Video", QTime(0,0,j), QTime(1,0,0), QRect(10*j,10*j,192,108));
 }
 
 //main update
@@ -78,52 +77,85 @@ void MainWindow::updateTime()
         int i;
         for(i = 0; i < ui->eventListTable->rowCount(); i++)
         {
-            if(mediaEventArray[i] != nullptr)
+            if(mediaEventArray.at(i) != nullptr)
             {
-                if(QTime(0,0,0).msecsTo(mediaEventArray[i]->start) <= currentMs && !mediaEventArray[i]->hasStarted)
+                if(QTime(0,0,0).msecsTo(mediaEventArray.at(i)->start) <= currentMs && !mediaEventArray.at(i)->hasStarted)
                 {
-                    mediaEventArray[i]->hasStarted = true;
-                    qDebug()<<"start mediaEvent " + mediaEventArray[i]->name;
-                    if(mediaEventArray[i]->type == "Video" || mediaEventArray[i]->type == "Sound")
+                    mediaEventArray.at(i)->hasStarted = true;
+                    qDebug()<<"start mediaEvent " + mediaEventArray.at(i)->name;
+                    if(mediaEventArray.at(i)->type == "Video" || mediaEventArray.at(i)->type == "Sound")
                     {
-                        qDebug()<<"play " + mediaEventArray[i]->path.toString();
+                        qDebug()<<"play " + mediaEventArray.at(i)->path.toString();
+
 
                         QMediaPlayer *player = new QMediaPlayer();
-                        //QVideoWidget *newVideoWidget = new QVideoWidget;
 
+                        if(glCanvas)
+                        {
                         VideoFrameGrabber *vidGrabber = new VideoFrameGrabber();
-                        //connect(vidGrabber, SIGNAL(frameAvailable(QImage)), this, SLOT(processFrame(QImage)));
+                        connect(vidGrabber, SIGNAL(frameAvailable(QImage)), this, SLOT(processFrame(QImage)));
                         vidGrabber->renderer = canvasrenderer;
-                        //newVideoWidget->setParent(ui->videoBox);
-                        //newVideoWidget->setGeometry( mediaEventArray[i]->rect);
-                        //newVideoWidget->setWindowFlags(Qt::FramelessWindowHint);
-                        //newVideoWidget->setWindowOpacity(0.2);
-                        //newVideoWidget->show();
                         player->setVideoOutput(vidGrabber);
-                        player->setMedia(mediaEventArray[i]->path);
+                        vidGrabber->rect = mediaEventArray.at(i)->rect;
+                        }
+                        else
+                        {
+                            QVideoWidget *newVideoWidget = new QVideoWidget;
+                            newVideoWidget->setParent(mainCanvas);
+                            newVideoWidget->setGeometry( mediaEventArray.at(i)->rect);
+                            newVideoWidget->setWindowFlags(Qt::FramelessWindowHint);
+                            QGraphicsOpacityEffect *op = new QGraphicsOpacityEffect(newVideoWidget);
+                                op->setOpacity(mediaEventArray.at(i)->alpha/100);
+                                newVideoWidget->setGraphicsEffect(op);
+                                newVideoWidget->setAutoFillBackground(true);
+                            newVideoWidget->show();
+                            player->setVideoOutput(newVideoWidget);
+
+                            mediaPlayerWidgets.append(newVideoWidget);
+                        }
+
+
+                        player->setMedia(mediaEventArray.at(i)->path);
                         player->play();
-                        //previewPlayer->setMedia(mediaEventArray[i]->path);
+
+                        mediaPlayers.append(player);
+
+                        //previewPlayer->setMedia(mediaEventArray.at(i)->path);
                         //previewPlayer->play();
                     }
-                    if(mediaEventArray[i]->type == "Image")
+                    if(mediaEventArray.at(i)->type == "Image")
                     {
-                        qDebug()<<"show " + mediaEventArray[i]->path.toLocalFile();
-                        QPixmap file(mediaEventArray[i]->path.toLocalFile());
-                        QImage imageTexture = file.toImage();
-                        QOpenGLTexture *glTex = new QOpenGLTexture(imageTexture);
-                        canvasrenderer->createSurface(glTex);
-                        QLabel *imageLabel = new QLabel();
-                        imageLabel->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
-                        imageLabel->setScaledContents(true);
-                        imageLabel->setPixmap(file);
-                        imageLabel->setParent(ui->videoBox);
-                        imageLabel->setGeometry(ui->videoBox->rect());
-                        imageLabel->show();
+                        qDebug()<<"show " + mediaEventArray.at(i)->path.toLocalFile();
+                        QPixmap file(mediaEventArray.at(i)->path.toLocalFile());
 
+                        if(glCanvas)
+                        {
+                            QImage imageTexture = file.toImage();
+                            QOpenGLTexture *glTex = new QOpenGLTexture(imageTexture);
+                            canvasrenderer->createSurface(glTex);
+                        }
+                        else
+                        {
+                            QWidget *imageItem = new QWidget(mainCanvas);
+                            QLabel *imageLabel = new QLabel(imageItem);
+                            imageLabel->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
+                            imageLabel->setScaledContents(true);
+                            imageLabel->setPixmap(file);
+                            imageItem->setGeometry(mediaEventArray.at(i)->rect);
+                            imageLabel->setGeometry(0,0,mediaEventArray.at(i)->rect.width(), mediaEventArray.at(i)->rect.height());
+                            QGraphicsOpacityEffect *op = new QGraphicsOpacityEffect(imageItem);
+                                op->setOpacity(mediaEventArray.at(i)->alpha/100);
+                                imageItem->setGraphicsEffect(op);
+                                imageItem->setAutoFillBackground(true);
+                            imageItem->show();
+                            imageLabel->show();
+
+                            images.append(imageItem);
+                        }
                     }
                 }
 
-                if(QTime(0,0,0).msecsTo(mediaEventArray[i]->end) <= currentMs && mediaEventArray[i]->hasStarted)
+                if(QTime(0,0,0).msecsTo(mediaEventArray.at(i)->end) <= currentMs && mediaEventArray.at(i)->hasStarted)
                 {
                    previewPlayer->stop();
                 }
@@ -131,8 +163,12 @@ void MainWindow::updateTime()
         }
     }
 
-    canvasrenderer->paintGL();
-    canvasrenderer->update();
+    if(glCanvas)
+    {
+        canvasrenderer->paintGL();
+        canvasrenderer->update();
+    }
+
 }
 
 MainWindow::~MainWindow()
@@ -233,8 +269,20 @@ void MainWindow::on_pause_Button_pressed()
         mainTime.restart();
         lastTime = 0;
 
-        if(isPaused) timer.stop();
-        else timer.start(1000/20,this);
+        if(isPaused)
+        {
+            timer.stop();
+            foreach (QMediaPlayer *item, mediaPlayers) {
+                item->pause();
+            }
+        }
+        else
+        {
+            timer.start(1000/20,this);
+            foreach (QMediaPlayer *item, mediaPlayers) {
+                item->play();
+            }
+        }
     }
 }
 
@@ -248,6 +296,25 @@ void MainWindow::on_stop_Button_pressed()
         ui->time_label->setText("00:00:00:000");
         isPlaying = false;
         ui->progressBar->setValue(0);
+
+        foreach (QMediaPlayer *item, mediaPlayers) {
+
+            item->stop();
+            mediaPlayers.removeOne(item);
+            delete item;
+
+        }
+        foreach (QWidget *item, images) {
+            images.removeOne(item);
+            delete item;
+        }
+        foreach (QWidget *item, mediaPlayerWidgets) {
+            mediaPlayerWidgets.removeOne(item);
+            delete item;
+        }
+        foreach (MediaEvent *item, mediaEventArray) {
+            item->hasStarted = false;
+        }
     }
 }
 
@@ -300,16 +367,16 @@ void MainWindow::on_addSoundButton_pressed()
     newItemAdder->show();
 }
 
-void MainWindow::createItem(QString name, QUrl path, QString type, QTime start, QTime end, QRect rect)
+void MainWindow::createItem(QString name, QUrl path, QString type, QTime start, QTime end, QRect rect, float alpha)
 {
     qDebug() << "create item of type: " + type + " from: " + path.toString() + " at: " + start.toString() + " to: " +end.toString();
     ui->eventListTable->setRowCount(ui->eventListTable->rowCount()+1);
-
-    mediaEventArray[ui->eventListTable->rowCount()-1] = new MediaEvent(name, path, type, start, end, rect);
-    ui->eventListTable->setItem(ui->eventListTable->rowCount()-1,0, new QTableWidgetItem(mediaEventArray[ui->eventListTable->rowCount()-1]->name));
-    ui->eventListTable->setItem(ui->eventListTable->rowCount()-1,1, new QTableWidgetItem(mediaEventArray[ui->eventListTable->rowCount()-1]->start.toString()));
-    ui->eventListTable->setItem(ui->eventListTable->rowCount()-1,2, new QTableWidgetItem(mediaEventArray[ui->eventListTable->rowCount()-1]->end.toString()));
-    ui->eventListTable->setItem(ui->eventListTable->rowCount()-1,3, new QTableWidgetItem(mediaEventArray[ui->eventListTable->rowCount()-1]->type));
+    MediaEvent *newEvent = new MediaEvent(name, path, type, start, end, rect, alpha);
+    mediaEventArray.append(newEvent);
+    ui->eventListTable->setItem(ui->eventListTable->rowCount()-1,0, new QTableWidgetItem(newEvent->name));
+    ui->eventListTable->setItem(ui->eventListTable->rowCount()-1,1, new QTableWidgetItem(newEvent->start.toString()));
+    ui->eventListTable->setItem(ui->eventListTable->rowCount()-1,2, new QTableWidgetItem(newEvent->end.toString()));
+    ui->eventListTable->setItem(ui->eventListTable->rowCount()-1,3, new QTableWidgetItem(newEvent->type));
 }
 
 void MainWindow::on_actionWebcam_triggered()

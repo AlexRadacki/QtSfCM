@@ -85,10 +85,23 @@ SetupCanvas::~SetupCanvas()
 
 void SetupCanvas::on_okButton_pressed()
 {
-    mainWindow->mainCanvas->x = ui->spinBoxX->value();
-    mainWindow->mainCanvas->y = ui->spinBoxY->value();
-    mainWindow->mainCanvas->width = ui->spinBoxW->value();
-    mainWindow->mainCanvas->height = ui->spinBoxH->value();
+    if(ui->glcheckBox->isChecked())
+    {
+        mainWindow->canvasrenderer->setGeometry(ui->spinBoxX->value(),ui->spinBoxY->value(),ui->spinBoxW->value(),ui->spinBoxH->value());
+        mainWindow->canvasrenderer->show();
+        mainWindow->mainCanvas->hide();
+
+    }
+    else
+    {
+        mainWindow->mainCanvas->setGeometry(ui->spinBoxX->value(),ui->spinBoxY->value(),ui->spinBoxW->value(),ui->spinBoxH->value());
+        mainWindow->canvasrenderer->hide();
+        mainWindow->mainCanvas->show();
+
+    }
+
+
+
 
     qDebug() <<"Canvas set to: " << QString::number(canvas_width) << "x, " << QString::number(canvas_height) << "y";
     SetupCanvas::~SetupCanvas();
@@ -101,6 +114,7 @@ void SetupCanvas::on_cancelButton_pressed()
 
 void SetupCanvas::on_testScreenButton_pressed()
 {
+
     UpdateCanvasFrame();
 }
 
@@ -191,4 +205,10 @@ void SetupCanvas::on_checkBox_clicked()
         QFrame *tmpFrame = canvasItems.at(i);
         tmpFrame->~QFrame();
     }
+}
+
+
+void SetupCanvas::on_glcheckBox_toggled(bool checked)
+{
+    mainWindow->glCanvas = checked;
 }

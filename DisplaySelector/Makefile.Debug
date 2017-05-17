@@ -1937,7 +1937,9 @@ debug\mainwindow.obj: mainwindow.cpp mainwindow.h \
 		C:\Qt\5.7\msvc2015_64\include\QtGui\qtextoption.h \
 		C:\Qt\5.7\msvc2015_64\include\QtWidgets\qscrollarea.h \
 		C:\Qt\5.7\msvc2015_64\include\QtWidgets\QGraphicsPixmapItem \
-		C:\Qt\5.7\msvc2015_64\include\QtWidgets\qgraphicsitem.h
+		C:\Qt\5.7\msvc2015_64\include\QtWidgets\qgraphicsitem.h \
+		C:\Qt\5.7\msvc2015_64\include\QtWidgets\QGraphicsOpacityEffect \
+		C:\Qt\5.7\msvc2015_64\include\QtWidgets\qgraphicseffect.h
 
 debug\additemdialog.obj: additemdialog.cpp additemdialog.h \
 		mainwindow.h \

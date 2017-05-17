@@ -24,7 +24,7 @@ public:
     void stop();
     QVideoSurfaceFormat m_format;
     OpenGLObject *glObject;
-
+    QRect rect;
 
 private :
     bool isCreated;
