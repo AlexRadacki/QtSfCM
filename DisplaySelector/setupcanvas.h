@@ -19,6 +19,7 @@ public:
     MainWindow *mainWindow;
     QFrame *canvasFrame;
     void UpdateCanvasFrame();
+    // setup canvas window deconstructor:
     ~SetupCanvas();
 
 private slots:

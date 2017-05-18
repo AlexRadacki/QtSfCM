@@ -104,18 +104,29 @@ void SetupCanvas::on_okButton_pressed()
 
 
     qDebug() <<"Canvas set to: " << QString::number(canvas_width) << "x, " << QString::number(canvas_height) << "y";
+    //close window and delete setupCanvas object:
     SetupCanvas::~SetupCanvas();
 }
 
 void SetupCanvas::on_cancelButton_pressed()
 {
+    //close window and delete setupCanvas object:
     SetupCanvas::~SetupCanvas();
 }
 
 void SetupCanvas::on_testScreenButton_pressed()
 {
 
-    UpdateCanvasFrame();
+    QList<QObject *> checkBoxList = ui->selectOutputBox->children().at(0)->children();
+    foreach (QObject * item, checkBoxList)
+    {
+        qDebug () << "item: " << item->objectName();
+        QCheckBox *chbxItem = (QCheckBox *)item;
+        if(chbxItem->isChecked())
+                UpdateCanvasFrame();
+
+    }
+
 }
 
 void SetupCanvas::UpdateCanvasFrame()
