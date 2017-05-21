@@ -25,6 +25,7 @@ MainWindow::MainWindow(QWidget *parent) :
         totalMs = QTime(0,0,0).msecsTo(ui->timeEdit->time());
         ui->progressBar->setRange(0,totalMs);
 
+        // Set the QWidget canvas up
         mainCanvas = new QWidget();
         mainCanvas->setGeometry(1920,0,1920,1080);
         mainCanvas->setStyleSheet("background-color:black;");
@@ -38,14 +39,16 @@ MainWindow::MainWindow(QWidget *parent) :
        previewVideoWidget->setGeometry(ui->videoBox->rect());
        previewVideoWidget->show();
 
-         // Set the window up
+       // Set the OpenGL canvas up
        canvasrenderer = new CanvasRenderer(QOpenGLWindow::NoPartialUpdate, 0);
+       canvasrenderer->setGeometry(1920,0,1920,1080);
+       //canvasrenderer->show();
+       glCanvas = false;
 
-        glCanvas = false;
-         //int maxitemCount = 20;
+         //int maxitemCount = 5;
          //int j;
          //for(j = 0; j < maxitemCount; j++)
-         //createItem(QString::number(j), QUrl("C:/Users/Alex/Videos/asd.avi"), "Video", QTime(0,0,j), QTime(1,0,0), QRect(10*j,10*j,192,108));
+         //createItem(QString::number(j), QUrl("C:/Users/Alex/Videos/asd.avi"), "Video", QTime(0,0,j), QTime(1,0,0), QRect(10*j,10*j,192,108), 100);
 }
 
 //main update
@@ -243,8 +246,6 @@ void MainWindow::on_play_Button_pressed()
         elapsed_mainTime.setHMS(0,0,0);
         lastTime = 0;
 
-
-        //connect(timer, SIGNAL(timeout()), this, SLOT(updateTime()));
         timer.start(1000/25, this);
 
         isPlaying = true;

@@ -2,7 +2,6 @@
 #include <QDebug>
 #include <QString>
 #include <QOpenGLShaderProgram>
-#include "vertex.h"
 #include "videoframegrabber.h"
 
 CanvasRenderer::CanvasRenderer(UpdateBehavior updateBehavior, QWindow *parent)
@@ -18,8 +17,6 @@ CanvasRenderer::~CanvasRenderer()
 
 void CanvasRenderer::initializeGL()
 {
-
-    objectCount = 0;
 
     initializeOpenGLFunctions();
 
@@ -53,29 +50,29 @@ void CanvasRenderer::paintGL()
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
   int i;
-  for(i = 0; i < objectCount; i++)
+  for(i = 0; i < glObjects.count(); i++)
   {
-      vbo.bind();
+      vertexBufferObject.bind();
       m_program->bind();
-      m_program->setUniformValue("matrix", glObjects[i]->transform);
+      m_program->setUniformValue("matrix", glObjects.at(i)->transform);
       m_program->enableAttributeArray(0);
       m_program->enableAttributeArray(1);
       m_program->setAttributeBuffer(0, GL_FLOAT, 0, 3, 5 * sizeof(GLfloat));
       m_program->setAttributeBuffer(1, GL_FLOAT, 3 * sizeof(GLfloat), 2, 5 * sizeof(GLfloat));
-      glObjects[i]->texture->bind();
+      glObjects.at(i)->texture->bind();
       glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
-      glObjects[i]->texture->release();
+      glObjects.at(i)->texture->release();
       m_program->release();
-      vbo.release();
+      vertexBufferObject.release();
   }
 }
 
 void CanvasRenderer::teardownGL()
 {
     int i;
-    for(i = 0; i < objectCount; i++)
+    for(i = 0; i < glObjects.count(); i++)
     {
-        glObjects[i]->~OpenGLObject();
+        glObjects.at(i)->~OpenGLObject();
     }
     delete m_program;
     doneCurrent();
@@ -95,18 +92,17 @@ void CanvasRenderer::createSurface(QOpenGLTexture *texture)
         vertData.append(j == 0 || j == 3);
         vertData.append(j == 0 || j == 1);
     }
-    vbo.create();
-    vbo.bind();
+    vertexBufferObject.create();
+    vertexBufferObject.bind();
 
-    vbo.allocate(vertData.constData(), vertData.count() * sizeof(GLfloat));
+    vertexBufferObject.allocate(vertData.constData(), vertData.count() * sizeof(GLfloat));
 
     QMatrix4x4 transform;
     transform.ortho(-0.5f, +0.5f, +0.5f, -0.5f, 0.1f, 15.0f);
-    transform.translate(objectCount / 10.0f, objectCount / 10.0f, -10.0f + (objectCount / 2.0f));
+    transform.translate(glObjects.count() / 10.0f, glObjects.count() / 10.0f, -10.0f + (glObjects.count() / 2.0f));
 
     OpenGLObject *new3dObject = new OpenGLObject(transform, texture);
-    glObjects[objectCount] = new3dObject;
-    objectCount++;
+    glObjects.append(new3dObject);
 }
 OpenGLObject * CanvasRenderer::createVideoSurface(QOpenGLTexture *texture)
 {
@@ -122,15 +118,14 @@ OpenGLObject * CanvasRenderer::createVideoSurface(QOpenGLTexture *texture)
         vertData.append(j == 0 || j == 3);
         vertData.append(j == 0 || j == 1);
     }
-    vbo.create();
-    vbo.bind();
-    vbo.allocate(vertData.constData(), vertData.count() * sizeof(GLfloat));
+    vertexBufferObject.create();
+    vertexBufferObject.bind();
+    vertexBufferObject.allocate(vertData.constData(), vertData.count() * sizeof(GLfloat));
 
     QMatrix4x4 transform;
     transform.ortho(-0.5f, +0.5f, +0.5f, -0.5f, 0.1f, 15.0f);
-    transform.translate(objectCount / 10.0f, objectCount / 10.0f, -10.0f + (objectCount / 2.0f));
+    transform.translate(glObjects.count() / 10.0f, glObjects.count() / 10.0f, -10.0f + (glObjects.count() / 2.0f));
     OpenGLObject *new3dObject = new OpenGLObject(transform, texture);
-    glObjects[objectCount] = new3dObject;
-    objectCount++;
+    glObjects.append(new3dObject);
     return new3dObject;
 }

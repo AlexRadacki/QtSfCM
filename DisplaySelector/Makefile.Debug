@@ -83,7 +83,6 @@ DIST          =  mainwindow.h \
 		mouseeventeater.h \
 		webcampreview.h \
 		canvasrenderer.h \
-		vertex.h \
 		openglobject.h \
 		videoframegrabber.h main.cpp \
 		mainwindow.cpp \
@@ -396,11 +395,9 @@ debug\moc_mainwindow.cpp: C:\Qt\5.7\msvc2015_64\include\QtWidgets\QMainWindow \
 		C:\Qt\5.7\msvc2015_64\include\QtGui\QOpenGLTexture \
 		C:\Qt\5.7\msvc2015_64\include\QtGui\qopengltexture.h \
 		openglobject.h \
-		vertex.h \
-		C:\Qt\5.7\msvc2015_64\include\QtGui\QVector3D \
-		C:\Qt\5.7\msvc2015_64\include\QtGui\qvector3d.h \
 		C:\Qt\5.7\msvc2015_64\include\QtGui\QMatrix4x4 \
 		C:\Qt\5.7\msvc2015_64\include\QtGui\qmatrix4x4.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qvector3d.h \
 		C:\Qt\5.7\msvc2015_64\include\QtGui\qvector4d.h \
 		C:\Qt\5.7\msvc2015_64\include\QtGui\qquaternion.h \
 		C:\Qt\5.7\msvc2015_64\include\QtGui\qgenericmatrix.h \
@@ -621,11 +618,9 @@ debug\moc_additemdialog.cpp: mainwindow.h \
 		C:\Qt\5.7\msvc2015_64\include\QtGui\QOpenGLTexture \
 		C:\Qt\5.7\msvc2015_64\include\QtGui\qopengltexture.h \
 		openglobject.h \
-		vertex.h \
-		C:\Qt\5.7\msvc2015_64\include\QtGui\QVector3D \
-		C:\Qt\5.7\msvc2015_64\include\QtGui\qvector3d.h \
 		C:\Qt\5.7\msvc2015_64\include\QtGui\QMatrix4x4 \
 		C:\Qt\5.7\msvc2015_64\include\QtGui\qmatrix4x4.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qvector3d.h \
 		C:\Qt\5.7\msvc2015_64\include\QtGui\qvector4d.h \
 		C:\Qt\5.7\msvc2015_64\include\QtGui\qquaternion.h \
 		C:\Qt\5.7\msvc2015_64\include\QtGui\qgenericmatrix.h \
@@ -847,11 +842,9 @@ debug\moc_setupcanvas.cpp: C:\Qt\5.7\msvc2015_64\include\QtGui\QMouseEvent \
 		C:\Qt\5.7\msvc2015_64\include\QtGui\QOpenGLTexture \
 		C:\Qt\5.7\msvc2015_64\include\QtGui\qopengltexture.h \
 		openglobject.h \
-		vertex.h \
-		C:\Qt\5.7\msvc2015_64\include\QtGui\QVector3D \
-		C:\Qt\5.7\msvc2015_64\include\QtGui\qvector3d.h \
 		C:\Qt\5.7\msvc2015_64\include\QtGui\QMatrix4x4 \
 		C:\Qt\5.7\msvc2015_64\include\QtGui\qmatrix4x4.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qvector3d.h \
 		C:\Qt\5.7\msvc2015_64\include\QtGui\qvector4d.h \
 		C:\Qt\5.7\msvc2015_64\include\QtGui\qquaternion.h \
 		C:\Qt\5.7\msvc2015_64\include\QtGui\qgenericmatrix.h \
@@ -1221,11 +1214,9 @@ debug\moc_canvasrenderer.cpp: C:\Qt\5.7\msvc2015_64\include\QtGui\QOpenGLWindow 
 		C:\Qt\5.7\msvc2015_64\include\QtGui\QOpenGLTexture \
 		C:\Qt\5.7\msvc2015_64\include\QtGui\qopengltexture.h \
 		openglobject.h \
-		vertex.h \
-		C:\Qt\5.7\msvc2015_64\include\QtGui\QVector3D \
-		C:\Qt\5.7\msvc2015_64\include\QtGui\qvector3d.h \
 		C:\Qt\5.7\msvc2015_64\include\QtGui\QMatrix4x4 \
 		C:\Qt\5.7\msvc2015_64\include\QtGui\qmatrix4x4.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qvector3d.h \
 		C:\Qt\5.7\msvc2015_64\include\QtGui\qvector4d.h \
 		C:\Qt\5.7\msvc2015_64\include\QtGui\qquaternion.h \
 		C:\Qt\5.7\msvc2015_64\include\QtGui\qgenericmatrix.h \
@@ -1379,11 +1370,9 @@ debug\moc_videoframegrabber.cpp: C:\Qt\5.7\msvc2015_64\include\QtCore\QList \
 		C:\Qt\5.7\msvc2015_64\include\QtGui\QOpenGLTexture \
 		C:\Qt\5.7\msvc2015_64\include\QtGui\qopengltexture.h \
 		openglobject.h \
-		vertex.h \
-		C:\Qt\5.7\msvc2015_64\include\QtGui\QVector3D \
-		C:\Qt\5.7\msvc2015_64\include\QtGui\qvector3d.h \
 		C:\Qt\5.7\msvc2015_64\include\QtGui\QMatrix4x4 \
 		C:\Qt\5.7\msvc2015_64\include\QtGui\qmatrix4x4.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qvector3d.h \
 		C:\Qt\5.7\msvc2015_64\include\QtGui\qvector4d.h \
 		C:\Qt\5.7\msvc2015_64\include\QtGui\qquaternion.h \
 		C:\Qt\5.7\msvc2015_64\include\QtGui\qgenericmatrix.h \
@@ -1628,11 +1617,9 @@ debug\main.obj: main.cpp mainwindow.h \
 		C:\Qt\5.7\msvc2015_64\include\QtGui\QOpenGLTexture \
 		C:\Qt\5.7\msvc2015_64\include\QtGui\qopengltexture.h \
 		openglobject.h \
-		vertex.h \
-		C:\Qt\5.7\msvc2015_64\include\QtGui\QVector3D \
-		C:\Qt\5.7\msvc2015_64\include\QtGui\qvector3d.h \
 		C:\Qt\5.7\msvc2015_64\include\QtGui\QMatrix4x4 \
 		C:\Qt\5.7\msvc2015_64\include\QtGui\qmatrix4x4.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qvector3d.h \
 		C:\Qt\5.7\msvc2015_64\include\QtGui\qvector4d.h \
 		C:\Qt\5.7\msvc2015_64\include\QtGui\qquaternion.h \
 		C:\Qt\5.7\msvc2015_64\include\QtGui\qgenericmatrix.h \
@@ -1856,11 +1843,9 @@ debug\mainwindow.obj: mainwindow.cpp mainwindow.h \
 		C:\Qt\5.7\msvc2015_64\include\QtGui\QOpenGLTexture \
 		C:\Qt\5.7\msvc2015_64\include\QtGui\qopengltexture.h \
 		openglobject.h \
-		vertex.h \
-		C:\Qt\5.7\msvc2015_64\include\QtGui\QVector3D \
-		C:\Qt\5.7\msvc2015_64\include\QtGui\qvector3d.h \
 		C:\Qt\5.7\msvc2015_64\include\QtGui\QMatrix4x4 \
 		C:\Qt\5.7\msvc2015_64\include\QtGui\qmatrix4x4.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qvector3d.h \
 		C:\Qt\5.7\msvc2015_64\include\QtGui\qvector4d.h \
 		C:\Qt\5.7\msvc2015_64\include\QtGui\qquaternion.h \
 		C:\Qt\5.7\msvc2015_64\include\QtGui\qgenericmatrix.h \
@@ -2146,11 +2131,9 @@ debug\additemdialog.obj: additemdialog.cpp additemdialog.h \
 		C:\Qt\5.7\msvc2015_64\include\QtGui\QOpenGLTexture \
 		C:\Qt\5.7\msvc2015_64\include\QtGui\qopengltexture.h \
 		openglobject.h \
-		vertex.h \
-		C:\Qt\5.7\msvc2015_64\include\QtGui\QVector3D \
-		C:\Qt\5.7\msvc2015_64\include\QtGui\qvector3d.h \
 		C:\Qt\5.7\msvc2015_64\include\QtGui\QMatrix4x4 \
 		C:\Qt\5.7\msvc2015_64\include\QtGui\qmatrix4x4.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qvector3d.h \
 		C:\Qt\5.7\msvc2015_64\include\QtGui\qvector4d.h \
 		C:\Qt\5.7\msvc2015_64\include\QtGui\qquaternion.h \
 		C:\Qt\5.7\msvc2015_64\include\QtGui\qgenericmatrix.h \
@@ -2431,11 +2414,9 @@ debug\setupcanvas.obj: setupcanvas.cpp C:\Qt\5.7\msvc2015_64\include\QtWidgets\Q
 		C:\Qt\5.7\msvc2015_64\include\QtGui\QOpenGLTexture \
 		C:\Qt\5.7\msvc2015_64\include\QtGui\qopengltexture.h \
 		openglobject.h \
-		vertex.h \
-		C:\Qt\5.7\msvc2015_64\include\QtGui\QVector3D \
-		C:\Qt\5.7\msvc2015_64\include\QtGui\qvector3d.h \
 		C:\Qt\5.7\msvc2015_64\include\QtGui\QMatrix4x4 \
 		C:\Qt\5.7\msvc2015_64\include\QtGui\qmatrix4x4.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qvector3d.h \
 		C:\Qt\5.7\msvc2015_64\include\QtGui\qvector4d.h \
 		C:\Qt\5.7\msvc2015_64\include\QtGui\qquaternion.h \
 		C:\Qt\5.7\msvc2015_64\include\QtGui\qgenericmatrix.h \
@@ -2866,11 +2847,9 @@ debug\canvasrenderer.obj: canvasrenderer.cpp canvasrenderer.h \
 		C:\Qt\5.7\msvc2015_64\include\QtGui\QOpenGLTexture \
 		C:\Qt\5.7\msvc2015_64\include\QtGui\qopengltexture.h \
 		openglobject.h \
-		vertex.h \
-		C:\Qt\5.7\msvc2015_64\include\QtGui\QVector3D \
-		C:\Qt\5.7\msvc2015_64\include\QtGui\qvector3d.h \
 		C:\Qt\5.7\msvc2015_64\include\QtGui\QMatrix4x4 \
 		C:\Qt\5.7\msvc2015_64\include\QtGui\qmatrix4x4.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qvector3d.h \
 		C:\Qt\5.7\msvc2015_64\include\QtGui\qvector4d.h \
 		C:\Qt\5.7\msvc2015_64\include\QtGui\qquaternion.h \
 		C:\Qt\5.7\msvc2015_64\include\QtGui\qgenericmatrix.h \
@@ -2907,8 +2886,8 @@ debug\canvasrenderer.obj: canvasrenderer.cpp canvasrenderer.h \
 		C:\Qt\5.7\msvc2015_64\include\QtMultimedia\qabstractvideosurface.h
 
 debug\openglobject.obj: openglobject.cpp openglobject.h \
-		vertex.h \
-		C:\Qt\5.7\msvc2015_64\include\QtGui\QVector3D \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\QMatrix4x4 \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qmatrix4x4.h \
 		C:\Qt\5.7\msvc2015_64\include\QtGui\qvector3d.h \
 		C:\Qt\5.7\msvc2015_64\include\QtCore\qpoint.h \
 		C:\Qt\5.7\msvc2015_64\include\QtCore\qnamespace.h \
@@ -2946,8 +2925,6 @@ debug\openglobject.obj: openglobject.cpp openglobject.h \
 		C:\Qt\5.7\msvc2015_64\include\QtCore\qalgorithms.h \
 		C:\Qt\5.7\msvc2015_64\include\QtCore\qobjectdefs.h \
 		C:\Qt\5.7\msvc2015_64\include\QtCore\qobjectdefs_impl.h \
-		C:\Qt\5.7\msvc2015_64\include\QtGui\QMatrix4x4 \
-		C:\Qt\5.7\msvc2015_64\include\QtGui\qmatrix4x4.h \
 		C:\Qt\5.7\msvc2015_64\include\QtGui\qvector4d.h \
 		C:\Qt\5.7\msvc2015_64\include\QtGui\qquaternion.h \
 		C:\Qt\5.7\msvc2015_64\include\QtGui\qgenericmatrix.h \
@@ -3156,11 +3133,9 @@ debug\videoframegrabber.obj: videoframegrabber.cpp videoframegrabber.h \
 		C:\Qt\5.7\msvc2015_64\include\QtGui\QOpenGLTexture \
 		C:\Qt\5.7\msvc2015_64\include\QtGui\qopengltexture.h \
 		openglobject.h \
-		vertex.h \
-		C:\Qt\5.7\msvc2015_64\include\QtGui\QVector3D \
-		C:\Qt\5.7\msvc2015_64\include\QtGui\qvector3d.h \
 		C:\Qt\5.7\msvc2015_64\include\QtGui\QMatrix4x4 \
 		C:\Qt\5.7\msvc2015_64\include\QtGui\qmatrix4x4.h \
+		C:\Qt\5.7\msvc2015_64\include\QtGui\qvector3d.h \
 		C:\Qt\5.7\msvc2015_64\include\QtGui\qvector4d.h \
 		C:\Qt\5.7\msvc2015_64\include\QtGui\qquaternion.h \
 		C:\Qt\5.7\msvc2015_64\include\QtGui\qgenericmatrix.h \

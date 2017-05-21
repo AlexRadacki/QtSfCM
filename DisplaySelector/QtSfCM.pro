@@ -29,7 +29,6 @@ HEADERS  += mainwindow.h \
     mouseeventeater.h \
     webcampreview.h \
     canvasrenderer.h \
-    vertex.h \
     openglobject.h \
     videoframegrabber.h
 

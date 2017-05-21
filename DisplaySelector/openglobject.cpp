@@ -8,7 +8,7 @@ OpenGLObject::OpenGLObject(QMatrix4x4 m_transform, QOpenGLTexture *m_texture)
 
 OpenGLObject::~OpenGLObject()
 {
-    delete this;
+
 }
 
 void OpenGLObject::UpdateTexture(QOpenGLTexture *m_texture)

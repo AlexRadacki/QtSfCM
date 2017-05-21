@@ -28,15 +28,26 @@ bool VideoFrameGrabber::present(const QVideoFrame &frame)
                         videoFrame.bytesPerLine(),
                         QVideoFrame::imageFormatFromPixelFormat(frame.pixelFormat())
                         );
+
+                   // destroy current openGL texture object and create a new one - this is rather expensive.
+                      //glObject->texture->~QOpenGLTexture();
+                      //glObject->texture = new QOpenGLTexture(outputImage);
+
+                   // next attempt: override data of texture object (same performance when not mirrored())
                       glObject->texture->destroy();
-                      glObject->UpdateTexture(new QOpenGLTexture(outputImage.mirrored()));
+                      glObject->texture->create();
+                      glObject->texture->setMipLevels(0);
+                      glObject->texture->setData(outputImage);
+
+                   // note: up to 5 full HD videos (mp4, 30fps) are playable at the same time without a lag. CPU load ca 80%
+                   // Using QImage::mirrored() reduces the framerate however.
+                      // todo: + find a new way to upload data to gpu (using framebuffer objects e.g.)
+                      //       + flip QImage in shader using UVs
+                      //       + researching different video codecs for better cpu load -> look at HAP codecs
 
             }
 
             videoFrame.unmap();
-
-            //glObject->texture->release();
-           // glObject->texture = outputTexture;
         }
         return true;
 }

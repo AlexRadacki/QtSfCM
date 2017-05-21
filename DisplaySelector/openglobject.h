@@ -1,6 +1,5 @@
 #ifndef OPENGLOBJECT_H
 #define OPENGLOBJECT_H
-#include "vertex.h"
 #include <QMatrix4x4>
 #include <QOpenGLTexture>
 #include <QOpenGLBuffer>
