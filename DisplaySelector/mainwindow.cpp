@@ -44,11 +44,6 @@ MainWindow::MainWindow(QWidget *parent) :
        canvasrenderer->setGeometry(1920,0,1920,1080);
        //canvasrenderer->show();
        glCanvas = false;
-
-         //int maxitemCount = 5;
-         //int j;
-         //for(j = 0; j < maxitemCount; j++)
-         //createItem(QString::number(j), QUrl("C:/Users/Alex/Videos/asd.avi"), "Video", QTime(0,0,j), QTime(1,0,0), QRect(10*j,10*j,192,108), 100);
 }
 
 //main update
